@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Regular">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Bold.TextColor">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+    <style name="Bold.TextColorLight">
+        <item name="android:textColor">@color/textColorLight</item>
+    </style>
+
+    <style name="Regular.TextColorLight">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+    <style name="Regular.TextColor">
+        <item name="android:textColor">@color/textColorLight</item>
+    </style>
+
+    <!-- TextColor -->
+    <style name="Bold.TextColor.VeryLarge" >
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Regular.TextColor.VeryLarge" >
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Bold.TextColor.Large" >
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Regular.TextColor.Large" >
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Bold.TextColor.Medium" >
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Regular.TextColor.Medium" >
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Bold.TextColor.Small" >
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Regular.TextColor.Small" >
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Bold.TextColor.VerySmall" >
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+    <style name="Regular.TextColor.VerySmall" >
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+
+    <!-- TextColorLight -->
+    <style name="Bold.TextColorLight.VeryLarge" >
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Regular.TextColorLight.VeryLarge" >
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Bold.TextColorLight.Large" >
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Regular.TextColorLight.Large" >
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Bold.TextColorLight.Medium" >
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Regular.TextColorLight.Medium" >
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Bold.TextColorLight.Small" >
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Regular.TextColorLight.Small" >
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Bold.TextColorLight.VerySmall" >
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+    <style name="Regular.TextColorLight.VerySmall" >
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+
+</resources>

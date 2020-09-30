@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Calculadora Perruna</string>
+    <string name="tab_dog">Edad perruna</string>
+    <string name="tab_human">Edad humana</string>
+    <string name="breed">Raza</string>
+    <string name="year">Año(s)</string>
+    <string name="month">Mes(es)</string>
+    <string name="select_breed">Seleccione una raza</string>
+</resources>
