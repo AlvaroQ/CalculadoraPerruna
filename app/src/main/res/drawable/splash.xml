@@ -4,6 +4,6 @@
         android:drawable="@drawable/splash_gradient"
         android:gravity="fill" />
     <item
-        android:drawable="@mipmap/ic_launcher"
+        android:drawable="@mipmap/ic_launcher_foreground"
         android:gravity="center" />
 </layer-list>
