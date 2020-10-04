@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.alvaroquintana.calculadoraperruna.ui.home.HomeFragment"
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_navigation_home_to_breed_list"
+            app:destination="@id/navigation_breed_list"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_home_to_result"
+            app:destination="@id/navigation_result"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_breed_list"
+        android:name="com.alvaroquintana.calculadoraperruna.ui.breedList.BreedListFragment"
+        tools:layout="@layout/breed_list_fragment" >
+        <action
+            android:id="@+id/action_navigation_breed_list_to_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_result"
+        android:name="com.alvaroquintana.calculadoraperruna.ui.result.ResultFragment"
+        tools:layout="@layout/result_fragment" >
+        <action
+            android:id="@+id/action_navigation_result_to_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        app:elevation="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:layout_marginEnd="20dp"
+                android:textAppearance="@style/Bold.TextColor.Large" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="@string/section_dog_description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutMain"
+        android:textAppearance="@style/Regular.TextColorLight.Medium" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fieldYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/year"
+        app:errorEnabled="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/EditTextTheme">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textAppearance="@style/Regular.TextColorLight.Medium"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fieldMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/month"
+        app:errorEnabled="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintTop_toBottomOf="@+id/fieldYear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/EditTextTheme">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textAppearance="@style/Regular.TextColorLight.Medium"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:id="@+id/constraintSelectBreed"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/border"
+        app:layout_constraintTop_toBottomOf="@+id/fieldMonth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <ImageView
+            android:id="@+id/imageBreed"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:src="@tools:sample/avatars"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/dog_image"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/imageExpand"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_expand_more"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/expand" />
+
+        <TextView
+            android:id="@+id/textBreed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/select_breed"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@+id/imageExpand"
+            android:layout_toEndOf="@+id/imageBreed"
+            android:gravity="center_vertical"/>
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:theme="@style/ExFabOverlay"
+        android:text="@string/calculate"
+        android:layout_gravity="bottom|center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

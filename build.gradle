@@ -3,7 +3,7 @@ buildscript {
     ext.versions = [
             'kotlin_version'        : '1.4.10',
             'gradle_version'        : '4.0.1',
-            'koin_version'          : '2.2.0-alpha-1',
+            'koin_version'          : '2.1.5',
             'preference_version'    : '1.1.1'
     ]
     repositories {
@@ -78,8 +78,6 @@ allprojects {
                 retrofit                 : "com.squareup.retrofit2:retrofit:2.6.0",
                 retrofitGsonConverter    : "com.squareup.retrofit2:converter-gson:2.6.0",
                 retrofitCoroutinesAdapter: "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2",
-                koin                     : "org.koin:koin-androidx-viewmodel:${versions.koin_version}",
-                koinScope                : "org.koin:koin-androidx-scope:${versions.koin_version}",
         ]
 
         testLibs = [

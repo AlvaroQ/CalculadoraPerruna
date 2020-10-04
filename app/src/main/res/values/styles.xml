@@ -4,6 +4,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/animationFade</item>
+    </style>
+
+    <style name="animationFade" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,7 +42,7 @@
     </style>
 
     <!-- TabItem -->
-    <style name="Widget.TabItem" parent="TextAppearance.Design.Tab">
+    <style name="TabItem" parent="TextAppearance.Design.Tab">
         <item name="android:elevation">0dp</item>
         <item name="tabTextColor">@color/textColor</item>
         <item name="tabSelectedTextColor">@color/colorAccent</item>

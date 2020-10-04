@@ -5,5 +5,17 @@
     <string name="breed">Raza</string>
     <string name="year">Año(s)</string>
     <string name="month">Mes(es)</string>
-    <string name="select_breed">Seleccione una raza</string>
+    <string name="calculate">Calcular</string>
+    <string name="select_breed">Seleccione raza</string>
+    <string name="dog_image">Imagen de la raza de perro</string>
+    <string name="section_dog_description">Introduzca la edad y raza de su perro para traducirlo a la edad que tendría si fuese una persona.</string>
+    <string name="section_human_description">Introduzca su edad para traducirlo a la edad que tendría si fuese la raza seleccionada.</string>
+    <string name="choose_breed">Escoge una raza</string>
+    <string name="back_btn">Volver</string>
+    <string name="expand">expandir</string>
+    <string name="completed">Estudio completado</string>
+    <string name="try_again">Intentar de nuevo</string>
+    <string name="save_puppy">¡Cuide de mucho su mascota!</string>
+
+    <string name="image_stamp">Imagen estampado</string>
 </resources>

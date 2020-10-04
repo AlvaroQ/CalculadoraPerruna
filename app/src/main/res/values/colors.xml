@@ -5,6 +5,7 @@
     <color name="colorAccent">#121281</color>
     <color name="textColor">#302645</color>
     <color name="textColorLight">#25007C</color>
+    <color name="backgroundTransparent30">#4DFFFFFF</color>
 
     <color name="blue">#0050C8</color>
     <color name="red">#F44336</color>
