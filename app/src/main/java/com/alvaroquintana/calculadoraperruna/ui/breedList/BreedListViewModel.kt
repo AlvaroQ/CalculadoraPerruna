@@ -1,14 +1,18 @@
 package com.alvaroquintana.calculadoraperruna.ui.breedList
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.alvaroquintana.calculadoraperruna.common.ScopedViewModel
+import com.alvaroquintana.calculadoraperruna.ui.MainActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class BreedListViewModel() : ViewModel() {
+class BreedListViewModel() : ScopedViewModel() {
 
 
-    private val mLoading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = mLoading
-
+    fun init(activity: MainActivity) {
+        launch {
+            activity.progressVisibility(true)
+            delay(1000)
+            activity.progressVisibility(false)
+        }
+    }
 }

@@ -4,37 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.calculadoraperruna.R
+import com.alvaroquintana.calculadoraperruna.databinding.ResultFragmentBinding
+import com.alvaroquintana.calculadoraperruna.ui.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
 
 class ResultFragment : Fragment() {
+    private lateinit var binding: ResultFragmentBinding
     private val resultViewModel: ResultViewModel by lifecycleScope.viewModel(this)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { navigateHome() }
+    }
 
-        val root = inflater.inflate(R.layout.result_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
-        val backButton: ImageView = root.findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            val action = ResultFragmentDirections.actionNavigationResultToHome()
-            findNavController().navigate(action)
-        }
+        binding = ResultFragmentBinding.inflate(inflater, container, false)
+        val root = binding.root
+
+        resultViewModel.init()
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener {
-            val action = ResultFragmentDirections.actionNavigationResultToHome()
-            findNavController().navigate(action)
-        }
+        btnSubmit.setOnClickListener { navigateHome() }
 
         return root
+    }
 
+    private fun navigateHome() {
+        val action = ResultFragmentDirections.actionNavigationResultToHome()
+        findNavController().navigate(action)
     }
 }

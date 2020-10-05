@@ -8,44 +8,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayoutMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_dashboard"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:layout_marginEnd="20dp"
-                android:textAppearance="@style/Bold.TextColor.Large" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <TextView
         android:id="@+id/section_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/section_dog_description"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutMain"
-        android:textAppearance="@style/Regular.TextColorLight.Medium" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/Regular.TextColorLight.VeryLarge" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fieldYear"
@@ -53,9 +27,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/year"
         app:errorEnabled="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
+        android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
+        android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
         app:layout_constraintTop_toBottomOf="@+id/section_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,8 +50,8 @@
         android:hint="@string/month"
         app:errorEnabled="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
+        android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
         app:layout_constraintTop_toBottomOf="@+id/fieldYear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,10 +69,10 @@
     <RelativeLayout
         android:id="@+id/constraintSelectBreed"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
+        android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
+        android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
         android:background="@drawable/border"
         app:layout_constraintTop_toBottomOf="@+id/fieldMonth"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,8 +80,8 @@
 
         <ImageView
             android:id="@+id/imageBreed"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             tools:src="@tools:sample/avatars"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/dog_image"
@@ -127,8 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/select_breed"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@+id/imageExpand"
             android:layout_toEndOf="@+id/imageBreed"
             android:gravity="center_vertical"/>

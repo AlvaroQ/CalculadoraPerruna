@@ -6,6 +6,7 @@ import com.alvaroquintana.calculadoraperruna.ui.MainActivity
 import com.alvaroquintana.calculadoraperruna.ui.MainViewModel
 import com.alvaroquintana.calculadoraperruna.ui.breedList.BreedListFragment
 import com.alvaroquintana.calculadoraperruna.ui.home.HomeFragment
+import com.alvaroquintana.calculadoraperruna.ui.home.HomeViewModel
 import com.alvaroquintana.calculadoraperruna.ui.result.ResultFragment
 import com.alvaroquintana.calculadoraperruna.ui.result.ResultViewModel
 import com.alvaroquintana.calculadoraperruna.utils.GetResources
@@ -38,7 +39,7 @@ private val scopesModule = module {
     }
 
     scope(named<HomeFragment>()) {
-        viewModel { BreedListViewModel() }
+        viewModel { HomeViewModel() }
     }
 
     scope(named<BreedListFragment>()) {

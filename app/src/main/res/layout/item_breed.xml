@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/dogImage"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:contentDescription="@string/dog_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+    <TextView
+        android:id="@+id/dogName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:orientation="vertical"
-        android:padding="2dp">
+        android:layout_alignParentStart="true"
+        android:maxLines="2"
+        android:padding="5dp"
+        android:background="@color/backgroundTransparent30"
+        app:layout_constraintBottom_toBottomOf="@id/dogImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        tools:text="Malamute"
+        android:textAppearance="@style/Bold.TextColor.Small"/>
 
-        <ImageView
-            android:id="@+id/dogImage"
-            android:layout_width="0dp"
-            android:layout_height="128dp"
-            android:contentDescription="@string/dog_image"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
-        <TextView
-            android:id="@+id/dogName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:maxLines="2"
-            android:padding="5dp"
-            android:background="@color/backgroundTransparent30"
-            app:layout_constraintBottom_toBottomOf="@id/dogImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
-            tools:text="Malamute"
-            android:textAppearance="@style/Bold.TextColor.Small"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

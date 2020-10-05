@@ -4,54 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/splash_gradient">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayoutResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_dashboard"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-            <ImageView
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
-                android:paddingStart="0dp"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:layout_gravity="start"
-                android:src="@drawable/ic_back"
-                android:contentDescription="@string/back_btn" />
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:gravity="center"
-                android:text="@string/completed"
-                android:layout_marginEnd="60dp"
-                android:textAppearance="@style/Bold.TextColor.Large" />
-
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/stamp_iso"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutResult"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/image_stamp" />
 
@@ -60,14 +20,14 @@
         android:layout_height="60dp"
         android:src="@drawable/stamp_certified"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutResult"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/image_stamp"  />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutResult"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="parent" >
