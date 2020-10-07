@@ -18,4 +18,5 @@
     <string name="save_puppy">¡Cuide de mucho su mascota!</string>
 
     <string name="image_stamp">Imagen estampado</string>
+    <string name="loading_image">loading image</string>
 </resources>

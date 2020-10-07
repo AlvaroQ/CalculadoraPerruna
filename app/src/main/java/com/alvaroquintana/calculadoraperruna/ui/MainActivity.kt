@@ -34,8 +34,4 @@ class MainActivity : BaseActivity() {
             binding.backButton.visibility = View.INVISIBLE
         }
     }
-
-    fun progressVisibility(isVisible: Boolean) {
-        binding.progressBar.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
 }

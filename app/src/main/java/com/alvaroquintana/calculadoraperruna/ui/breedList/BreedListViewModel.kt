@@ -1,18 +1,54 @@
 package com.alvaroquintana.calculadoraperruna.ui.breedList
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.alvaroquintana.calculadoraperruna.common.ScopedViewModel
-import com.alvaroquintana.calculadoraperruna.ui.MainActivity
-import kotlinx.coroutines.delay
+import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.usecases.GetBreedList
 import kotlinx.coroutines.launch
 
-class BreedListViewModel() : ScopedViewModel() {
+class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewModel() {
 
+    private val _progress = MutableLiveData<Boolean>()
+    val progress: LiveData<Boolean> = _progress
 
-    fun init(activity: MainActivity) {
+    private val _list = MutableLiveData<MutableList<Dog>>()
+    val list: LiveData<MutableList<Dog>> = _list
+
+    private val _navigation = MutableLiveData<Navigation>()
+    val navigation: LiveData<Navigation> = _navigation
+
+    fun init() {
         launch {
-            activity.progressVisibility(true)
-            delay(1000)
-            activity.progressVisibility(false)
+            _progress.value = true
+            _list.value = getBreedList()
+            _progress.value = false
         }
+    }
+
+    private suspend fun getBreedList(): MutableList<Dog> {
+        return getBreedList.invoke()
+    }
+
+
+    fun onBackPressed() {
+        _navigation.value = Navigation.Home("-1")
+    }
+
+    fun onDogClicked(dog: Dog) {
+        _navigation.value = Navigation.Home(dog.objectId)
+    }
+
+    private fun <Dog> getSubList(list: MutableList<Dog>): MutableList<Dog> {
+        val subList: MutableList<Dog> = ArrayList()
+        for (i in 0..110) {
+            subList.add(list[i])
+        }
+        return subList
+    }
+
+    sealed class Navigation {
+        data class Home(val dogId : String): Navigation()
     }
 }

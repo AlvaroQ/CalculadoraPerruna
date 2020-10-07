@@ -15,16 +15,12 @@ import com.alvaroquintana.calculadoraperruna.utils.hideKeyboard
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
+import androidx.lifecycle.Observer
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
     private val homeViewModel: HomeViewModel by lifecycleScope.viewModel(this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (activity as MainActivity).setupToolbar(getString(R.string.app_name), false)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,32 +28,40 @@ class HomeFragment : Fragment() {
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        homeViewModel.init()
-
         val parentLayout: ConstraintLayout = root.findViewById(R.id.parentLayout)
         parentLayout.setOnClickListener { hideKeyboard(activity as MainActivity) }
 
         val constraintSelectBreed: RelativeLayout = root.findViewById(R.id.constraintSelectBreed)
-        constraintSelectBreed.setOnClickListener {
-            navigateToBreedList()
-        }
+        constraintSelectBreed.setOnClickListener { homeViewModel.navigateToBreedList() }
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener {
-            navigateToResult()
-        }
+        btnSubmit.setOnClickListener { homeViewModel.navigateToResult() }
+
         return root
     }
 
-    private fun navigateToBreedList() {
-        hideKeyboard(activity as MainActivity)
-        val action = HomeFragmentDirections.actionNavigationHomeToBreedList()
-        findNavController().navigate(action)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).setupToolbar(getString(R.string.app_name), false)
+
+        homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
     }
 
-    private fun navigateToResult() {
-        hideKeyboard(activity as MainActivity)
-        val action = HomeFragmentDirections.actionNavigationHomeToResult()
-        findNavController().navigate(action)
+    private fun navigate(navigation: HomeViewModel.Navigation?) {
+        (activity as MainActivity).apply {
+            when (navigation) {
+                HomeViewModel.Navigation.BreedList -> {
+                    hideKeyboard(activity as MainActivity)
+                    val action = HomeFragmentDirections.actionNavigationHomeToBreedList()
+                    findNavController().navigate(action)
+                }
+                is HomeViewModel.Navigation.Result -> {
+                    hideKeyboard(activity as MainActivity)
+                    val action = HomeFragmentDirections.actionNavigationHomeToResult() // navigation.dogId
+                    findNavController().navigate(action)
+                }
+            }
+        }
     }
 }

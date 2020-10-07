@@ -1,6 +1,7 @@
 package com.alvaroquintana.calculadoraperruna.application
 
 import android.app.Application
+import com.alvaroquintana.calculadoraperruna.datasource.DataBaseBaseSourceImpl
 import com.alvaroquintana.calculadoraperruna.ui.breedList.BreedListViewModel
 import com.alvaroquintana.calculadoraperruna.ui.MainActivity
 import com.alvaroquintana.calculadoraperruna.ui.MainViewModel
@@ -10,6 +11,11 @@ import com.alvaroquintana.calculadoraperruna.ui.home.HomeViewModel
 import com.alvaroquintana.calculadoraperruna.ui.result.ResultFragment
 import com.alvaroquintana.calculadoraperruna.ui.result.ResultViewModel
 import com.alvaroquintana.calculadoraperruna.utils.GetResources
+import com.alvaroquintana.data.datasource.DataBaseSource
+import com.alvaroquintana.data.repository.BreedListRepository
+import com.alvaroquintana.usecases.GetBreedList
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
@@ -23,6 +29,7 @@ fun Application.initDI() {
         androidContext(this@initDI)
         koin.loadModules(listOf(
             appModule,
+            dataModule,
             scopesModule
         ))
         koin.createRootScope()
@@ -30,7 +37,13 @@ fun Application.initDI() {
 }
 
 private val appModule = module {
+    factory<DataBaseSource> { DataBaseBaseSourceImpl() }
     single {GetResources(get())}
+    single<CoroutineDispatcher> { Dispatchers.Main }
+}
+
+val dataModule = module {
+    factory { BreedListRepository(get()) }
 }
 
 private val scopesModule = module {
@@ -43,7 +56,8 @@ private val scopesModule = module {
     }
 
     scope(named<BreedListFragment>()) {
-        viewModel { BreedListViewModel() }
+        viewModel { BreedListViewModel(get()) }
+        scoped { GetBreedList(get()) }
     }
 
     scope(named<ResultFragment>()) {

@@ -19,4 +19,14 @@
         app:spanCount="3"
         tools:listitem="@layout/item_breed" />
 
+    <ImageView
+        android:id="@+id/imageLoading"
+        android:layout_width="140dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/loading_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

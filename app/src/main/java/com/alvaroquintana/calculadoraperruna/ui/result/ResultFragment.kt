@@ -12,16 +12,12 @@ import com.alvaroquintana.calculadoraperruna.ui.MainActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
+import androidx.lifecycle.Observer
 
 
 class ResultFragment : Fragment() {
     private lateinit var binding: ResultFragmentBinding
     private val resultViewModel: ResultViewModel by lifecycleScope.viewModel(this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { navigateHome() }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,13 +28,27 @@ class ResultFragment : Fragment() {
         resultViewModel.init()
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener { navigateHome() }
+        btnSubmit.setOnClickListener { resultViewModel.navigateHome() }
 
         return root
     }
 
-    private fun navigateHome() {
-        val action = ResultFragmentDirections.actionNavigationResultToHome()
-        findNavController().navigate(action)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { resultViewModel.navigateHome() }
+
+        resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
+    }
+
+    private fun navigate(navigation: ResultViewModel.Navigation?) {
+        (activity as MainActivity).apply {
+            when (navigation) {
+                ResultViewModel.Navigation.Home -> {
+                    val action = ResultFragmentDirections.actionNavigationResultToHome()
+                    findNavController().navigate(action)
+                }
+            }
+        }
     }
 }
