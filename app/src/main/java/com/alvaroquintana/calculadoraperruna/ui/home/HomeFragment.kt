@@ -20,7 +20,6 @@ import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
 import com.alvaroquintana.calculadoraperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
-import com.alvaroquintana.calculadoraperruna.ui.result.ResultFragmentArgs
 import com.alvaroquintana.calculadoraperruna.utils.glideLoadBase64
 import com.alvaroquintana.domain.Dog
 
@@ -47,8 +46,17 @@ class HomeFragment : Fragment() {
         val constraintSelectBreed: RelativeLayout = root.findViewById(R.id.constraintSelectBreed)
         constraintSelectBreed.setOnClickListener { homeViewModel.navigateToBreedList() }
 
+        editTextMonth = root.findViewById(R.id.editTextMonth)
+        editTextYear = root.findViewById(R.id.editTextYear)
+
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener { homeViewModel.navigateToResult(Dog(icon!!, longevity!!, name!!)) }
+        btnSubmit.setOnClickListener {
+            val dog = Dog(icon!!, longevity!!, name!!)
+
+            if(homeViewModel.checkErrors(dog, editTextYear.text.toString(), editTextMonth.text.toString())) {
+                homeViewModel.navigateToResult(dog)
+            }
+        }
 
         val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
         val breedText: TextView = root.findViewById(R.id.textBreed)
@@ -62,9 +70,6 @@ class HomeFragment : Fragment() {
         }
 
 
-        editTextMonth = root.findViewById(R.id.editTextMonth)
-        editTextYear = root.findViewById(R.id.editTextYear)
-
         return root
     }
 
@@ -74,6 +79,7 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).setupToolbar(getString(R.string.app_name), false)
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
+        homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
     }
 
     private fun navigate(navigation: HomeViewModel.Navigation?) {
@@ -95,6 +101,16 @@ class HomeFragment : Fragment() {
                     )
                     findNavController().navigate(action)
                 }
+            }
+        }
+    }
+
+    private fun showError(error: HomeViewModel.Error) {
+        (activity as MainActivity).apply {
+            when(error) {
+                HomeViewModel.Error.ErrorBreedEmpty -> { binding.constraintSelectBreed.background = getDrawable(R.drawable.border_error)}
+                HomeViewModel.Error.ErrorYearEmpty -> { binding.fieldYear.error = getString(R.string.fill_year) }
+                HomeViewModel.Error.ErrorMonthEmpty -> { binding.fieldMonth.error = getString(R.string.fill_month) }
             }
         }
     }

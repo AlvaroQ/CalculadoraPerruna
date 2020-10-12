@@ -16,6 +16,8 @@
     <string name="completed">Estudio completado</string>
     <string name="try_again">Intentar de nuevo</string>
     <string name="save_puppy">¡Cuide de mucho su mascota!</string>
+    <string name="fill_year">Rellene los años de su perro</string>
+    <string name="fill_month">Rellene los meses de su perro</string>
 
     <string name="image_stamp">Imagen estampado</string>
     <string name="loading_image">loading image</string>
