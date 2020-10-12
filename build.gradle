@@ -3,7 +3,19 @@ buildscript {
     ext {
         kotlin_version = '1.4.10'
     }
+
+    ext.names = [
+            'applicationId': "com.alvaroquintana.calculadoraperruna"
+    ]
     ext.versions = [
+            'compileSdk'            : 30,
+            'minSdk'                : 23,
+            'targetSdk'             : 30,
+            'name'                  : '4.0.0',
+            'code'                  : 400,
+            'buildtoolsVersion'     : '30.0.2',
+    ]
+    ext.libsversions = [
             'kotlin_version'         : '1.4.10',
             'gradle_version'         : '4.0.1',
             'koin_version'           : '2.1.5',
@@ -15,9 +27,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.google.gms:google-services:${versions.google_services_version}"
-        classpath "com.android.tools.build:gradle:${versions.gradle_version}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin_version}"
+        classpath "com.google.gms:google-services:${libsversions.google_services_version}"
+        classpath "com.android.tools.build:gradle:${libsversions.gradle_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${libsversions.kotlin_version}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
     }
 }
@@ -35,11 +47,11 @@ allprojects {
                 constraintMotion    : 'androidx.constraintlayout:constraintlayout:2.0.0-beta6',
 
                 // Koin
-                koinAndroid         : "org.koin:koin-android:${versions.koin_version}",
-                koinViewModel       : "org.koin:koin-android-viewmodel:${versions.koin_version}",
+                koinAndroid         : "org.koin:koin-android:${libsversions.koin_version}",
+                koinViewModel       : "org.koin:koin-android-viewmodel:${libsversions.koin_version}",
 
                 // androidX preferences
-                androidxPreference : "androidx.preference:preference-ktx:${versions.preference_version}",
+                androidxPreference : "androidx.preference:preference-ktx:${libsversions.preference_version}",
 
                 legacy              : 'androidx.legacy:legacy-support-v4:1.0.0',
                 arrow               : "io.arrow-kt:arrow-core-data:0.10.3",
@@ -73,7 +85,7 @@ allprojects {
         ]
 
         kotlinLibs = [
-                stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin_version}"
+                stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libsversions.kotlin_version}"
         ]
 
         libs = [
