@@ -14,7 +14,7 @@
         android:background="@color/white"
         app:cardCornerRadius="16dp">
 
-    <com.alvaroquintana.calculadoraperruna.ui.components.AspectRatioImageView
+    <com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
         android:id="@+id/imageBreed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.alvaroquintana.calculadoraperruna.ui.home.HomeFragment"
+        android:name="com.alvaroquintana.edadperruna.ui.home.HomeFragment"
         tools:layout="@layout/main_fragment" >
         <action
             android:id="@+id/action_navigation_home_to_breed_list"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/navigation_breed_list"
-        android:name="com.alvaroquintana.calculadoraperruna.ui.breedList.BreedListFragment"
+        android:name="com.alvaroquintana.edadperruna.ui.breedList.BreedListFragment"
         tools:layout="@layout/breed_list_fragment" >
         <action
             android:id="@+id/action_navigation_breed_list_to_home"
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/navigation_result"
-        android:name="com.alvaroquintana.calculadoraperruna.ui.result.ResultFragment"
+        android:name="com.alvaroquintana.edadperruna.ui.result.ResultFragment"
         tools:layout="@layout/result_fragment" >
         <action
             android:id="@+id/action_navigation_result_to_home"

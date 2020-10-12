@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="parent" />
 
-        <com.alvaroquintana.calculadoraperruna.ui.components.AspectRatioImageView
+        <com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
             android:id="@+id/imageBreed"
             android:layout_width="wrap_content"
             android:layout_height="160dp"

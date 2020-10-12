@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:padding="2dp">
 
-    <com.alvaroquintana.calculadoraperruna.ui.components.AspectRatioImageView
+    <com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
         android:id="@+id/dogImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
