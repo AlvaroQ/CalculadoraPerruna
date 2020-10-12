@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
+import com.alvaroquintana.calculadoraperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.calculadoraperruna.ui.home.HomeFragmentArgs
 import com.alvaroquintana.calculadoraperruna.utils.glideLoadBase64
 import com.alvaroquintana.domain.Dog
@@ -59,7 +60,7 @@ class ResultFragment : Fragment() {
             }
         }
 
-        val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
+        val imageBreed: AspectRatioImageView = root.findViewById(R.id.imageBreed)
         glideLoadBase64((activity as MainActivity), icon, imageBreed)
 
         val textBreed: TextView = root.findViewById(R.id.textBreed)

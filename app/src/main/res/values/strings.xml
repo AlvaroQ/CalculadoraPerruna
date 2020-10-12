@@ -23,6 +23,7 @@
     <string name="time_year_month">%1$s y %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>
+    <string name="equal_to">Equivale a</string>
     <plurals name="year">
         <item quantity="one">%d año</item>
         <item quantity="other">%d años</item>

@@ -1,5 +1,6 @@
 package com.alvaroquintana.calculadoraperruna.ui.breedList
 
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -40,8 +41,8 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
         _navigation.value = Navigation.Home(dog)
     }
 
-    fun onDogLongClicked(dog: Dog) {
-        _navigation.value = Navigation.Expand(dog.icon)
+    fun onDogLongClicked(imageView: ImageView, icon: String) {
+        _navigation.value = Navigation.Expand(imageView, icon)
     }
 
     private fun <Dog> getSubList(list: MutableList<Dog>): MutableList<Dog> {
@@ -54,6 +55,6 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
 
     sealed class Navigation {
         data class Home(val breed : Dog): Navigation()
-        data class Expand(val image : String): Navigation()
+        data class Expand(val imageView: ImageView, val icon: String): Navigation()
     }
 }

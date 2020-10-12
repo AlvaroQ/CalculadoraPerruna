@@ -66,4 +66,10 @@
         <item name="boxStrokeColor">@color/textColorLight</item>
         <item name="colorAccent">@color/textColorLight</item>
     </style>
+
+    <!-- Expand image dialog style -->
+    <style name="ImagePreviewerTheme" >
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/animationFade</item>
+    </style>
 </resources>

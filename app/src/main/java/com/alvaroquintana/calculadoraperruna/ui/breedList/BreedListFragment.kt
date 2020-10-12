@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.calculadoraperruna.R
 import com.alvaroquintana.calculadoraperruna.databinding.BreedListFragmentBinding
 import com.alvaroquintana.calculadoraperruna.ui.MainActivity
+import com.alvaroquintana.calculadoraperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.calculadoraperruna.utils.glideLoadGif
 import com.alvaroquintana.domain.Dog
 import org.koin.android.scope.lifecycleScope
@@ -20,8 +22,10 @@ class BreedListFragment : Fragment() {
     private lateinit var binding: BreedListFragmentBinding
     private val breedListViewModel: BreedListViewModel by lifecycleScope.viewModel(this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = BreedListFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
@@ -43,7 +47,12 @@ class BreedListFragment : Fragment() {
     }
 
     private fun fillBreedList(breedList: MutableList<Dog>) {
-        binding.recycler.adapter = BreedListAdapter(activity as MainActivity, breedList, breedListViewModel::onDogClicked, breedListViewModel::onDogLongClicked)
+        binding.recycler.adapter = BreedListAdapter(
+            activity as MainActivity,
+            breedList,
+            breedListViewModel::onDogClicked,
+            breedListViewModel::onDogLongClicked
+        )
     }
 
     private fun progressVisibility(isVisible: Boolean) {
@@ -63,9 +72,13 @@ class BreedListFragment : Fragment() {
                     findNavController().navigate(action)
                 }
                 is BreedListViewModel.Navigation.Expand -> {
-                    // Expand Image
+                    expandImage(navigation.imageView, navigation.icon)
                 }
             }
         }
+    }
+
+    private fun expandImage(imageView: ImageView, icon: String) {
+        ImagePreviewer().show(activity as MainActivity, imageView, icon)
     }
 }

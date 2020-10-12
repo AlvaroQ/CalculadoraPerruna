@@ -21,6 +21,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textAppearance="@style/Regular.TextColorLight.VeryLarge" />
 
+    <RelativeLayout
+        android:id="@+id/constraintSelectBreed"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
+        android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
+        android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
+        android:background="@drawable/border"
+        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <ImageView
+            android:id="@+id/imageBreed"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:src="@tools:sample/avatars"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/dog_image"/>
+
+        <ImageView
+            android:id="@+id/imageExpand"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_expand_more"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/expand" />
+
+        <TextView
+            android:id="@+id/textBreed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/select_breed"
+            android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/imageExpand"
+            android:layout_toEndOf="@+id/imageBreed"
+            android:gravity="center_vertical"/>
+    </RelativeLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fieldYear"
         android:layout_width="match_parent"
@@ -30,7 +70,7 @@
         android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
         android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
         android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
-        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        app:layout_constraintTop_toBottomOf="@+id/constraintSelectBreed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/EditTextTheme">
@@ -65,46 +105,6 @@
             android:inputType="number"
             android:textAppearance="@style/Regular.TextColorLight.Medium"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-    <RelativeLayout
-        android:id="@+id/constraintSelectBreed"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
-        android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
-        android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
-        android:background="@drawable/border"
-        app:layout_constraintTop_toBottomOf="@+id/fieldMonth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
-
-        <ImageView
-            android:id="@+id/imageBreed"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            tools:src="@tools:sample/avatars"
-            android:layout_alignParentStart="true"
-            android:contentDescription="@string/dog_image"/>
-
-        <ImageView
-            android:id="@+id/imageExpand"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_expand_more"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/expand" />
-
-        <TextView
-            android:id="@+id/textBreed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/select_breed"
-            android:layout_marginStart="8dp"
-            android:layout_toStartOf="@+id/imageExpand"
-            android:layout_toEndOf="@+id/imageBreed"
-            android:gravity="center_vertical"/>
-    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnSubmit"

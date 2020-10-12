@@ -3,6 +3,7 @@ package com.alvaroquintana.calculadoraperruna.ui.breedList
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import kotlin.reflect.KFunction1
 class BreedListAdapter(private var context: Context,
                        var breedList: MutableList<Dog>,
                        private val clickListener: (Dog) -> Unit,
-                       private val longClickListener: KFunction1<Dog, Unit>,
+                       private val longClickListener: (ImageView, String) -> Unit,
 ) : RecyclerView.Adapter<BreedListAdapter.BreedListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedListViewHolder {
@@ -31,7 +32,7 @@ class BreedListAdapter(private var context: Context,
         glideLoadBase64(context,  breed.icon, holder.dogImage)
         holder.itemContainer.setOnClickListener { clickListener(breed) }
         holder.itemContainer.setOnLongClickListener {
-            longClickListener(breed)
+            longClickListener(holder.dogImage, breed.icon!!)
             true
         }
     }
