@@ -93,7 +93,7 @@
             android:id="@+id/textResultDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="de una persona"
+            android:text="@string/of_people"
             android:textAppearance="@style/Regular.TextColor.Medium"
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@+id/textResult"

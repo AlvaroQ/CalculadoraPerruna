@@ -27,10 +27,6 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="" />
-        <argument
-            android:name="longevity"
-            app:argType="integer"
-            android:defaultValue="0" />
     </fragment>
 
     <fragment
@@ -69,10 +65,6 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="" />
-        <argument
-            android:name="longevity"
-            app:argType="integer"
-            android:defaultValue="0" />
     </fragment>
 
 </navigation>

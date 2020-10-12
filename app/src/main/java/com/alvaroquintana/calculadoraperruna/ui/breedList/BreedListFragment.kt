@@ -66,8 +66,7 @@ class BreedListFragment : Fragment() {
                 is BreedListViewModel.Navigation.Home -> {
                     val action = BreedListFragmentDirections.actionNavigationBreedListToHome(
                         navigation.breed.icon!!,
-                        navigation.breed.name!!,
-                        navigation.breed.longevidad!!
+                        navigation.breed.name!!
                     )
                     findNavController().navigate(action)
                 }

@@ -25,11 +25,10 @@ class ResultFragment : Fragment() {
     private lateinit var binding: ResultFragmentBinding
     private val resultViewModel: ResultViewModel by lifecycleScope.viewModel(this)
 
-    private val years by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).years } }
-    private val months by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).months } }
+    private val dogYears by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).years } }
+    private val dogMonths by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).months } }
     private val icon by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).icon } }
     private val name by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).name } }
-    private val longevity by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).longevity } }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,17 +44,17 @@ class ResultFragment : Fragment() {
 
         val textTime: TextView = root.findViewById(R.id.textTime)
         when {
-            years == 0 -> {
-                val m: String = resources.getQuantityString(R.plurals.month, months!!, months)
+            dogYears == 0 -> {
+                val m: String = resources.getQuantityString(R.plurals.month, dogMonths!!, dogMonths)
                 textTime.text = String.format(resources.getString(R.string.time_month), m)
             }
-            months == 0 -> {
-                val y: String = resources.getQuantityString(R.plurals.year, years!!, years)
+            dogMonths == 0 -> {
+                val y: String = resources.getQuantityString(R.plurals.year, dogYears!!, dogYears)
                 textTime.text = String.format(resources.getString(R.string.time_year), y)
             }
             else -> {
-                val m: String = resources.getQuantityString(R.plurals.month, months!!, months)
-                val y: String = resources.getQuantityString(R.plurals.year, years!!, years)
+                val m: String = resources.getQuantityString(R.plurals.month, dogMonths!!, dogMonths)
+                val y: String = resources.getQuantityString(R.plurals.year, dogYears!!, dogYears)
                 textTime.text = String.format(resources.getString(R.string.time_year_month), y, m)
             }
         }
@@ -65,6 +64,34 @@ class ResultFragment : Fragment() {
 
         val textBreed: TextView = root.findViewById(R.id.textBreed)
         textBreed.text = name
+
+        // RESULT
+        val textResult: TextView = root.findViewById(R.id.textResult)
+        val result = resultViewModel.translateToHuman(dogYears!!, dogMonths!!)
+        when {
+            result[0] == 0 -> {
+                val m: String = resources.getQuantityString(R.plurals.month, result[1], result[1])
+                textResult.text = String.format(resources.getString(R.string.time_month), m)
+            }
+            result[1] == 0 -> {
+                val y: String = resources.getQuantityString(R.plurals.year, result[0], result[0])
+                textResult.text = String.format(resources.getString(R.string.time_year), y)
+            }
+            else -> {
+                val m: String = resources.getQuantityString(R.plurals.month, result[1], result[1])
+                val y: String = resources.getQuantityString(R.plurals.year, result[0], result[0])
+                textResult.text = String.format(resources.getString(R.string.time_year_month), y, m)
+            }
+        }
+
+        // RESULT CATEGORY
+        val textResultCategory: TextView = root.findViewById(R.id.textResultCategory)
+        val totalMonths = dogYears!! * 12 + dogMonths!!
+
+        if(totalMonths < 4) textResultCategory.text = resources.getStringArray(R.array.breed_step)[0] // cachorro: 0 a 3 meses
+        else if(totalMonths < 13) textResultCategory.text = resources.getStringArray(R.array.breed_step)[1] // juvenil: 3 meses a 12 meses
+        else if(totalMonths < 84) textResultCategory.text = resources.getStringArray(R.array.breed_step)[2] // adulta: 12 meses a 7 años (84 meses)
+        else  textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
 
         return root
     }
@@ -81,7 +108,7 @@ class ResultFragment : Fragment() {
         (activity as MainActivity).apply {
             when (navigation) {
                 ResultViewModel.Navigation.Home -> {
-                    val action = ResultFragmentDirections.actionNavigationResultToHome("","",0)
+                    val action = ResultFragmentDirections.actionNavigationResultToHome("","")
                     findNavController().navigate(action)
                 }
             }

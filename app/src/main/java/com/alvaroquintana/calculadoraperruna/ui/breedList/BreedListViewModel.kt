@@ -32,9 +32,8 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
         return getBreedList.invoke()
     }
 
-
     fun onBackPressed() {
-        _navigation.value = Navigation.Home(Dog("",0,""))
+        _navigation.value = Navigation.Home(Dog("",""))
     }
 
     fun onDogClicked(dog: Dog) {
@@ -43,14 +42,6 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
 
     fun onDogLongClicked(imageView: ImageView, icon: String) {
         _navigation.value = Navigation.Expand(imageView, icon)
-    }
-
-    private fun <Dog> getSubList(list: MutableList<Dog>): MutableList<Dog> {
-        val subList: MutableList<Dog> = ArrayList()
-        for (i in 0..110) {
-            subList.add(list[i])
-        }
-        return subList
     }
 
     sealed class Navigation {

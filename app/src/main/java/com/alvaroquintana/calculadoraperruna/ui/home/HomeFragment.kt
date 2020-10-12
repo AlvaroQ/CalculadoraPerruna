@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
 
     private val icon by lazy { arguments?.let { fromBundle(it).icon } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
-    private val longevity by lazy { arguments?.let { fromBundle(it).longevity } }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,7 +50,7 @@ class HomeFragment : Fragment() {
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener {
-            val dog = Dog(icon!!, longevity!!, name!!)
+            val dog = Dog(icon!!, name!!)
 
             if(homeViewModel.checkErrors(dog, editTextYear.text.toString(), editTextMonth.text.toString())) {
                 homeViewModel.navigateToResult(dog)
@@ -96,8 +95,7 @@ class HomeFragment : Fragment() {
                         editTextYear.text.toString().toInt(),
                         editTextMonth.text.toString().toInt(),
                         navigation.breed.icon!!,
-                        navigation.breed.name!!,
-                        navigation.breed.longevidad!!
+                        navigation.breed.name!!
                     )
                     findNavController().navigate(action)
                 }
