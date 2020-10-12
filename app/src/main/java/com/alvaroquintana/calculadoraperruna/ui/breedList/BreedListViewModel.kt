@@ -33,11 +33,15 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
 
 
     fun onBackPressed() {
-        _navigation.value = Navigation.Home("-1")
+        _navigation.value = Navigation.Home(Dog("",0,""))
     }
 
     fun onDogClicked(dog: Dog) {
-        _navigation.value = Navigation.Home(dog.objectId)
+        _navigation.value = Navigation.Home(dog)
+    }
+
+    fun onDogLongClicked(dog: Dog) {
+        _navigation.value = Navigation.Expand(dog.icon)
     }
 
     private fun <Dog> getSubList(list: MutableList<Dog>): MutableList<Dog> {
@@ -49,6 +53,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
     }
 
     sealed class Navigation {
-        data class Home(val dogId : String): Navigation()
+        data class Home(val breed : Dog): Navigation()
+        data class Expand(val image : String): Navigation()
     }
 }

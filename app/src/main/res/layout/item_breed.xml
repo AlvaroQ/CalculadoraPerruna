@@ -10,28 +10,30 @@
     android:orientation="vertical"
     android:padding="2dp">
 
-    <ImageView
+    <com.alvaroquintana.calculadoraperruna.ui.components.AspectRatioImageView
         android:id="@+id/dogImage"
         android:layout_width="0dp"
-        android:layout_height="128dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/dog_image"
-        android:scaleType="centerCrop"
+        app:ratio="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
         tools:src="@tools:sample/avatars" />
     <TextView
         android:id="@+id/dogName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:padding="5dp"
-        android:background="@drawable/item_text_gradient"
-        app:layout_constraintBottom_toBottomOf="@id/dogImage"
+        android:lines="3"
+        android:padding="6dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/dogImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         tools:text="Malamute"
-        android:textAppearance="@style/Regular.TextColor.Medium"/>
+        android:textAppearance="@style/Regular.TextColor.Small"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

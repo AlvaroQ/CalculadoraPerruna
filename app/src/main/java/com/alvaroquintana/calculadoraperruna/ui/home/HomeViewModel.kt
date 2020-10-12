@@ -3,6 +3,7 @@ package com.alvaroquintana.calculadoraperruna.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.calculadoraperruna.common.ScopedViewModel
+import com.alvaroquintana.domain.Dog
 
 class HomeViewModel : ScopedViewModel() {
 
@@ -13,12 +14,12 @@ class HomeViewModel : ScopedViewModel() {
         _navigation.value = Navigation.BreedList
     }
 
-    fun navigateToResult() {
-        _navigation.value = Navigation.Result("-1")
+    fun navigateToResult(dog: Dog) {
+        _navigation.value = Navigation.Result(dog)
     }
 
     sealed class Navigation {
-        data class Result(val dogId : String): Navigation()
+        data class Result(val breed : Dog): Navigation()
         object BreedList : Navigation()
     }
 }

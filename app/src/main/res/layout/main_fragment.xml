@@ -25,7 +25,7 @@
         android:id="@+id/fieldYear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/year"
+        android:hint="@string/year_title"
         app:errorEnabled="true"
         android:layout_marginTop="@dimen/fragment_main_choose_breed_vertical_margin"
         android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
@@ -47,7 +47,7 @@
         android:id="@+id/fieldMonth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/month"
+        android:hint="@string/month_title"
         app:errorEnabled="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
@@ -80,12 +80,11 @@
 
         <ImageView
             android:id="@+id/imageBreed"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             tools:src="@tools:sample/avatars"
             android:layout_alignParentStart="true"
-            android:contentDescription="@string/dog_image"
-            android:visibility="gone"/>
+            android:contentDescription="@string/dog_image"/>
 
         <ImageView
             android:id="@+id/imageExpand"
@@ -101,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/select_breed"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="8dp"
             android:layout_toStartOf="@+id/imageExpand"
             android:layout_toEndOf="@+id/imageBreed"
             android:gravity="center_vertical"/>

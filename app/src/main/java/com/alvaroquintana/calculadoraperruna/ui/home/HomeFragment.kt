@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,11 +19,21 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
+import com.alvaroquintana.calculadoraperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
+import com.alvaroquintana.calculadoraperruna.ui.result.ResultFragmentArgs
+import com.alvaroquintana.calculadoraperruna.utils.glideLoadBase64
+import com.alvaroquintana.domain.Dog
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
     private val homeViewModel: HomeViewModel by lifecycleScope.viewModel(this)
+    private lateinit var editTextMonth: EditText
+    private lateinit var editTextYear: EditText
+
+    private val icon by lazy { arguments?.let { fromBundle(it).icon } }
+    private val name by lazy { arguments?.let { fromBundle(it).name } }
+    private val longevity by lazy { arguments?.let { fromBundle(it).longevity } }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,7 +48,22 @@ class HomeFragment : Fragment() {
         constraintSelectBreed.setOnClickListener { homeViewModel.navigateToBreedList() }
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener { homeViewModel.navigateToResult() }
+        btnSubmit.setOnClickListener { homeViewModel.navigateToResult(Dog(icon!!, longevity!!, name!!)) }
+
+        val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
+        val breedText: TextView = root.findViewById(R.id.textBreed)
+        if(icon != "" && name != "") {
+            breedText.text = name
+            glideLoadBase64((activity as MainActivity),  icon, imageBreed)
+            imageBreed.visibility = View.VISIBLE
+        } else {
+            breedText.text = getString(R.string.select_breed)
+            imageBreed.visibility = View.GONE
+        }
+
+
+        editTextMonth = root.findViewById(R.id.editTextMonth)
+        editTextYear = root.findViewById(R.id.editTextYear)
 
         return root
     }
@@ -58,7 +86,13 @@ class HomeFragment : Fragment() {
                 }
                 is HomeViewModel.Navigation.Result -> {
                     hideKeyboard(activity as MainActivity)
-                    val action = HomeFragmentDirections.actionNavigationHomeToResult() // navigation.dogId
+                    val action = HomeFragmentDirections.actionNavigationHomeToResult(
+                        editTextYear.text.toString().toInt(),
+                        editTextMonth.text.toString().toInt(),
+                        navigation.breed.icon!!,
+                        navigation.breed.name!!,
+                        navigation.breed.longevidad!!
+                    )
                     findNavController().navigate(action)
                 }
             }

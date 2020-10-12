@@ -48,7 +48,7 @@ dependencies {
     implementation libs.values()
     implementation androidKaptLibs.values()
 
-    implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation 'com.google.firebase:firebase-database:19.5.0'
     testImplementation testLibs.values()
     testImplementation androidxTestLibs.values()
     androidTestImplementation androidTestLibs.values()

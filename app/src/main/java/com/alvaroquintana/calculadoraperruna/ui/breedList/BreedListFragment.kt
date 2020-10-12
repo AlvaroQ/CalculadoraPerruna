@@ -43,7 +43,7 @@ class BreedListFragment : Fragment() {
     }
 
     private fun fillBreedList(breedList: MutableList<Dog>) {
-        binding.recycler.adapter = BreedListAdapter(activity as MainActivity, breedList, breedListViewModel::onDogClicked)
+        binding.recycler.adapter = BreedListAdapter(activity as MainActivity, breedList, breedListViewModel::onDogClicked, breedListViewModel::onDogLongClicked)
     }
 
     private fun progressVisibility(isVisible: Boolean) {
@@ -55,8 +55,15 @@ class BreedListFragment : Fragment() {
         (activity as MainActivity).apply {
             when (navigation) {
                 is BreedListViewModel.Navigation.Home -> {
-                    val action = BreedListFragmentDirections.actionNavigationBreedListToHome() // navigation.dogId
+                    val action = BreedListFragmentDirections.actionNavigationBreedListToHome(
+                        navigation.breed.icon!!,
+                        navigation.breed.name!!,
+                        navigation.breed.longevidad!!
+                    )
                     findNavController().navigate(action)
+                }
+                is BreedListViewModel.Navigation.Expand -> {
+                    // Expand Image
                 }
             }
         }

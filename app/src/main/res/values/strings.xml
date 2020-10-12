@@ -3,8 +3,8 @@
     <string name="tab_dog">Edad perruna</string>
     <string name="tab_human">Edad humana</string>
     <string name="breed">Raza</string>
-    <string name="year">Año(s)</string>
-    <string name="month">Mes(es)</string>
+    <string name="year_title">Año(s)</string>
+    <string name="month_title">Mes(es)</string>
     <string name="calculate">Calcular</string>
     <string name="select_breed">Seleccione raza</string>
     <string name="dog_image">Imagen de la raza de perro</string>
@@ -19,4 +19,16 @@
 
     <string name="image_stamp">Imagen estampado</string>
     <string name="loading_image">loading image</string>
+
+    <string name="time_year_month">%1$s y %2$s</string>
+    <string name="time_year">%1$s</string>
+    <string name="time_month">%1$s</string>
+    <plurals name="year">
+        <item quantity="one">%d año</item>
+        <item quantity="other">%d años</item>
+    </plurals>
+    <plurals name="month">
+        <item quantity="one">%d mes</item>
+        <item quantity="other">%d meses</item>
+    </plurals>
 </resources>

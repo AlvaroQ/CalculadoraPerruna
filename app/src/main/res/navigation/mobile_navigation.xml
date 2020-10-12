@@ -19,6 +19,18 @@
             app:destination="@id/navigation_result"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"  />
+        <argument
+            android:name="icon"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="longevity"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
     <fragment
@@ -41,6 +53,26 @@
             app:destination="@id/navigation_home"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"  />
+        <argument
+            android:name="years"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <argument
+            android:name="months"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="icon"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="longevity"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
 </navigation>
