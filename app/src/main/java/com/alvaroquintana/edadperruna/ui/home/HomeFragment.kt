@@ -130,6 +130,9 @@ class HomeFragment : Fragment() {
                 HomeViewModel.Error.ErrorMonthEmpty -> {
                     binding.fieldMonth.error = getString(R.string.fill_month)
                 }
+                HomeViewModel.Error.ErrorMonthIlegal -> {
+                    binding.fieldMonth.error = getString(R.string.ilegal_month)
+                }
             }
         }
     }

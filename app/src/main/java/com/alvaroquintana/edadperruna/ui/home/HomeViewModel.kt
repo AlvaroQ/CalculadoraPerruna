@@ -36,6 +36,10 @@ class HomeViewModel : ScopedViewModel() {
             handleFailure(Error.ErrorMonthEmpty)
             isCorrect = false
         }
+        if(month != "" && (month.toInt() < 0 || month.toInt() > 12)) {
+            handleFailure(Error.ErrorMonthIlegal)
+            isCorrect = false
+        }
 
         return isCorrect
     }
@@ -57,5 +61,6 @@ class HomeViewModel : ScopedViewModel() {
         object ErrorBreedEmpty : Error()
         object ErrorYearEmpty : Error()
         object ErrorMonthEmpty : Error()
+        object ErrorMonthIlegal : Error()
     }
 }

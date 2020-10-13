@@ -84,10 +84,12 @@ class ResultFragment : Fragment() {
         val textResultCategory: TextView = root.findViewById(R.id.textResultCategory)
         val totalMonths = dogYears!! * 12 + dogMonths!!
 
-        if(totalMonths < 4) textResultCategory.text = resources.getStringArray(R.array.breed_step)[0] // cachorro: 0 a 3 meses
-        else if(totalMonths < 13) textResultCategory.text = resources.getStringArray(R.array.breed_step)[1] // juvenil: 3 meses a 12 meses
-        else if(totalMonths < 84) textResultCategory.text = resources.getStringArray(R.array.breed_step)[2] // adulta: 12 meses a 7 años (84 meses)
-        else  textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
+        when {
+            totalMonths < 4 -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[0] // cachorro: 0 a 3 meses
+            totalMonths < 13 -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[1] // juvenil: 3 meses a 12 meses
+            totalMonths < 84 -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[2] // adulta: 12 meses a 7 años (84 meses)
+            else -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
+        }
 
         return root
     }
