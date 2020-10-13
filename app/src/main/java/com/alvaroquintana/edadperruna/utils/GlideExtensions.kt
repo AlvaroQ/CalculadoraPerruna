@@ -27,7 +27,7 @@ private fun initUrlGlide(context: Context, url: String?) =
                 target: Target<Drawable>?,
                 isFirstResource: Boolean
             ): Boolean {
-                Log.d("Glide", "onLoadFailed", e)
+                log("Glide", "onLoadFailed", e)
                 e?.logRootCauses("GLIDE")
                 return false
             }
@@ -39,7 +39,7 @@ private fun initUrlGlide(context: Context, url: String?) =
                 dataSource: DataSource?,
                 isFirstResource: Boolean
             ): Boolean {
-                Log.d("Glide", "onResourceReady")
+                log("Glide", "onResourceReady")
                 return false
             }
 

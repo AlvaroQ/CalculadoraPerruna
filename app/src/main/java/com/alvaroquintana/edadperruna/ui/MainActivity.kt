@@ -3,8 +3,8 @@ package com.alvaroquintana.edadperruna.ui
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
-import com.alvaroquintana.edadperruna.R
 import androidx.navigation.findNavController
+import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.alvaroquintana.edadperruna.common.viewBinding
 import com.alvaroquintana.edadperruna.databinding.MainActivityBinding
@@ -25,7 +25,7 @@ class MainActivity : BaseActivity() {
         navController = findNavController(R.id.nav_host_fragment)
     }
 
-    fun setupToolbar(title: String, hasBackButton: Boolean, myBackFunction:  () -> Unit = {}) {
+    fun setupToolbar(title: String, hasBackButton: Boolean, myBackFunction: () -> Unit = {}) {
         binding.toolbarTitle.text = title
         if(hasBackButton) {
             binding.backButton.visibility = View.VISIBLE
@@ -33,5 +33,12 @@ class MainActivity : BaseActivity() {
         } else {
             binding.backButton.visibility = View.INVISIBLE
         }
+    }
+
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0) super.onBackPressed()
+        else supportFragmentManager.popBackStack()
+
     }
 }

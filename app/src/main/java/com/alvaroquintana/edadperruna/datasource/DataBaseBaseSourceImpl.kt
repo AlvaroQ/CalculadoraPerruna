@@ -3,6 +3,7 @@ package com.alvaroquintana.edadperruna.datasource
 import android.util.Log
 import com.alvaroquintana.data.datasource.DataBaseSource
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.utils.log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,8 +18,9 @@ class DataBaseBaseSourceImpl : DataBaseSource {
     // Read from the database
     override suspend fun getBreedList(): MutableList<Dog> {
         return suspendCancellableCoroutine { continuation ->
-            FirebaseDatabase.getInstance().getReference("dog/breeds")
+            FirebaseDatabase.getInstance().getReference(PATH_REFERENCE)
                 .addValueEventListener(object : ValueEventListener {
+
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     var value = dataSnapshot.getValue<MutableList<Dog>>()
                     if(value == null) value = mutableListOf()
@@ -27,28 +29,14 @@ class DataBaseBaseSourceImpl : DataBaseSource {
 
                 override fun onCancelled(error: DatabaseError) {
                     // Failed to read value
-                    Log.w("DataBaseBaseSourceImpl", "Failed to read value.", error.toException())
+                    log("DataBaseBaseSourceImpl", "Failed to read value.", error.toException())
                     continuation.resume(mutableListOf())
                 }
             })
         }
     }
-/*
-    override suspend fun getBreedList(): List<Dog> {
-        return suspendCancellableCoroutine { continuation ->
-            val collection = database.collection(COLLECTION_ADVERTS)
-            collection.get()
-                .addOnSuccessListener {
-                    continuation.resume(it.toObjects())
-                }
-                .addOnFailureListener {
-                    continuation.resume(emptyList())
-                }
-        }
-    }
-*/
 
     companion object {
-        const val COLLECTION_ADVERTS = "dogs"
+        const val PATH_REFERENCE = "dog/breeds"
     }
 }

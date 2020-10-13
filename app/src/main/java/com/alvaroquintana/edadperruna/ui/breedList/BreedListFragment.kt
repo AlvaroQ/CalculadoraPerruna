@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -79,5 +80,21 @@ class BreedListFragment : Fragment() {
 
     private fun expandImage(imageView: ImageView, icon: String) {
         ImagePreviewer().show(activity as MainActivity, imageView, icon)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
+    }
+
+    override fun onStop() {
+        callback.remove()
+        super.onStop()
+    }
+
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            breedListViewModel.onBackPressed()
+        }
     }
 }

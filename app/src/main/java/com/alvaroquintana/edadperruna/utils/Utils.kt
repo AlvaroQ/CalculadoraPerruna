@@ -2,9 +2,11 @@ package com.alvaroquintana.edadperruna.utils
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.alvaroquintana.edadperruna.BuildConfig
 
 
 fun hideKeyboard(activity: Activity) {
@@ -18,5 +20,14 @@ fun getCircularProgressDrawable(context: Context) : CircularProgressDrawable {
         strokeWidth = 5f
         centerRadius = 30f
         start()
+    }
+}
+fun log(tag:String?, msg:String?, error:Throwable? = null){
+    if (BuildConfig.BUILD_TYPE != "release") {
+        if (error != null){
+            Log.e(tag, msg, error)
+        } else {
+            Log.d(tag, msg!!)
+        }
     }
 }

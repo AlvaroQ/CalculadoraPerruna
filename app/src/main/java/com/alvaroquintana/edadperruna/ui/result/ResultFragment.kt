@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.edadperruna.R
@@ -32,8 +33,6 @@ class ResultFragment : Fragment() {
 
         binding = ResultFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
-
-        resultViewModel.init()
 
         val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener { resultViewModel.navigateHome() }
@@ -109,6 +108,22 @@ class ResultFragment : Fragment() {
                     findNavController().navigate(action)
                 }
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
+    }
+
+    override fun onStop() {
+        callback.remove()
+        super.onStop()
+    }
+
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            resultViewModel.navigateHome()
         }
     }
 }

@@ -2,26 +2,31 @@ package com.alvaroquintana.edadperruna.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
+import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
+import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
+import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
-import androidx.lifecycle.Observer
-import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
-import com.alvaroquintana.domain.Dog
+
 
 class HomeFragment : Fragment() {
 
@@ -33,8 +38,10 @@ class HomeFragment : Fragment() {
     private val icon by lazy { arguments?.let { fromBundle(it).icon } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
@@ -52,7 +59,11 @@ class HomeFragment : Fragment() {
         btnSubmit.setOnClickListener {
             val dog = Dog(icon!!, name!!)
 
-            if(homeViewModel.checkErrors(dog, editTextYear.text.toString(), editTextMonth.text.toString())) {
+            if(homeViewModel.checkErrors(
+                    dog,
+                    editTextYear.text.toString(),
+                    editTextMonth.text.toString()
+                )) {
                 homeViewModel.navigateToResult(dog)
             }
         }
@@ -61,7 +72,7 @@ class HomeFragment : Fragment() {
         val breedText: TextView = root.findViewById(R.id.textBreed)
         if(icon != "" && name != "") {
             breedText.text = name
-            glideLoadBase64((activity as MainActivity),  icon, imageBreed)
+            glideLoadBase64((activity as MainActivity), icon, imageBreed)
             imageBreed.visibility = View.VISIBLE
         } else {
             breedText.text = getString(R.string.select_breed)
@@ -79,6 +90,8 @@ class HomeFragment : Fragment() {
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
+
+
     }
 
     private fun navigate(navigation: HomeViewModel.Navigation?) {
@@ -106,10 +119,34 @@ class HomeFragment : Fragment() {
     private fun showError(error: HomeViewModel.Error) {
         (activity as MainActivity).apply {
             when(error) {
-                HomeViewModel.Error.ErrorBreedEmpty -> { binding.constraintSelectBreed.background = getDrawable(R.drawable.border_error)}
-                HomeViewModel.Error.ErrorYearEmpty -> { binding.fieldYear.error = getString(R.string.fill_year) }
-                HomeViewModel.Error.ErrorMonthEmpty -> { binding.fieldMonth.error = getString(R.string.fill_month) }
+                HomeViewModel.Error.ErrorBreedEmpty -> {
+                    binding.constraintSelectBreed.background = getDrawable(
+                        R.drawable.border_error
+                    )
+                }
+                HomeViewModel.Error.ErrorYearEmpty -> {
+                    binding.fieldYear.error = getString(R.string.fill_year)
+                }
+                HomeViewModel.Error.ErrorMonthEmpty -> {
+                    binding.fieldMonth.error = getString(R.string.fill_month)
+                }
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
+    }
+
+    override fun onStop() {
+        callback.remove()
+        super.onStop()
+    }
+
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            (activity as MainActivity).finish()
         }
     }
 }
