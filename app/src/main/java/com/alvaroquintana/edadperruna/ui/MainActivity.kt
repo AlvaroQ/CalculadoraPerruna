@@ -8,6 +8,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.alvaroquintana.edadperruna.common.viewBinding
 import com.alvaroquintana.edadperruna.databinding.MainActivityBinding
+import com.google.android.gms.ads.MobileAds
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 

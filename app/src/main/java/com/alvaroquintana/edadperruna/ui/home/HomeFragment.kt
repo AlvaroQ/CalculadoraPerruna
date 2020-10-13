@@ -23,13 +23,16 @@ import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBun
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import com.alvaroquintana.edadperruna.utils.log
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import kotlinx.coroutines.delay
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
 
 class HomeFragment : Fragment() {
-
     private lateinit var binding: MainFragmentBinding
     private val homeViewModel: HomeViewModel by lifecycleScope.viewModel(this)
     private lateinit var editTextMonth: EditText
@@ -79,6 +82,7 @@ class HomeFragment : Fragment() {
             imageBreed.visibility = View.GONE
         }
 
+        loadAd(root.findViewById(R.id.adView))
 
         return root
     }
@@ -90,8 +94,6 @@ class HomeFragment : Fragment() {
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
-
-
     }
 
     private fun navigate(navigation: HomeViewModel.Navigation?) {
@@ -135,6 +137,12 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadAd(mAdView: AdView) {
+        MobileAds.initialize(activity as MainActivity)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onStart() {

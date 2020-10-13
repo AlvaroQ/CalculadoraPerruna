@@ -67,7 +67,10 @@ allprojects {
                 lifecycle           : "android.arch.lifecycle:extensions:1.1.1",
                 imagepicker         : "com.github.dhaval2404:imagepicker:1.6",
                 navigationFragment  : "androidx.navigation:navigation-fragment-ktx:2.2.2",
-                navigationUI        : "androidx.navigation:navigation-ui-ktx:2.2.2"
+                navigationUI        : "androidx.navigation:navigation-ui-ktx:2.2.2",
+
+                // Admod
+                admob               : 'com.google.android.gms:play-services-ads:19.4.0'
         ]
 
         detektPlugin = [

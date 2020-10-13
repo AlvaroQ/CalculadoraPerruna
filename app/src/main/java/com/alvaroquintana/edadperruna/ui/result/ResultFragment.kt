@@ -17,6 +17,9 @@ import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 
 
 class ResultFragment : Fragment() {
@@ -91,6 +94,8 @@ class ResultFragment : Fragment() {
             else -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
         }
 
+        loadAd(root.findViewById(R.id.adView))
+
         return root
     }
 
@@ -111,6 +116,12 @@ class ResultFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadAd(mAdView: AdView) {
+        MobileAds.initialize(activity as MainActivity)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onStart() {
