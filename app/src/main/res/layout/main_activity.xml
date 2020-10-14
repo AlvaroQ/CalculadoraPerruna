@@ -47,6 +47,18 @@
                 android:layout_marginEnd="60dp"
                 android:textAppearance="@style/Bold.TextColor.Large" />
 
+            <ImageView
+                android:id="@+id/imagenMode"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon_sun"
+                android:layout_gravity="end"
+                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:contentDescription="@string/set_mode"/>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

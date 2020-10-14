@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -11,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.ResultFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
@@ -37,7 +37,7 @@ class ResultFragment : Fragment() {
         binding = ResultFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
+        val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener { resultViewModel.navigateHome() }
 
 

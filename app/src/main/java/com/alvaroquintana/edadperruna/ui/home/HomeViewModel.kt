@@ -49,6 +49,7 @@ class HomeViewModel : ScopedViewModel() {
             is Error.ErrorBreedEmpty -> mError.value = Error.ErrorBreedEmpty
             is Error.ErrorYearEmpty -> mError.value = Error.ErrorYearEmpty
             is Error.ErrorMonthEmpty -> mError.value = Error.ErrorMonthEmpty
+            is Error.ErrorMonthIlegal -> mError.value = Error.ErrorMonthIlegal
         }
     }
 

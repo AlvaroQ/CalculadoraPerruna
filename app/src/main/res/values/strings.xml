@@ -5,6 +5,7 @@
     <string name="breed">Raza</string>
     <string name="year_title">Año(s)</string>
     <string name="month_title">Mes(es)</string>
+    <string name="set_mode">Mode night</string>
     <string name="calculate">Calcular</string>
     <string name="select_breed">Seleccione raza</string>
     <string name="dog_image">Imagen de la raza de perro</string>

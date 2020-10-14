@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@style/animationFade</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="animationFade" parent="@android:style/Animation.Activity">
@@ -23,10 +23,6 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash</item>
-    </style>
 
     <!-- Progress -->
     <style name="ProgressDialog" parent="Theme.AppCompat.Dialog">
@@ -54,17 +50,20 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="ExFabOverlay">
+    <style name="buttonStyle">
         <item name="android:backgroundTint">@color/colorPrimaryDark</item>
         <item name="rippleColor">@color/colorPrimaryDark</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textAppearance">@style/Regular.TextColorLight.Medium</item>
     </style>
 
     <style name="EditTextTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="colorControlNormal">@color/textColor</item>
         <item name="hintTextColor">@color/textColorLight</item>
-        <item name="boxStrokeColor">@color/textColorLight</item>
         <item name="colorAccent">@color/textColorLight</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="boxStrokeWidthFocused">4dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeColor">@drawable/selector_text_input</item>
     </style>
 
     <!-- Expand image dialog style -->

@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -58,7 +55,7 @@ class HomeFragment : Fragment() {
         editTextMonth = root.findViewById(R.id.editTextMonth)
         editTextYear = root.findViewById(R.id.editTextYear)
 
-        val btnSubmit: ExtendedFloatingActionButton = root.findViewById(R.id.btnSubmit)
+        val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener {
             val dog = Dog(icon!!, name!!)
 

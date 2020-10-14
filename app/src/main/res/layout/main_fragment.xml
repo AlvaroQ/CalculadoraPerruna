@@ -55,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/select_breed"
+            android:textAppearance="@style/Regular.TextColorLight.VerySmall"
             android:layout_marginStart="8dp"
             android:layout_toStartOf="@+id/imageExpand"
             android:layout_toEndOf="@+id/imageBreed"
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:inputType="number"
-            android:textAppearance="@style/Regular.TextColorLight.Medium"/>
+            android:textColor="@color/textColorLight"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -103,17 +104,16 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:inputType="number"
-            android:textAppearance="@style/Regular.TextColorLight.Medium"/>
+            android:textColor="@color/textColorLight"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_horizontal_margin"
-        android:theme="@style/ExFabOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        style="@style/buttonStyle"
         android:text="@string/calculate"
-        android:layout_gravity="bottom|center"
         app:layout_constraintBottom_toTopOf="@id/adView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
