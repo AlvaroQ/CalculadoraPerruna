@@ -1,4 +1,4 @@
-# CalculadoraPerruna
+# edadperruna
 
 Android Single-Activity MVVM Architecture with Navigation Component
 
@@ -8,6 +8,8 @@ Android Single-Activity MVVM Architecture with Navigation Component
  - Firebase: Realtime Database
  - Glide
  - Android Jetpack's Navigation component
+ - Mode light / night
+ - Admob for Android
 
 
 Reasons to use Android Single-Activity Architecture with Navigation Component to test this alternative

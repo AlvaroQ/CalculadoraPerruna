@@ -5,7 +5,7 @@ buildscript {
     }
 
     ext.names = [
-            'applicationId': "com.alvaroquintana.calculadoraperruna"
+            'applicationId': "com.alvaroquintana.edadperruna"
     ]
     ext.versions = [
             'compileSdk'            : 30,
