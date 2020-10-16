@@ -1,13 +1,13 @@
-# edadperruna
+   #### CALCULADORA PERRUNA ####
 
 Android Single-Activity MVVM Architecture with Navigation Component
 
+ - Android Jetpack's Navigation component
+ - Firebase: Realtime Database
  - Lifecycle and coroutines
  - Data Binding
  - Koin
- - Firebase: Realtime Database
  - Glide
- - Android Jetpack's Navigation component
  - Mode light / night
  - Admob for Android
 
