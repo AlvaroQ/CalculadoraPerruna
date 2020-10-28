@@ -1,6 +1,6 @@
 package com.alvaroquintana.edadperruna.utils
 
 object Constants {
-    internal const val SECTION_DOG = 1
-    internal const val SECTION_HUMAN = 2
+    const val PATH_REFERENCE = "dog/breeds"
+    const val PATH_REFERENCE_APPS = "dog/apps"
 }

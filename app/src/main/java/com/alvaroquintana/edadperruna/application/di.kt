@@ -1,6 +1,7 @@
 package com.alvaroquintana.edadperruna.application
 
 import android.app.Application
+import com.alvaroquintana.data.repository.AppsRecommendedRepository
 import com.alvaroquintana.edadperruna.data.server.DataBaseBaseSourceImpl
 import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
 import com.alvaroquintana.edadperruna.ui.MainActivity
@@ -16,6 +17,7 @@ import com.alvaroquintana.data.repository.BreedListRepository
 import com.alvaroquintana.data.source.LocalDataSource
 import com.alvaroquintana.edadperruna.data.database.DogDatabase
 import com.alvaroquintana.edadperruna.data.database.RoomDataSource
+import com.alvaroquintana.usecases.GetAppsRecommended
 import com.alvaroquintana.usecases.GetBreedList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +51,7 @@ private val appModule = module {
 
 val dataModule = module {
     factory { BreedListRepository(get(), get()) }
+    factory { AppsRecommendedRepository(get()) }
 }
 
 private val scopesModule = module {
@@ -66,7 +69,8 @@ private val scopesModule = module {
     }
 
     scope(named<ResultFragment>()) {
-        viewModel { ResultViewModel() }
+        viewModel { ResultViewModel(get()) }
+        scoped { GetAppsRecommended(get()) }
     }
 
 }

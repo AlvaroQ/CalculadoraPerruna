@@ -1,5 +1,8 @@
 package com.alvaroquintana.edadperruna.ui.result
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +18,7 @@ import com.alvaroquintana.edadperruna.ui.MainActivity
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
+import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.google.android.gms.ads.AdRequest
@@ -94,8 +98,6 @@ class ResultFragment : Fragment() {
             else -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
         }
 
-        loadAd(root.findViewById(R.id.adView))
-
         return root
     }
 
@@ -105,6 +107,17 @@ class ResultFragment : Fragment() {
         (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { resultViewModel.navigateHome() }
 
         resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
+        resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
+        resultViewModel.list.observe(viewLifecycleOwner, Observer(::fillAppList))
+    }
+
+    private fun fillAppList(appList: MutableList<App>) {
+        binding.otherAppText.visibility = View.VISIBLE
+        binding.recyclerviewOtherApps.adapter = AppListAdapter(
+            activity as MainActivity,
+            appList,
+            resultViewModel::onAppClicked
+        )
     }
 
     private fun navigate(navigation: ResultViewModel.Navigation?) {
@@ -114,14 +127,29 @@ class ResultFragment : Fragment() {
                     val action = ResultFragmentDirections.actionNavigationResultToHome("","")
                     findNavController().navigate(action)
                 }
+                is ResultViewModel.Navigation.Open -> {
+                    openAppOnPlayStore(navigation.url)
+                }
             }
         }
+    }
+
+    private fun progressVisibility(isVisible: Boolean) {
+        binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     private fun loadAd(mAdView: AdView) {
         MobileAds.initialize(activity as MainActivity)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+    }
+
+    private fun openAppOnPlayStore(appPackageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+        } catch (notFoundException: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+        }
     }
 
     override fun onStart() {

@@ -20,6 +20,7 @@
     <string name="fill_year">Rellene los años de su perro</string>
     <string name="fill_month">Rellene los meses de su perro</string>
     <string name="ilegal_month">Los meses introducidos no son correctos</string>
+    <string name="other_apps">Otras aplicaciones</string>
 
     <string name="image_stamp">Imagen estampado</string>
     <string name="loading_image">loading image</string>
