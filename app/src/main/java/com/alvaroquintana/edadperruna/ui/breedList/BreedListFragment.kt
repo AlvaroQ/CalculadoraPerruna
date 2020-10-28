@@ -15,6 +15,9 @@ import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.domain.Dog
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -32,6 +35,7 @@ class BreedListFragment : Fragment() {
         val root = binding.root
 
         glideLoadGif(activity as MainActivity, binding.imageLoading)
+        loadAd(root.findViewById(R.id.adView))
 
         return root
     }
@@ -80,6 +84,12 @@ class BreedListFragment : Fragment() {
 
     private fun expandImage(imageView: ImageView, icon: String) {
         ImagePreviewer().show(activity as MainActivity, imageView, icon)
+    }
+
+    private fun loadAd(mAdView: AdView) {
+        MobileAds.initialize(activity as MainActivity)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onStart() {
