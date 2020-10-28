@@ -1,4 +1,6 @@
 <resources>
+    <dimen name="height_status_bar">24dp</dimen>
+    <dimen name="height_status_bar_and_action_bar">72dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fragment_main_choose_breed_vertical_margin">24dp</dimen>

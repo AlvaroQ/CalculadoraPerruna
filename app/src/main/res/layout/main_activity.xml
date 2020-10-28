@@ -16,6 +16,7 @@
         android:background="@color/backgroundTransparent"
         app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_marginTop="@dimen/height_status_bar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -67,7 +68,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
+        android:layout_marginTop="@dimen/height_status_bar_and_action_bar"
         tools:layout="@layout/main_fragment" >
         <fragment
             android:id="@+id/nav_host_fragment"

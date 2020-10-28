@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    packagingOptions {
+        exclude 'META-INF/gradle/incremental.annotation.processors'
+    }
+
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildtoolsVersion
 
@@ -54,9 +59,8 @@ dependencies {
     implementation androidKtxLibs.values()
     implementation kotlinLibs.values()
     implementation libs.values()
-    implementation androidKaptLibs.values()
+    kapt androidKaptLibs.values()
 
-    implementation 'com.google.firebase:firebase-database:19.5.0'
     testImplementation testLibs.values()
     testImplementation androidxTestLibs.values()
     androidTestImplementation androidTestLibs.values()

@@ -2,6 +2,8 @@ package com.alvaroquintana.edadperruna.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.ActivityInfo
+import android.os.Build
 import android.util.Log
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -29,5 +31,13 @@ fun log(tag:String?, msg:String?, error:Throwable? = null){
         } else {
             Log.d(tag, msg!!)
         }
+    }
+}
+
+fun Activity.screenOrientationPortrait(){
+    requestedOrientation = if (Build.VERSION.SDK_INT == 26) {
+        ActivityInfo.SCREEN_ORIENTATION_BEHIND
+    } else {
+        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }

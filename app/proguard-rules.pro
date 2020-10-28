@@ -34,8 +34,8 @@
 -keep class * implements com.google.gson.JsonDeserializer
 
 # Application classes that will be serialized/deserialized over Gson
--keepclassmembers class com.alvaroquintana.domain.** { *; }
--keep class com.alvaroquintana.domain.** { *; }
+-keepclassmembers class com.alvaroquintana.domain.* { *; }
+-keep class com.alvaroquintana.domain.* { *; }
 
 -ignorewarnings
 -dontwarn okhttp3.**

@@ -142,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ads:adSize="FULL_BANNER"
-        ads:adUnitId="@string/admob_banner_result_id"
+        ads:adUnitId="@string/admob_banner_test_id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

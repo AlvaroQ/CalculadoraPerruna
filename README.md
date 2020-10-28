@@ -1,9 +1,11 @@
    #### CALCULADORA PERRUNA ####
 
-Android Single-Activity MVVM Architecture with Navigation Component
-
+Android Single-Activity MVVM Architecture with Navigation Component and KOTLIN
+ - Follow SOLID principles
+ - Koin dependency injector
  - Android Jetpack's Navigation component
  - Firebase: Realtime Database
+ - SQLite local database using Room
  - Lifecycle and coroutines
  - Data Binding
  - Koin

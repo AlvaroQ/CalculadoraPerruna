@@ -1,4 +1,4 @@
-package com.alvaroquintana.data.datasource
+package com.alvaroquintana.data.source
 
 import com.alvaroquintana.domain.Dog
 
