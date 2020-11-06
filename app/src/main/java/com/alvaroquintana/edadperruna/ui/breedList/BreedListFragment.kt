@@ -44,6 +44,7 @@ class BreedListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).setupToolbar(getString(R.string.choose_breed), true) { breedListViewModel.onBackPressed() }
+        (activity as MainActivity).setupBackground(MainActivity.Screen.BREED_LIST)
 
         breedListViewModel.init()
         breedListViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))

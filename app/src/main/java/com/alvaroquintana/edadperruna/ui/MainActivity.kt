@@ -43,10 +43,30 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    fun setupBackground(screen: Screen) {
+        when(screen) {
+            Screen.MAIN -> {
+                binding.imageBackground.visibility = View.VISIBLE
+                binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
+            }
+            Screen.BREED_LIST -> {
+                binding.imageBackground.visibility = View.GONE
+            }
+            Screen.RESULT -> {
+                binding.imageBackground.visibility = View.VISIBLE
+                binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_result))
+            }
+        }
+
+    }
+
     override fun onBackPressed() {
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) super.onBackPressed()
         else supportFragmentManager.popBackStack()
+    }
 
+    enum class Screen {
+        MAIN, BREED_LIST, RESULT
     }
 }

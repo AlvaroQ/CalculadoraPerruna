@@ -105,6 +105,7 @@ class ResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { resultViewModel.navigateHome() }
+        (activity as MainActivity).setupBackground(MainActivity.Screen.RESULT)
 
         resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))

@@ -88,6 +88,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).setupToolbar(getString(R.string.app_name), false)
+        (activity as MainActivity).setupBackground(MainActivity.Screen.MAIN)
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
