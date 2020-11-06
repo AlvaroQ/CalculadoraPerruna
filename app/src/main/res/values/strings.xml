@@ -1,35 +1,35 @@
 <resources>
-    <string name="app_name">Calculadora Perruna</string>
-    <string name="tab_dog">Edad perruna</string>
-    <string name="tab_human">Edad humana</string>
-    <string name="breed">Raza</string>
-    <string name="year_title">Año(s)</string>
-    <string name="month_title">Mes(es)</string>
+    <string name="app_name">Dog calculator</string>
+    <string name="tab_dog">Dog age</string>
+    <string name="tab_human">Human age</string>
+    <string name="breed">breed</string>
+    <string name="year_title">Year(s)</string>
+    <string name="month_title">Month(s)</string>
     <string name="set_mode">Mode night</string>
-    <string name="calculate">Calcular</string>
-    <string name="select_breed">Seleccione raza</string>
-    <string name="dog_image">Imagen de la raza de perro</string>
-    <string name="section_dog_description">Introduzca la edad y raza de su perro para convertirlo a la edad que tendría si fuese una persona.</string>
-    <string name="section_human_description">Introduzca su edad para traducirlo a la edad que tendría si fuese la raza seleccionada.</string>
-    <string name="choose_breed">Escoge una raza</string>
-    <string name="back_btn">Volver</string>
-    <string name="expand">expandir</string>
+    <string name="calculate">Calculate</string>
+    <string name="select_breed">Select breed</string>
+    <string name="dog_image">dog breed image</string>
+    <string name="section_dog_description">Enter the age and breed of your dog to make it the age it would be if it were a person.</string>
+    <string name="section_human_description">Enter your age to translate it to the age you would be if it were the selected breed.</string>
+    <string name="choose_breed">Choose breed</string>
+    <string name="back_btn">back</string>
+    <string name="expand">zoom in</string>
     <string name="completed">Estudio completado</string>
-    <string name="try_again">Intentar de nuevo</string>
-    <string name="save_puppy">¡Cuide de mucho su mascota!</string>
-    <string name="fill_year">Rellene los años de su perro</string>
-    <string name="fill_month">Rellene los meses de su perro</string>
-    <string name="ilegal_month">Los meses introducidos no son correctos</string>
-    <string name="other_apps">Otras aplicaciones</string>
+    <string name="try_again">Try again</string>
+    <string name="save_puppy">Take care off pet!</string>
+    <string name="fill_year">Fill years of your dog</string>
+    <string name="fill_month">Fill months of your dog</string>
+    <string name="ilegal_month">Incorrect months</string>
+    <string name="other_apps">Other apps</string>
 
-    <string name="image_stamp">Imagen estampado</string>
+    <string name="image_stamp">stamp image</string>
     <string name="loading_image">loading image</string>
 
     <string name="time_year_month">%1$s y %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>
-    <string name="equal_to">Equivale a</string>
-    <string name="of_people">de una persona</string>
+    <string name="equal_to">equal to</string>
+    <string name="of_people">of humans</string>
     <plurals name="year">
         <item quantity="one">%d año</item>
         <item quantity="other">%d años</item>
@@ -40,9 +40,9 @@
     </plurals>
 
     <string-array name="breed_step">
-        <item>Su perro es un cachorro</item> // 0 a 3 meses
-        <item>Su perro se encuentra en el período juvenil</item> // 3 meses a 1 año
-        <item>Su perro se encuentra en la edad adulta</item> // 1 a 7 años
-        <item>Su perro se encuentra en el período senior</item> // 7 años o mas
+        <item>Your dog is a puppy</item> // 0 a 3 meses
+        <item>Your dog is young</item> // 3 meses a 1 año
+        <item>Your dog is adult</item> // 1 a 7 años
+        <item>Your dog is senior</item> // 7 años o mas
     </string-array>
 </resources>
