@@ -51,3 +51,7 @@
 -dontwarn org.hamcrest.**
 -dontwarn com.squareup.javawriter.JavaWriter
 -dontwarn org.mockito.**
+
+# Crashlitics
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

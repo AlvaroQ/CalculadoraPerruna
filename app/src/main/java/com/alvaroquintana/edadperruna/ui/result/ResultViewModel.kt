@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
+import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetAppsRecommended
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,7 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended) : Scop
     val list: LiveData<MutableList<App>> = _list
 
     init {
+        Analytics.analyticsScreenViewed(Analytics.SCREEN_RESULT)
         launch {
             _progress.value = true
             _list.value = appsRecommended()
@@ -31,6 +33,7 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended) : Scop
     }
 
     fun onAppClicked(url: String) {
+        Analytics.analyticsAppRecommendedOpen(url)
         _navigation.value = Navigation.Open(url)
     }
 
@@ -39,6 +42,7 @@ class ResultViewModel(private val getAppsRecommended: GetAppsRecommended) : Scop
     }
 
     fun translateToHuman(years: Int, months: Int): MutableList<Int> {
+        Analytics.analyticsDogTraslateFinished(years, months)
         return mutableListOf(((years * 12 + months) * 7) / 12, ((years * 12 + months) * 7) % 12)
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.managers.Analytics
 
 class HomeViewModel : ScopedViewModel() {
 
@@ -11,13 +12,18 @@ class HomeViewModel : ScopedViewModel() {
     val navigation: LiveData<Navigation> = _navigation
 
     private val mError = MutableLiveData<Error>()
+
     val error: LiveData<Error> = mError
+    init {
+        Analytics.analyticsScreenViewed(Analytics.SCREEN_HOME)
+    }
 
     fun navigateToBreedList() {
         _navigation.value = Navigation.BreedList
     }
 
     fun navigateToResult(dog: Dog) {
+        Analytics.analyticsClicked(Analytics.BTN_RESULT)
         _navigation.value = Navigation.Result(dog)
     }
 

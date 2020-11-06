@@ -4,7 +4,7 @@ Android Single-Activity MVVM Architecture with Navigation Component and KOTLIN
  - Follow SOLID principles
  - Koin dependency injector
  - Android Jetpack's Navigation component
- - Firebase: Realtime Database
+ - Google Firebase: Crashlitics, Analytics Real Time database
  - SQLite local database using Room
  - Lifecycle and coroutines
  - Data Binding

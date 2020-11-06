@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetBreedList
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
     val navigation: LiveData<Navigation> = _navigation
 
     fun init() {
+        Analytics.analyticsScreenViewed(Analytics.SCREEN_BREED_LIST)
         launch {
             _progress.value = true
             _list.value = getBreedList()
