@@ -21,9 +21,12 @@ import androidx.lifecycle.Observer
 import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 class ResultFragment : Fragment() {
@@ -43,7 +46,6 @@ class ResultFragment : Fragment() {
 
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener { resultViewModel.navigateHome() }
-
 
         val textTime: TextView = root.findViewById(R.id.textTime)
         when {
@@ -137,12 +139,6 @@ class ResultFragment : Fragment() {
 
     private fun progressVisibility(isVisible: Boolean) {
         binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun loadAd(mAdView: AdView) {
-        MobileAds.initialize(activity as MainActivity)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
     }
 
     private fun openAppOnPlayStore(appPackageName: String) {

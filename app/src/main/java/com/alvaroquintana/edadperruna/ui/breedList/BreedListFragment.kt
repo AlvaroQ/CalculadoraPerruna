@@ -15,9 +15,14 @@ import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -25,17 +30,18 @@ import org.koin.android.viewmodel.scope.viewModel
 class BreedListFragment : Fragment() {
     private lateinit var binding: BreedListFragmentBinding
     private val breedListViewModel: BreedListViewModel by lifecycleScope.viewModel(this)
+    private lateinit var rewardedAd: RewardedAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View {
 
         binding = BreedListFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
         glideLoadGif(activity as MainActivity, binding.imageLoading)
-        loadAd(root.findViewById(R.id.adView))
+        loadRewardAd()
+        loadBannerAd(root.findViewById(R.id.adView))
 
         return root
     }
@@ -87,10 +93,25 @@ class BreedListFragment : Fragment() {
         ImagePreviewer().show(activity as MainActivity, imageView, icon)
     }
 
-    private fun loadAd(mAdView: AdView) {
+    private fun loadBannerAd(mAdView: AdView) {
         MobileAds.initialize(activity as MainActivity)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+    }
+
+    private fun loadRewardAd() {
+        rewardedAd = RewardedAd(requireContext(), getString(R.string.BONIFICADO_LIST))
+        val adLoadCallback: RewardedAdLoadCallback = object : RewardedAdLoadCallback() {
+            override fun onRewardedAdLoaded() {
+                rewardedAd.show(activity, null)
+            }
+
+            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+                FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
+                log("ResultActivity - loadAd", "Ad failed to load.")
+            }
+        }
+        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
     override fun onStart() {

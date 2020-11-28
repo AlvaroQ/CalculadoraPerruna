@@ -22,8 +22,10 @@ import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
@@ -38,13 +40,16 @@ class HomeFragment : Fragment() {
     private val icon by lazy { arguments?.let { fromBundle(it).icon } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
 
+
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View {
 
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
+        loadInstersticialAd()
 
         val parentLayout: ConstraintLayout = root.findViewById(R.id.parentLayout)
         parentLayout.setOnClickListener { hideKeyboard(activity as MainActivity) }
@@ -66,6 +71,7 @@ class HomeFragment : Fragment() {
                 )) {
                 homeViewModel.navigateToResult(dog)
             }
+            showInstersticialAd()
         }
 
         val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
@@ -151,6 +157,20 @@ class HomeFragment : Fragment() {
     override fun onStop() {
         callback.remove()
         super.onStop()
+    }
+
+    private fun loadInstersticialAd() {
+        mInterstitialAd = InterstitialAd(requireContext())
+        mInterstitialAd.adUnitId = getString(R.string.INTERSTICIAL_RESULT)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+    }
+    private fun showInstersticialAd() {
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
+        } else {
+            log("TAG", "The interstitial wasn't loaded yet.")
+            FirebaseCrashlytics.getInstance().recordException(Throwable("The interstitial wasn't loaded"))
+        }
     }
 
     private val callback = object : OnBackPressedCallback(true) {

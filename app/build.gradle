@@ -14,6 +14,20 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildtoolsVersion
 
+    signingConfigs {
+        config {
+            keyAlias EDADPERRUNA_RELEASE_KEY_ALIAS
+            keyPassword EDADPERRUNA_RELEASE_KEY_PASSWORD
+            storeFile file(EDADPERRUNA_RELEASE_STORE_FILE)
+            storePassword EDADPERRUNA_RELEASE_STORE_PASSWORD
+        }
+        debug {
+            keyAlias EDADPERRUNA_RELEASE_KEY_ALIAS
+            keyPassword EDADPERRUNA_RELEASE_KEY_PASSWORD
+            storeFile file(EDADPERRUNA_RELEASE_STORE_FILE)
+            storePassword EDADPERRUNA_RELEASE_STORE_PASSWORD
+        }
+    }
     defaultConfig {
         applicationId names.applicationId
         minSdkVersion versions.minSdk
@@ -34,14 +48,25 @@ android {
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
+
+            resValue 'string', 'BANNER_MAIN', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_LIST', getAdmobBannerTestId()
+            resValue 'string', 'INTERSTICIAL_RESULT', getAdmobIntersticialTestId()
+            resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoTestId()
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
+            signingConfig signingConfigs.config
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
             }
+
+            resValue 'string', 'BANNER_MAIN', getAdmobBannerMainId()
+            resValue 'string', 'BANNER_LIST', getAdmobBannerListId()
+            resValue 'string', 'INTERSTICIAL_RESULT', getAdmobIntersticialResultId()
+            resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoListId()
         }
     }
     compileOptions {
@@ -71,4 +96,70 @@ dependencies {
     testImplementation testLibs.values()
     testImplementation androidxTestLibs.values()
     androidTestImplementation androidTestLibs.values()
+}
+// KEYS ADMOB TEST
+def getAdmobBannerTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_test_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_test_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobIntersticialTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_intersticial_list_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+
+// KEYS ADMOB PRODUCTION
+def getAdmobBannerMainId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_main_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBannerListId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_list_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobIntersticialResultId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_intersticial_result_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobBonificadoListId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_bonificado_list_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
 }
