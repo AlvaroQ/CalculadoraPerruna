@@ -1,14 +1,18 @@
 package com.alvaroquintana.edadperruna.utils
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.alvaroquintana.edadperruna.BuildConfig
+import com.alvaroquintana.edadperruna.R
 
 
 fun hideKeyboard(activity: Activity) {
@@ -39,5 +43,52 @@ fun Activity.screenOrientationPortrait(){
         ActivityInfo.SCREEN_ORIENTATION_BEHIND
     } else {
         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+}
+
+fun rateApp(context: Context) {
+    val uri: Uri = Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+    val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+    goToMarket.addFlags(
+        Intent.FLAG_ACTIVITY_NO_HISTORY or
+            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+            Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+    try {
+        context.startActivity(goToMarket)
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+            Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"))
+        )
+    }
+}
+
+fun shareApp(points: Int, context: Context) {
+    try {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+
+        var shareMessage =
+            if(points < 0) context.resources.getString(R.string.share)
+            else context.resources.getString(R.string.share_summary)
+
+        shareMessage =
+            """
+                ${shareMessage} https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}
+                """.trimIndent()
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.choose_one)))
+    } catch (e: Exception) {
+        log(context.getString(R.string.share), e.toString())
+    }
+}
+
+fun openAppOnPlayStore(context: Context, appPackageName: String) {
+    try {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+    } catch (notFoundException: ActivityNotFoundException) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
     }
 }

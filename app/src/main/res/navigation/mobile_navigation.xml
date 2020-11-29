@@ -19,6 +19,11 @@
             app:destination="@id/navigation_result"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_home_to_settings"
+            app:destination="@id/navigation_settings"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
         <argument
             android:name="icon"
             app:argType="string"
@@ -67,4 +72,14 @@
             android:defaultValue="" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.alvaroquintana.edadperruna.ui.settings.SettingsFragment"
+        tools:layout="@layout/settings_fragment" >
+    <action
+        android:id="@+id/action_navigation_result_to_home"
+        app:destination="@id/navigation_home"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out"  />
+    </fragment>
 </navigation>

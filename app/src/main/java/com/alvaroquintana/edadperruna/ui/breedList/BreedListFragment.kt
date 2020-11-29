@@ -9,20 +9,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.BreedListFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.domain.Dog
-import com.alvaroquintana.edadperruna.utils.log
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -30,7 +23,6 @@ import org.koin.android.viewmodel.scope.viewModel
 class BreedListFragment : Fragment() {
     private lateinit var binding: BreedListFragmentBinding
     private val breedListViewModel: BreedListViewModel by lifecycleScope.viewModel(this)
-    private lateinit var rewardedAd: RewardedAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +30,7 @@ class BreedListFragment : Fragment() {
 
         binding = BreedListFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
-
         glideLoadGif(activity as MainActivity, binding.imageLoading)
-        loadRewardAd()
-        loadBannerAd(root.findViewById(R.id.adView))
-
         return root
     }
 
@@ -56,11 +44,12 @@ class BreedListFragment : Fragment() {
         breedListViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
         breedListViewModel.list.observe(viewLifecycleOwner, Observer(::fillBreedList))
         breedListViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
+        breedListViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
 
     private fun fillBreedList(breedList: MutableList<Dog>) {
-        binding.recycler.adapter = BreedListAdapter(
-            activity as MainActivity,
+        binding.recyclerList.adapter = BreedListAdapter(
+            requireContext(),
             breedList,
             breedListViewModel::onDogClicked,
             breedListViewModel::onDogLongClicked
@@ -93,25 +82,11 @@ class BreedListFragment : Fragment() {
         ImagePreviewer().show(activity as MainActivity, imageView, icon)
     }
 
-    private fun loadBannerAd(mAdView: AdView) {
-        MobileAds.initialize(activity as MainActivity)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-    }
-
-    private fun loadRewardAd() {
-        rewardedAd = RewardedAd(requireContext(), getString(R.string.BONIFICADO_LIST))
-        val adLoadCallback: RewardedAdLoadCallback = object : RewardedAdLoadCallback() {
-            override fun onRewardedAdLoaded() {
-                rewardedAd.show(activity, null)
-            }
-
-            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
-                log("ResultActivity - loadAd", "Ad failed to load.")
-            }
+    private fun loadAd(model: BreedListViewModel.UiModel) {
+        if (model is BreedListViewModel.UiModel.ShowAd && model.show) {
+            (activity as MainActivity).showRewardAd()
+            (activity as MainActivity).showAd(model.show)
         }
-        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
     override fun onStart() {

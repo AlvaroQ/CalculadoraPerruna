@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 
-class MainViewModel() : ScopedViewModel() {
+class MainViewModel : ScopedViewModel() {
 
     fun setModeNight(context: Context) {
         if (getIsNightTheme(context)) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)

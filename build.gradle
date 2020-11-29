@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.4.10'
+        kotlin_version = '1.4.20'
     }
 
     ext.names = [
@@ -16,12 +16,12 @@ buildscript {
             'buildtoolsVersion'     : '30.0.2',
     ]
     ext.libsversions = [
-            'kotlin_version'         : '1.4.10',
-            'gradle_version'         : '4.1.0',
+            'gradle_version'         : '4.1.1',
             'koin_version'           : '2.1.5',
             'preference_version'     : '1.1.1',
             'google_services_version': '4.3.4',
-            'room_version'           : '2.2.1'
+            'room_version'           : '2.2.1',
+            'billing_version'        : "3.0.0"
     ]
     repositories {
         google()
@@ -30,9 +30,9 @@ buildscript {
     dependencies {
         classpath "com.google.gms:google-services:${libsversions.google_services_version}"
         classpath "com.android.tools.build:gradle:${libsversions.gradle_version}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${libsversions.kotlin_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
     }
 }
 
@@ -76,12 +76,17 @@ allprojects {
                 firebaseAnalytics   : "com.google.firebase:firebase-analytics:17.2.1",
                 BoMFirebasePlatform : "com.google.firebase:firebase-bom:25.12.0",
                 firebaseAuthKtx     : "com.google.firebase:firebase-auth-ktx:19.4.0",
+                firestore           : 'com.google.firebase:firebase-firestore:21.2.1',
 
                 // Firebase Crashlytics SDK.
                 crashlytics         : "com.google.firebase:firebase-crashlytics:17.0.0",
 
                 // Admod
-                admob               : 'com.google.android.gms:play-services-ads:19.4.0'
+                admob               : 'com.google.android.gms:play-services-ads:19.4.0',
+
+
+                // In-app purchase remove ads
+                billingclient       : "com.android.billingclient:billing-ktx:${libsversions.billing_version}"
         ]
 
         detektPlugin = [
@@ -100,7 +105,7 @@ allprojects {
         ]
 
         kotlinLibs = [
-                stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libsversions.kotlin_version}"
+                stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
         ]
 
         libs = [

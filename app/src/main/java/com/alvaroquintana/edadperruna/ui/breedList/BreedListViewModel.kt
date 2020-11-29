@@ -7,9 +7,14 @@ import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetBreedList
+import com.alvaroquintana.usecases.GetPaymentDone
 import kotlinx.coroutines.launch
 
-class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewModel() {
+class BreedListViewModel(private val getBreedList: GetBreedList,
+                         private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
+
+    private val _showingAds = MutableLiveData<UiModel>()
+    val showingAds: LiveData<UiModel> = _showingAds
 
     private val _progress = MutableLiveData<Boolean>()
     val progress: LiveData<Boolean> = _progress
@@ -25,6 +30,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
         launch {
             _progress.value = true
             _list.value = getBreedList()
+            _showingAds.value = UiModel.ShowAd(!getPaymentDone())
             _progress.value = false
         }
     }
@@ -34,7 +40,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
     }
 
     fun onBackPressed() {
-        _navigation.value = Navigation.Home(Dog("",""))
+        _navigation.value = Navigation.Home(Dog(icon = "",name = ""))
     }
 
     fun onDogClicked(dog: Dog) {
@@ -48,5 +54,9 @@ class BreedListViewModel(private val getBreedList: GetBreedList) : ScopedViewMod
     sealed class Navigation {
         data class Home(val breed : Dog): Navigation()
         data class Expand(val imageView: ImageView, val icon: String): Navigation()
+    }
+
+    sealed class UiModel {
+        data class ShowAd(val show: Boolean) : UiModel()
     }
 }

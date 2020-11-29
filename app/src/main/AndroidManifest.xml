@@ -3,6 +3,7 @@
     package="com.alvaroquintana.edadperruna">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name="com.alvaroquintana.edadperruna.application.CalculadoraApp"

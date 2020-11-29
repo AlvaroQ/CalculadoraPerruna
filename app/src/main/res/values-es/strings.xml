@@ -30,6 +30,7 @@
     <string name="time_month">%1$s</string>
     <string name="equal_to">Equivale a</string>
     <string name="of_people">de una persona</string>
+    <string name="settings">Ajustes</string>
     <plurals name="year">
         <item quantity="one">%d año</item>
         <item quantity="other">%d años</item>
@@ -45,4 +46,23 @@
         <item>Su perro se encuentra en la edad adulta</item> // 1 a 7 años
         <item>Su perro se encuentra en el período senior</item> // 7 años o mas
     </string-array>
+
+    <!-- Settings screen -->
+    <string name="settings_version">Version</string>
+    <string name="settings_delete_ads">Quitar anuncios</string>
+    <string name="settings_delete_ads_summary">Quitar anuncios para siempre</string>
+    <string name="settings_rate_app">Valorar la aplicación</string>
+    <string name="settings_rate_app_summary">Ir al play store para puntuar la app</string>
+    <string name="settings_more_apps">Más aplicaciones</string>
+    <string name="settings_more_apps_summary">Aplicaciones gratuitas recomendadas</string>
+    <string name="more_apps">Más aplicaciones</string>
+    <string name="settings_share">Compartir con mis amigos</string>
+    <string name="settings_share_summary">Comparte con tus amigos esta aplicación para jugar con ellos</string>
+    <string name="settings_dark_mode">Sounds</string>
+    <string name="night_mode">Night mode</string>
+    <string name="day_mode">Day mode</string>
+
+    <string name="share">Me ha gustado esta aplicación</string>
+    <string name="share_summary">Descarga esta aplicación y aprende del mundo canino</string>
+    <string name="choose_one">Elige una:</string>
 </resources>

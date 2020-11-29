@@ -53,6 +53,8 @@ android {
             resValue 'string', 'BANNER_LIST', getAdmobBannerTestId()
             resValue 'string', 'INTERSTICIAL_RESULT', getAdmobIntersticialTestId()
             resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoTestId()
+            resValue 'string', 'BANNER_PREFERENCES', getAdmobBannerTestId()
+            resValue 'string', 'BANNER_DESCRIPTION', getAdmobBannerTestId()
         }
         release {
             minifyEnabled true
@@ -67,6 +69,8 @@ android {
             resValue 'string', 'BANNER_LIST', getAdmobBannerListId()
             resValue 'string', 'INTERSTICIAL_RESULT', getAdmobIntersticialResultId()
             resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoListId()
+            resValue 'string', 'BANNER_PREFERENCES', getAdmobPreferencesTestId()
+            resValue 'string', 'BANNER_DESCRIPTION', getAdmobDescriptionTestId()
         }
     }
     compileOptions {
@@ -140,6 +144,24 @@ def getAdmobBannerListId() {
     try {
         def stringsFile = file("./src/main/res/values/secrets.xml")
         return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_list_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobPreferencesTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_settings_id' }.text()
+    } catch(e) {
+        println(e)
+        return ""
+    }
+}
+def getAdmobDescriptionTestId() {
+    try {
+        def stringsFile = file("./src/main/res/values/secrets.xml")
+        return new XmlParser().parse(stringsFile).string.find { it.@name.equals 'admob_banner_description_id' }.text()
     } catch(e) {
         println(e)
         return ""

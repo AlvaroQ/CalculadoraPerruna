@@ -14,11 +14,18 @@ import com.alvaroquintana.edadperruna.ui.result.ResultViewModel
 import com.alvaroquintana.edadperruna.utils.GetResources
 import com.alvaroquintana.data.source.DataBaseSource
 import com.alvaroquintana.data.repository.BreedListRepository
+import com.alvaroquintana.data.repository.SharedPreferencesRepository
 import com.alvaroquintana.data.source.LocalDataSource
+import com.alvaroquintana.data.source.SharedPreferencesLocalDataSource
 import com.alvaroquintana.edadperruna.data.database.DogDatabase
 import com.alvaroquintana.edadperruna.data.database.RoomDataSource
+import com.alvaroquintana.edadperruna.managers.SharedPrefsDataSource
+import com.alvaroquintana.edadperruna.ui.settings.SettingsFragment
+import com.alvaroquintana.edadperruna.ui.settings.SettingsViewModel
 import com.alvaroquintana.usecases.GetAppsRecommended
 import com.alvaroquintana.usecases.GetBreedList
+import com.alvaroquintana.usecases.GetPaymentDone
+import com.alvaroquintana.usecases.SetPaymentDone
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -47,11 +54,13 @@ private val appModule = module {
     single<CoroutineDispatcher> { Dispatchers.Main }
     single { DogDatabase.build(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
+    factory<SharedPreferencesLocalDataSource> { SharedPrefsDataSource(get()) }
 }
 
 val dataModule = module {
     factory { BreedListRepository(get(), get()) }
     factory { AppsRecommendedRepository(get()) }
+    factory { SharedPreferencesRepository(get()) }
 }
 
 private val scopesModule = module {
@@ -60,17 +69,26 @@ private val scopesModule = module {
     }
 
     scope(named<HomeFragment>()) {
-        viewModel { HomeViewModel() }
+        viewModel { HomeViewModel(get()) }
+        scoped { GetPaymentDone(get()) }
     }
 
     scope(named<BreedListFragment>()) {
-        viewModel { BreedListViewModel(get()) }
+        viewModel { BreedListViewModel(get(), get()) }
+        scoped { GetPaymentDone(get()) }
         scoped { GetBreedList(get()) }
     }
 
     scope(named<ResultFragment>()) {
-        viewModel { ResultViewModel(get()) }
+        viewModel { ResultViewModel(get(), get()) }
         scoped { GetAppsRecommended(get()) }
+        scoped { GetPaymentDone(get()) }
+    }
+
+    scope(named<SettingsFragment>()) {
+        viewModel { SettingsViewModel(get(), get()) }
+        scoped { GetPaymentDone(get()) }
+        scoped { SetPaymentDone(get()) }
     }
 
 }

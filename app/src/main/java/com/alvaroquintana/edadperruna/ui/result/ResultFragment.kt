@@ -112,6 +112,7 @@ class ResultFragment : Fragment() {
         resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
         resultViewModel.list.observe(viewLifecycleOwner, Observer(::fillAppList))
+        resultViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
 
     private fun fillAppList(appList: MutableList<App>) {
@@ -164,4 +165,9 @@ class ResultFragment : Fragment() {
             resultViewModel.navigateHome()
         }
     }
+    private fun loadAd(model: ResultViewModel.UiModel) {
+        if (model is ResultViewModel.UiModel.ShowAd && model.show)
+            (activity as MainActivity).showInstersticialAd()
+    }
+
 }

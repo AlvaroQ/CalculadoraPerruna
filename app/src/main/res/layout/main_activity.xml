@@ -58,16 +58,16 @@
                 android:textAppearance="@style/Bold.TextColor.Large" />
 
             <ImageView
-                android:id="@+id/imagenMode"
+                android:id="@+id/imagenSettings"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/icon_sun"
+                android:src="@drawable/ic_settings"
                 android:layout_gravity="end"
-                android:paddingTop="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:contentDescription="@string/set_mode"/>
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:contentDescription="@string/settings"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -76,8 +76,11 @@
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/height_status_bar_and_action_bar"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayoutMain"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:layout="@layout/main_fragment" >
         <fragment
             android:id="@+id/nav_host_fragment"
@@ -87,4 +90,15 @@
             app:navGraph="@navigation/mobile_navigation"
             app:defaultNavHost="true" />
     </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="FULL_BANNER"
+        ads:adUnitId="@string/BANNER_LIST"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

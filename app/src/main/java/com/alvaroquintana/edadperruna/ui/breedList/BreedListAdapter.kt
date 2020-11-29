@@ -24,7 +24,6 @@ class BreedListAdapter(private var context: Context,
         return BreedListViewHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: BreedListViewHolder, position: Int) {
         val breed = breedList[position]
         holder.dogName.text = breed.name

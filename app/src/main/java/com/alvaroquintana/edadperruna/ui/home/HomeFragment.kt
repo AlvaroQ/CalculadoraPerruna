@@ -17,7 +17,9 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
+import com.alvaroquintana.edadperruna.ui.settings.SettingsViewModel
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.glideLoadURL
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
@@ -37,11 +39,8 @@ class HomeFragment : Fragment() {
     private lateinit var editTextMonth: EditText
     private lateinit var editTextYear: EditText
 
-    private val icon by lazy { arguments?.let { fromBundle(it).icon } }
+    private val image by lazy { arguments?.let { fromBundle(it).icon } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
-
-
-    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +48,6 @@ class HomeFragment : Fragment() {
 
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
-        loadInstersticialAd()
 
         val parentLayout: ConstraintLayout = root.findViewById(R.id.parentLayout)
         parentLayout.setOnClickListener { hideKeyboard(activity as MainActivity) }
@@ -62,7 +60,7 @@ class HomeFragment : Fragment() {
 
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener {
-            val dog = Dog(icon!!, name!!)
+            val dog = Dog(icon = image!!, name = name!!)
 
             if(homeViewModel.checkErrors(
                     dog,
@@ -71,21 +69,18 @@ class HomeFragment : Fragment() {
                 )) {
                 homeViewModel.navigateToResult(dog)
             }
-            showInstersticialAd()
         }
 
         val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
         val breedText: TextView = root.findViewById(R.id.textBreed)
-        if(icon != "" && name != "") {
+        if(image != "" && name != "") {
             breedText.text = name
-            glideLoadBase64((activity as MainActivity), icon, imageBreed)
+            glideLoadURL((activity as MainActivity), image, imageBreed)
             imageBreed.visibility = View.VISIBLE
         } else {
             breedText.text = getString(R.string.select_breed)
             imageBreed.visibility = View.GONE
         }
-
-        loadAd(root.findViewById(R.id.adView))
 
         return root
     }
@@ -98,6 +93,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
+        homeViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
 
     private fun navigate(navigation: HomeViewModel.Navigation?) {
@@ -143,12 +139,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadAd(mAdView: AdView) {
-        MobileAds.initialize(activity as MainActivity)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-    }
-
     override fun onStart() {
         super.onStart()
         requireActivity().onBackPressedDispatcher.addCallback(callback)
@@ -159,18 +149,8 @@ class HomeFragment : Fragment() {
         super.onStop()
     }
 
-    private fun loadInstersticialAd() {
-        mInterstitialAd = InterstitialAd(requireContext())
-        mInterstitialAd.adUnitId = getString(R.string.INTERSTICIAL_RESULT)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
-    }
-    private fun showInstersticialAd() {
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
-        } else {
-            log("TAG", "The interstitial wasn't loaded yet.")
-            FirebaseCrashlytics.getInstance().recordException(Throwable("The interstitial wasn't loaded"))
-        }
+    private fun loadAd(model: HomeViewModel.UiModel) {
+        if (model is HomeViewModel.UiModel.ShowAd) (activity as MainActivity).showAd(model.show)
     }
 
     private val callback = object : OnBackPressedCallback(true) {
