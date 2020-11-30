@@ -76,10 +76,26 @@
         android:id="@+id/navigation_settings"
         android:name="com.alvaroquintana.edadperruna.ui.settings.SettingsFragment"
         tools:layout="@layout/settings_fragment" >
-    <action
-        android:id="@+id/action_navigation_result_to_home"
-        app:destination="@id/navigation_home"
-        app:enterAnim="@android:anim/fade_in"
-        app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_settings_to_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_settings_to_more_apps"
+            app:destination="@id/navigation_more_apps"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_more_apps"
+        android:name="com.alvaroquintana.edadperruna.ui.moreApps.MoreAppsFragment"
+        tools:layout="@layout/more_apps_fragment" >
+        <action
+            android:id="@+id/action_navigation_more_apps_to_settings"
+            app:destination="@id/navigation_settings"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
     </fragment>
 </navigation>

@@ -2,8 +2,8 @@ package com.alvaroquintana.edadperruna.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetPaymentDone
 

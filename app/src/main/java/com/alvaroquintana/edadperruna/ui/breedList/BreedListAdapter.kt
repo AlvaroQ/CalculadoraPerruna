@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.common.inflate
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
-import com.alvaroquintana.domain.Dog
 
 class BreedListAdapter(private var context: Context,
                        var breedList: MutableList<Dog>,

@@ -6,17 +6,17 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.edadperruna.utils.screenOrientationPortrait
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
 import com.alvaroquintana.edadperruna.utils.log
+import com.alvaroquintana.edadperruna.utils.screenOrientationPortrait
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseActivity(var uiContext: CoroutineContext = Dispatchers.Main) :
     AppCompatActivity(),

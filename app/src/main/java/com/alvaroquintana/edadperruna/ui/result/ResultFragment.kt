@@ -9,24 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.ResultFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
-import androidx.lifecycle.Observer
-import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
-import com.alvaroquintana.edadperruna.utils.log
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import org.koin.android.scope.lifecycleScope
+import org.koin.android.viewmodel.scope.viewModel
 
 
 class ResultFragment : Fragment() {
@@ -106,7 +99,7 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).setupToolbar(getString(R.string.completed), true) { resultViewModel.navigateHome() }
+        (activity as MainActivity).setupToolbar(getString(R.string.completed), hasSettings = false, hasBackButton = true)
         (activity as MainActivity).setupBackground(MainActivity.Screen.RESULT)
 
         resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
@@ -147,22 +140,6 @@ class ResultFragment : Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
         } catch (notFoundException: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
-    }
-
-    override fun onStop() {
-        callback.remove()
-        super.onStop()
-    }
-
-    private val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            resultViewModel.navigateHome()
         }
     }
     private fun loadAd(model: ResultViewModel.UiModel) {

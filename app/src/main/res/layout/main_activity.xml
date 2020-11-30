@@ -67,6 +67,7 @@
                 android:paddingBottom="10dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:visibility="gone"
                 android:contentDescription="@string/settings"/>
 
         </androidx.appcompat.widget.Toolbar>

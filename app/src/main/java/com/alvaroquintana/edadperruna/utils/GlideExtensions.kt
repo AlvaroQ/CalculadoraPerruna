@@ -3,7 +3,6 @@ package com.alvaroquintana.edadperruna.utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Base64
-import android.util.Log
 import android.widget.ImageView
 import com.alvaroquintana.edadperruna.R
 import com.bumptech.glide.Glide

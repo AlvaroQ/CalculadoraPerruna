@@ -2,14 +2,11 @@ package com.alvaroquintana.edadperruna.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.domain.Dog
@@ -17,18 +14,8 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
-import com.alvaroquintana.edadperruna.ui.settings.SettingsViewModel
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.glideLoadURL
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
-import com.alvaroquintana.edadperruna.utils.log
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.delay
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -88,7 +75,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).setupToolbar(getString(R.string.app_name), false)
+        (activity as MainActivity).setupToolbar(getString(R.string.app_name),hasSettings = true, hasBackButton = false)
         (activity as MainActivity).setupBackground(MainActivity.Screen.MAIN)
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
@@ -139,23 +126,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
-    }
-
-    override fun onStop() {
-        callback.remove()
-        super.onStop()
-    }
-
     private fun loadAd(model: HomeViewModel.UiModel) {
         if (model is HomeViewModel.UiModel.ShowAd) (activity as MainActivity).showAd(model.show)
-    }
-
-    private val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            (activity as MainActivity).finish()
-        }
     }
 }

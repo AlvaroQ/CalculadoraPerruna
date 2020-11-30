@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
+import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.BreedListFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
-import com.alvaroquintana.domain.Dog
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -37,7 +35,7 @@ class BreedListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).setupToolbar(getString(R.string.choose_breed), true) { breedListViewModel.onBackPressed() }
+        (activity as MainActivity).setupToolbar(getString(R.string.choose_breed), hasSettings = false, hasBackButton = true)
         (activity as MainActivity).setupBackground(MainActivity.Screen.BREED_LIST)
 
         breedListViewModel.init()
@@ -86,22 +84,6 @@ class BreedListFragment : Fragment() {
         if (model is BreedListViewModel.UiModel.ShowAd && model.show) {
             (activity as MainActivity).showRewardAd()
             (activity as MainActivity).showAd(model.show)
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
-    }
-
-    override fun onStop() {
-        callback.remove()
-        super.onStop()
-    }
-
-    private val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            breedListViewModel.onBackPressed()
         }
     }
 }

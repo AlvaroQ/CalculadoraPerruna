@@ -3,8 +3,8 @@ package com.alvaroquintana.edadperruna.ui.breedList
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.domain.Dog
+import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetBreedList
 import com.alvaroquintana.usecases.GetPaymentDone

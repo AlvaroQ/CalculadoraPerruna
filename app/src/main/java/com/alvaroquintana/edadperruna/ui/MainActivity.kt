@@ -9,8 +9,6 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.alvaroquintana.edadperruna.common.viewBinding
 import com.alvaroquintana.edadperruna.databinding.MainActivityBinding
-import com.alvaroquintana.edadperruna.ui.home.HomeFragmentDirections
-import com.alvaroquintana.edadperruna.ui.settings.SettingsFragment
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -40,19 +38,25 @@ class MainActivity : BaseActivity() {
         navController = findNavController(R.id.nav_host_fragment)
     }
 
-    fun setupToolbar(title: String, hasBackButton: Boolean, myBackFunction: () -> Unit = {}) {
+    fun setupToolbar(title: String, hasSettings: Boolean, hasBackButton: Boolean = false) {
         binding.toolbarTitle.text = title
         if(hasBackButton) {
             binding.backButton.visibility = View.VISIBLE
-            binding.backButton.setOnClickListener { myBackFunction() }
+            binding.backButton.setOnClickListener { onBackPressed() }
         } else {
             binding.backButton.visibility = View.INVISIBLE
         }
 
-        val imagenSettings: ImageView = binding.imagenSettings
-        imagenSettings.setOnClickListener {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_home_to_settings)
+        if(hasSettings) {
+            binding.imagenSettings.visibility = View.VISIBLE
+            val imagenSettings: ImageView = binding.imagenSettings
+            imagenSettings.setOnClickListener {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_home_to_settings)
+            }
+        } else {
+            binding.imagenSettings.visibility = View.GONE
         }
+
     }
 
     fun setupBackground(screen: Screen) {
@@ -119,9 +123,23 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        val count = supportFragmentManager.backStackEntryCount
-        if (count == 0) super.onBackPressed()
-        else supportFragmentManager.popBackStack()
+        when(navController.currentDestination?.id) {
+            R.id.navigation_more_apps -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_more_apps_to_settings)
+            }
+            R.id.navigation_settings -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_settings_to_home)
+            }
+            R.id.navigation_breed_list -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_breed_list_to_home)
+            }
+            R.id.navigation_result -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_result_to_home)
+            }
+            else -> {
+                super.onBackPressed()
+            }
+        }
     }
 
     enum class Screen {

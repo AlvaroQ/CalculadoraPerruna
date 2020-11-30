@@ -2,26 +2,28 @@ package com.alvaroquintana.edadperruna.application
 
 import android.app.Application
 import com.alvaroquintana.data.repository.AppsRecommendedRepository
-import com.alvaroquintana.edadperruna.data.server.DataBaseBaseSourceImpl
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
-import com.alvaroquintana.edadperruna.ui.MainActivity
-import com.alvaroquintana.edadperruna.ui.MainViewModel
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragment
-import com.alvaroquintana.edadperruna.ui.home.HomeFragment
-import com.alvaroquintana.edadperruna.ui.home.HomeViewModel
-import com.alvaroquintana.edadperruna.ui.result.ResultFragment
-import com.alvaroquintana.edadperruna.ui.result.ResultViewModel
-import com.alvaroquintana.edadperruna.utils.GetResources
-import com.alvaroquintana.data.source.DataBaseSource
 import com.alvaroquintana.data.repository.BreedListRepository
 import com.alvaroquintana.data.repository.SharedPreferencesRepository
+import com.alvaroquintana.data.source.DataBaseSource
 import com.alvaroquintana.data.source.LocalDataSource
 import com.alvaroquintana.data.source.SharedPreferencesLocalDataSource
 import com.alvaroquintana.edadperruna.data.database.DogDatabase
 import com.alvaroquintana.edadperruna.data.database.RoomDataSource
+import com.alvaroquintana.edadperruna.data.server.DataBaseBaseSourceImpl
 import com.alvaroquintana.edadperruna.managers.SharedPrefsDataSource
+import com.alvaroquintana.edadperruna.ui.MainActivity
+import com.alvaroquintana.edadperruna.ui.MainViewModel
+import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragment
+import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
+import com.alvaroquintana.edadperruna.ui.home.HomeFragment
+import com.alvaroquintana.edadperruna.ui.home.HomeViewModel
+import com.alvaroquintana.edadperruna.ui.moreApps.MoreAppsFragment
+import com.alvaroquintana.edadperruna.ui.moreApps.MoreAppsViewModel
+import com.alvaroquintana.edadperruna.ui.result.ResultFragment
+import com.alvaroquintana.edadperruna.ui.result.ResultViewModel
 import com.alvaroquintana.edadperruna.ui.settings.SettingsFragment
 import com.alvaroquintana.edadperruna.ui.settings.SettingsViewModel
+import com.alvaroquintana.edadperruna.utils.GetResources
 import com.alvaroquintana.usecases.GetAppsRecommended
 import com.alvaroquintana.usecases.GetBreedList
 import com.alvaroquintana.usecases.GetPaymentDone
@@ -89,6 +91,12 @@ private val scopesModule = module {
         viewModel { SettingsViewModel(get(), get()) }
         scoped { GetPaymentDone(get()) }
         scoped { SetPaymentDone(get()) }
+    }
+
+    scope(named<MoreAppsFragment>()) {
+        viewModel { MoreAppsViewModel(get(), get()) }
+        scoped { GetPaymentDone(get()) }
+        scoped { GetAppsRecommended(get()) }
     }
 
 }
