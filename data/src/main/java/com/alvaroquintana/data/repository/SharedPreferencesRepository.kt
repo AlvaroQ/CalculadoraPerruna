@@ -10,10 +10,4 @@ class SharedPreferencesRepository(private val sharedPreferencesLocalDataSource: 
         set(value) {
             sharedPreferencesLocalDataSource.paymentDone = value
         }
-
-    var nightTheme: Boolean
-        get() = sharedPreferencesLocalDataSource.isNightTheme
-        set(value) {
-            sharedPreferencesLocalDataSource.isNightTheme = value
-        }
 }

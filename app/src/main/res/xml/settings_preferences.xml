@@ -7,6 +7,7 @@
             app:summaryOff="@string/day_mode"
             app:defaultValue="true"
             app:iconSpaceReserved="false"
+            app:isPreferenceVisible="false"
             app:icon="@drawable/ic_moon"/>
         <Preference
             app:key="delete_ads"

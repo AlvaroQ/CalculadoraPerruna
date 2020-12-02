@@ -11,12 +11,3 @@ class SetPaymentDone(private val sharedPreferencesRepository: SharedPreferencesR
 class GetPaymentDone(private val sharedPreferencesRepository: SharedPreferencesRepository) {
     operator fun invoke() = sharedPreferencesRepository.paymentDone
 }
-
-class SetNightTheme(private val sharedPreferencesRepository: SharedPreferencesRepository) {
-    operator fun invoke(value: Boolean)  {
-        sharedPreferencesRepository.nightTheme = value
-    }
-}
-class GetNightTheme(private val sharedPreferencesRepository: SharedPreferencesRepository) {
-    operator fun invoke() = sharedPreferencesRepository.nightTheme
-}

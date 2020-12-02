@@ -2,12 +2,10 @@ package com.alvaroquintana.edadperruna.ui.settings
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.managers.Analytics
@@ -73,13 +71,6 @@ class SettingsFragment : PreferenceFragmentCompat(), PurchasesUpdatedListener {
             settingsViewModel.updateBreeds()
             false
         }
-
-        //TODO(): night_mode bug for first open and day_mode
-        val nightMode: Preference? = findPreference("night_mode")
-        nightMode?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            setNightMode(newValue as Boolean)
-            true
-        }
     }
 
 
@@ -89,12 +80,6 @@ class SettingsFragment : PreferenceFragmentCompat(), PurchasesUpdatedListener {
         (activity as MainActivity).setupBackground(MainActivity.Screen.SETTINGS)
         settingsViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
         settingsViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
-    }
-
-    private fun setNightMode(newValue: Boolean) {
-        settingsViewModel.setIsNightTheme(newValue)
-        (activity as MainActivity).mainViewModel.setModeNight()
-        (activity as MainActivity).recreate()
     }
 
     private fun loadAd(model: SettingsViewModel.UiModel) {

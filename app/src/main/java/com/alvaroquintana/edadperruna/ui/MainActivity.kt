@@ -30,7 +30,6 @@ class MainActivity : BaseActivity() {
     lateinit var activity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mainViewModel.setModeNight()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         activity = this

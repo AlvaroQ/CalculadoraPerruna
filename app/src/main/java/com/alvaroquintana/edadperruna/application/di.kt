@@ -68,8 +68,7 @@ val dataModule = module {
 
 private val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get()) }
-        scoped { GetNightTheme(get()) }
+        viewModel { MainViewModel() }
     }
 
     scope(named<HomeFragment>()) {
@@ -96,12 +95,10 @@ private val scopesModule = module {
     }
 
     scope(named<SettingsFragment>()) {
-        viewModel { SettingsViewModel(get(), get(), get(), get(), get()) }
+        viewModel { SettingsViewModel(get(), get(), get()) }
         scoped { GetPaymentDone(get()) }
         scoped { SetPaymentDone(get()) }
         scoped { UpdateBreedDescription(get()) }
-        scoped { SetNightTheme(get()) }
-        scoped { GetNightTheme(get()) }
     }
 
     scope(named<MoreAppsFragment>()) {

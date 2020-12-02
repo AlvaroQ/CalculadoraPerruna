@@ -9,8 +9,6 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
                         private val getPaymentDone: GetPaymentDone,
-                        private val setNightTheme: SetNightTheme,
-                        private val getNightTheme: GetNightTheme,
                         private val updateBreedDescription: UpdateBreedDescription) : ScopedViewModel() {
 
     private val _showingAds = MutableLiveData<UiModel>()
@@ -40,10 +38,6 @@ class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
         launch {
             updateBreedDescription.invoke()
         }
-    }
-
-    fun setIsNightTheme(isNight: Boolean) {
-        setNightTheme(isNight)
     }
 
     sealed class UiModel {
