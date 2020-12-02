@@ -23,14 +23,14 @@ import org.koin.android.viewmodel.scope.viewModel
 class MainActivity : BaseActivity() {
     private val binding by viewBinding(MainActivityBinding::inflate)
     private lateinit var navController : NavController
-    private val mainViewModel: MainViewModel by lifecycleScope.viewModel(this)
+    val mainViewModel: MainViewModel by lifecycleScope.viewModel(this)
 
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var rewardedAd: RewardedAd
     lateinit var activity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mainViewModel.setModeNight(this)
+        mainViewModel.setModeNight()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         activity = this
@@ -140,7 +140,7 @@ class MainActivity : BaseActivity() {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_breed_description_to_breed_list)
             }
             else -> {
-                super.onBackPressed()
+                finish()
             }
         }
     }

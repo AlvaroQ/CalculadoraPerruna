@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@drawable/splash</item>
+        <item name="preferenceTheme">@style/PreferenceScreen</item>
     </style>
 
     <style name="animationFade" parent="@android:style/Animation.Activity">
@@ -70,5 +71,9 @@
     <style name="ImagePreviewerTheme" >
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowAnimationStyle">@style/animationFade</item>
+    </style>
+
+    <style name="PreferenceScreen" parent="AppTheme">
+        <item name="android:textColor">@color/textColor</item>
     </style>
 </resources>

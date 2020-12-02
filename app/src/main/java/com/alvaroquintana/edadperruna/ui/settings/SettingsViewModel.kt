@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.GetPaymentDone
-import com.alvaroquintana.usecases.SetPaymentDone
-import com.alvaroquintana.usecases.UpdateBreedDescription
+import com.alvaroquintana.usecases.*
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
                         private val getPaymentDone: GetPaymentDone,
+                        private val setNightTheme: SetNightTheme,
+                        private val getNightTheme: GetNightTheme,
                         private val updateBreedDescription: UpdateBreedDescription) : ScopedViewModel() {
 
     private val _showingAds = MutableLiveData<UiModel>()
@@ -40,6 +40,10 @@ class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
         launch {
             updateBreedDescription.invoke()
         }
+    }
+
+    fun setIsNightTheme(isNight: Boolean) {
+        setNightTheme(isNight)
     }
 
     sealed class UiModel {

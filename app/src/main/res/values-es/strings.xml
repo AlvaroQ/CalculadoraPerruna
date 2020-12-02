@@ -58,9 +58,9 @@
     <string name="more_apps">Más aplicaciones</string>
     <string name="settings_share">Compartir con mis amigos</string>
     <string name="settings_share_summary">Comparte con tus amigos esta aplicación para jugar con ellos</string>
-    <string name="settings_dark_mode">Sounds</string>
-    <string name="night_mode">Night mode</string>
-    <string name="day_mode">Day mode</string>
+    <string name="settings_dark_mode">Cambiar modo</string>
+    <string name="night_mode">Modo noche</string>
+    <string name="day_mode">Modo día</string>
 
     <string name="share">Me ha gustado esta aplicación</string>
     <string name="share_summary">Descarga esta aplicación y aprende del mundo canino</string>

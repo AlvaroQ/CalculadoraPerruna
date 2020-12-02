@@ -59,7 +59,7 @@
     <string name="settings_share">Share with your friends</string>
     <string name="settings_share_summary">Share with your friend this application to play with them</string>
     <string name="more_apps">More applications</string>
-    <string name="settings_dark_mode">Sounds</string>
+    <string name="settings_dark_mode">Mode</string>
     <string name="night_mode">Night mode</string>
     <string name="day_mode">Day mode</string>
     <string name="update_breeds" translatable="false">Actualizar razas perrunas</string>
