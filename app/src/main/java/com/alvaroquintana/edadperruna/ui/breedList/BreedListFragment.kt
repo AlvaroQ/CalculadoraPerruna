@@ -62,11 +62,11 @@ class BreedListFragment : Fragment() {
     private fun navigate(navigation: BreedListViewModel.Navigation?) {
         (activity as MainActivity).apply {
             when (navigation) {
-                is BreedListViewModel.Navigation.Home -> {
-                    val action = BreedListFragmentDirections.actionNavigationBreedListToHome(
+                is BreedListViewModel.Navigation.BreedDescription -> {
+                    val action = BreedListFragmentDirections.actionNavigationBreedListToBreedDescription(
                         navigation.breed.icon!!,
-                        navigation.breed.name!!
-                    )
+                        navigation.breed.name!!,
+                        navigation.idBreed.toString())
                     findNavController().navigate(action)
                 }
                 is BreedListViewModel.Navigation.Expand -> {

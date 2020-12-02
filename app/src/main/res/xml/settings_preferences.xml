@@ -37,4 +37,10 @@
             app:title="@string/settings_version"
             app:iconSpaceReserved="true"
             app:icon="@drawable/ic_version"/>
+        <Preference
+            app:key="update_breeds"
+            app:title="@string/update_breeds"
+            app:iconSpaceReserved="true"
+            app:isPreferenceVisible="false"
+            app:icon="@drawable/ic_update"/>
 </PreferenceScreen>

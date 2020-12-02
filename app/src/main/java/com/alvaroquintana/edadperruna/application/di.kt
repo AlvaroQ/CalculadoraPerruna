@@ -2,17 +2,20 @@ package com.alvaroquintana.edadperruna.application
 
 import android.app.Application
 import com.alvaroquintana.data.repository.AppsRecommendedRepository
-import com.alvaroquintana.data.repository.BreedListRepository
+import com.alvaroquintana.data.repository.BreedRepository
 import com.alvaroquintana.data.repository.SharedPreferencesRepository
 import com.alvaroquintana.data.source.DataBaseSource
 import com.alvaroquintana.data.source.LocalDataSource
 import com.alvaroquintana.data.source.SharedPreferencesLocalDataSource
 import com.alvaroquintana.edadperruna.data.database.DogDatabase
 import com.alvaroquintana.edadperruna.data.database.RoomDataSource
+import com.alvaroquintana.edadperruna.data.localfiles.FileLocalDb
 import com.alvaroquintana.edadperruna.data.server.DataBaseBaseSourceImpl
 import com.alvaroquintana.edadperruna.managers.SharedPrefsDataSource
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.MainViewModel
+import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionFragment
+import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionViewModel
 import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragment
 import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
 import com.alvaroquintana.edadperruna.ui.home.HomeFragment
@@ -24,10 +27,7 @@ import com.alvaroquintana.edadperruna.ui.result.ResultViewModel
 import com.alvaroquintana.edadperruna.ui.settings.SettingsFragment
 import com.alvaroquintana.edadperruna.ui.settings.SettingsViewModel
 import com.alvaroquintana.edadperruna.utils.GetResources
-import com.alvaroquintana.usecases.GetAppsRecommended
-import com.alvaroquintana.usecases.GetBreedList
-import com.alvaroquintana.usecases.GetPaymentDone
-import com.alvaroquintana.usecases.SetPaymentDone
+import com.alvaroquintana.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -51,7 +51,8 @@ fun Application.initDI() {
 }
 
 private val appModule = module {
-    factory<DataBaseSource> { DataBaseBaseSourceImpl() }
+    factory<DataBaseSource> { DataBaseBaseSourceImpl(get()) }
+    single {FileLocalDb(get())}
     single {GetResources(get())}
     single<CoroutineDispatcher> { Dispatchers.Main }
     single { DogDatabase.build(get()) }
@@ -60,7 +61,7 @@ private val appModule = module {
 }
 
 val dataModule = module {
-    factory { BreedListRepository(get(), get()) }
+    factory { BreedRepository(get(), get()) }
     factory { AppsRecommendedRepository(get()) }
     factory { SharedPreferencesRepository(get()) }
 }
@@ -81,6 +82,12 @@ private val scopesModule = module {
         scoped { GetBreedList(get()) }
     }
 
+    scope(named<BreedDescriptionFragment>()) {
+        viewModel { BreedDescriptionViewModel(get(), get()) }
+        scoped { GetPaymentDone(get()) }
+        scoped { GetBreedsDescription(get()) }
+    }
+
     scope(named<ResultFragment>()) {
         viewModel { ResultViewModel(get(), get()) }
         scoped { GetAppsRecommended(get()) }
@@ -88,9 +95,10 @@ private val scopesModule = module {
     }
 
     scope(named<SettingsFragment>()) {
-        viewModel { SettingsViewModel(get(), get()) }
+        viewModel { SettingsViewModel(get(), get(), get()) }
         scoped { GetPaymentDone(get()) }
         scoped { SetPaymentDone(get()) }
+        scoped { UpdateBreedDescription(get()) }
     }
 
     scope(named<MoreAppsFragment>()) {

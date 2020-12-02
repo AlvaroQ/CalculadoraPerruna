@@ -62,6 +62,7 @@
     <string name="settings_dark_mode">Sounds</string>
     <string name="night_mode">Night mode</string>
     <string name="day_mode">Day mode</string>
+    <string name="update_breeds" translatable="false">Actualizar razas perrunas</string>
 
     <string name="share">I like this app</string>
     <string name="share_summary">Download this app and learn about dogs</string>

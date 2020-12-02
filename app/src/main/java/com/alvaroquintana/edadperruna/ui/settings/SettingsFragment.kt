@@ -71,6 +71,14 @@ class SettingsFragment : PreferenceFragmentCompat(), PurchasesUpdatedListener {
             Toast.makeText(requireContext(), "pulsado, enable = " + nightMode?.isEnabled, Toast.LENGTH_SHORT).show()
             false
         }
+
+        // update_breeds
+        val updateBreeds: Preference? = findPreference("update_breeds")
+        if(BuildConfig.uploadBreedsFromJSON) updateBreeds?.isVisible = true
+        updateBreeds?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            settingsViewModel.updateBreeds()
+            false
+        }
     }
 
 

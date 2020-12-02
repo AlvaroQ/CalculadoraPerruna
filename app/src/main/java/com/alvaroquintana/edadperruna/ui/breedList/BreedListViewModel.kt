@@ -39,12 +39,8 @@ class BreedListViewModel(private val getBreedList: GetBreedList,
         return getBreedList.invoke()
     }
 
-    fun onBackPressed() {
-        _navigation.value = Navigation.Home(Dog(icon = "",name = ""))
-    }
-
-    fun onDogClicked(dog: Dog) {
-        _navigation.value = Navigation.Home(dog)
+    fun onDogClicked(idBreed: Int, dog: Dog) {
+        _navigation.value = Navigation.BreedDescription(idBreed, dog)
     }
 
     fun onDogLongClicked(imageView: ImageView, icon: String) {
@@ -52,7 +48,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList,
     }
 
     sealed class Navigation {
-        data class Home(val breed : Dog): Navigation()
+        data class BreedDescription(val idBreed: Int, val breed : Dog): Navigation()
         data class Expand(val imageView: ImageView, val icon: String): Navigation()
     }
 

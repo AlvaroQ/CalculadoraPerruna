@@ -55,6 +55,8 @@ android {
             resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoTestId()
             resValue 'string', 'BANNER_PREFERENCES', getAdmobBannerTestId()
             resValue 'string', 'BANNER_DESCRIPTION', getAdmobBannerTestId()
+
+            buildConfigField 'Boolean', 'uploadBreedsFromJSON', 'true'
         }
         release {
             minifyEnabled true
@@ -71,6 +73,8 @@ android {
             resValue 'string', 'BONIFICADO_LIST', getAdmobBonificadoListId()
             resValue 'string', 'BANNER_PREFERENCES', getAdmobPreferencesTestId()
             resValue 'string', 'BANNER_DESCRIPTION', getAdmobDescriptionTestId()
+
+            buildConfigField 'Boolean', 'uploadBreedsFromJSON', 'false'
         }
     }
     compileOptions {

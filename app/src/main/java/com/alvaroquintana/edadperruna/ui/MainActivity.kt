@@ -62,22 +62,22 @@ class MainActivity : BaseActivity() {
     fun setupBackground(screen: Screen) {
         when(screen) {
             Screen.MAIN -> {
-                binding.imageBackground.visibility = View.VISIBLE
-                binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
+                //binding.imageBackground.visibility = View.VISIBLE
+                // binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
             }
             Screen.BREED_LIST -> {
-                binding.imageBackground.visibility = View.GONE
+                // binding.imageBackground.visibility = View.GONE
             }
             Screen.RESULT -> {
-                binding.imageBackground.visibility = View.VISIBLE
-                binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_result))
+                // binding.imageBackground.visibility = View.VISIBLE
+                // binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_result))
                 showAd(false)
             }
             Screen.SETTINGS -> {
-                binding.imageBackground.visibility = View.GONE
+                // binding.imageBackground.visibility = View.GONE
             }
             Screen.DESCRIPTION -> {
-                binding.imageBackground.visibility = View.GONE
+               // binding.imageBackground.visibility = View.GONE
             }
         }
     }
@@ -135,6 +135,9 @@ class MainActivity : BaseActivity() {
             }
             R.id.navigation_result -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_result_to_home)
+            }
+            R.id.navigation_breed_description -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_breed_description_to_breed_list)
             }
             else -> {
                 super.onBackPressed()

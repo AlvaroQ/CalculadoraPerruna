@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private val image by lazy { arguments?.let { fromBundle(it).icon } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
+    private val life by lazy { arguments?.let { fromBundle(it).life } }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +98,8 @@ class HomeFragment : Fragment() {
                         editTextYear.text.toString().toInt(),
                         editTextMonth.text.toString().toInt(),
                         navigation.breed.icon!!,
-                        navigation.breed.name!!
+                        navigation.breed.name!!,
+                        navigation.breed.life!!
                     )
                     findNavController().navigate(action)
                 }

@@ -6,10 +6,12 @@ import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetPaymentDone
 import com.alvaroquintana.usecases.SetPaymentDone
+import com.alvaroquintana.usecases.UpdateBreedDescription
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
-                        private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
+                        private val getPaymentDone: GetPaymentDone,
+                        private val updateBreedDescription: UpdateBreedDescription) : ScopedViewModel() {
 
     private val _showingAds = MutableLiveData<UiModel>()
     val showingAds: LiveData<UiModel> = _showingAds
@@ -34,8 +36,10 @@ class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
         _navigation.value = Navigation.MoreApps
     }
 
-    fun onBackPressed() {
-        _navigation.value = Navigation.Home
+    fun updateBreeds() {
+        launch {
+            updateBreedDescription.invoke()
+        }
     }
 
     sealed class UiModel {

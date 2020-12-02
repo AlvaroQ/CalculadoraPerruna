@@ -15,7 +15,7 @@ import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 
 class BreedListAdapter(private var context: Context,
                        var breedList: MutableList<Dog>,
-                       private val clickListener: (Dog) -> Unit,
+                       private val clickListener: (Int, Dog) -> Unit,
                        private val longClickListener: (ImageView, String) -> Unit,
 ) : RecyclerView.Adapter<BreedListAdapter.BreedListViewHolder>() {
 
@@ -28,7 +28,7 @@ class BreedListAdapter(private var context: Context,
         val breed = breedList[position]
         holder.dogName.text = breed.name
         glideLoadBase64(context,  breed.icon, holder.dogImage)
-        holder.itemContainer.setOnClickListener { clickListener(breed) }
+        holder.itemContainer.setOnClickListener { clickListener(position, breed) }
         holder.itemContainer.setOnLongClickListener {
             longClickListener(holder.dogImage, breed.icon!!)
             true

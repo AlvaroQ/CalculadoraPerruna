@@ -16,7 +16,6 @@ class HomeViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewMode
     val navigation: LiveData<Navigation> = _navigation
 
     private val mError = MutableLiveData<Error>()
-
     val error: LiveData<Error> = mError
 
     init {

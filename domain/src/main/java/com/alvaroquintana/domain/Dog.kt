@@ -2,8 +2,9 @@ package com.alvaroquintana.domain
 
 data class Dog(
     var name: String? = "",
-    var icon: String? = ""
-/*
+    var icon: String? = "",
+    var life: String? = "",
+
     var breedId: String? = "",
     var image: String? = "",
     var otherNames: MutableList<String>? = mutableListOf(),
@@ -14,5 +15,5 @@ data class Dog(
     var commonDiseases: MutableList<String>? = mutableListOf(),
     var hygiene: String? = "",
     var lossHair: String? = "",
-    var nutrition: String? = ""*/
+    var nutrition: String? = ""
 )

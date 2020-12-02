@@ -32,6 +32,10 @@
             android:name="name"
             app:argType="string"
             android:defaultValue="" />
+        <argument
+            android:name="life"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
     <fragment
@@ -43,6 +47,52 @@
             app:destination="@id/navigation_home"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_breed_list_to_breed_description"
+            app:destination="@id/navigation_breed_description"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+
+        <argument
+            android:name="icon"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="idBreed"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_breed_description"
+        android:name="com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionFragment"
+        tools:layout="@layout/breed_description_fragment" >
+        <action
+            android:id="@+id/action_navigation_breed_description_to_home"
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+        <action
+            android:id="@+id/action_navigation_breed_description_to_breed_list"
+            app:destination="@id/navigation_breed_list"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"  />
+        <argument
+            android:name="icon"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="idBreed"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
     <fragment
@@ -68,6 +118,10 @@
             android:defaultValue="" />
         <argument
             android:name="name"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="life"
             app:argType="string"
             android:defaultValue="" />
     </fragment>

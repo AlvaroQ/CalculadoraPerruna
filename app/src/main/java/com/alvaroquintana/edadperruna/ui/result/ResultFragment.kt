@@ -1,8 +1,5 @@
 package com.alvaroquintana.edadperruna.ui.result
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +15,7 @@ import com.alvaroquintana.edadperruna.databinding.ResultFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.openAppOnPlayStore
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -30,9 +28,10 @@ class ResultFragment : Fragment() {
     private val dogMonths by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).months } }
     private val icon by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).icon } }
     private val name by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).name } }
+    private val life by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).life } }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         binding = ResultFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
@@ -125,7 +124,7 @@ class ResultFragment : Fragment() {
                     findNavController().navigate(action)
                 }
                 is ResultViewModel.Navigation.Open -> {
-                    openAppOnPlayStore(navigation.url)
+                    openAppOnPlayStore(requireContext(), navigation.url)
                 }
             }
         }
@@ -135,16 +134,8 @@ class ResultFragment : Fragment() {
         binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
-    private fun openAppOnPlayStore(appPackageName: String) {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
-        } catch (notFoundException: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
-        }
-    }
     private fun loadAd(model: ResultViewModel.UiModel) {
         if (model is ResultViewModel.UiModel.ShowAd && model.show)
             (activity as MainActivity).showInstersticialAd()
     }
-
 }
