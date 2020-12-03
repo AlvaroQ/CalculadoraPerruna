@@ -89,8 +89,7 @@ private val scopesModule = module {
     }
 
     scope(named<ResultFragment>()) {
-        viewModel { ResultViewModel(get(), get()) }
-        scoped { GetAppsRecommended(get()) }
+        viewModel { ResultViewModel(get()) }
         scoped { GetPaymentDone(get()) }
     }
 

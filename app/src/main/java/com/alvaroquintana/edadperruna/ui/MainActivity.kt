@@ -70,7 +70,6 @@ class MainActivity : BaseActivity() {
             Screen.RESULT -> {
                 // binding.imageBackground.visibility = View.VISIBLE
                 // binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_result))
-                showAd(false)
             }
             Screen.SETTINGS -> {
                 // binding.imageBackground.visibility = View.GONE

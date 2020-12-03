@@ -13,6 +13,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.BreedListFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
+import com.alvaroquintana.edadperruna.utils.expandImage
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
@@ -70,14 +71,10 @@ class BreedListFragment : Fragment() {
                     findNavController().navigate(action)
                 }
                 is BreedListViewModel.Navigation.Expand -> {
-                    expandImage(navigation.imageView, navigation.icon)
+                    expandImage(activity, navigation.imageView, navigation.icon)
                 }
             }
         }
-    }
-
-    private fun expandImage(imageView: ImageView, icon: String) {
-        ImagePreviewer().show(activity as MainActivity, imageView, icon)
     }
 
     private fun loadAd(model: BreedListViewModel.UiModel) {

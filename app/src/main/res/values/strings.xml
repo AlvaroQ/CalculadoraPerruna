@@ -22,6 +22,14 @@
     <string name="ilegal_month">Incorrect months</string>
     <string name="other_apps">Other apps</string>
 
+    <string name="size">Size</string>
+    <string name="life_expectative">Expectative life</string>
+    <string name="life_expectative_text">%s years</string>
+    <string name="fci_group">Group\n%d</string>
+    <string name="fci_section">Section\n%d</string>
+    <string name="other_names">Other names</string>
+    <string name="common_diseases">Common diseases</string>
+
     <string name="image_stamp">stamp image</string>
     <string name="loading_image">loading image</string>
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,7 +14,9 @@ import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.ResultFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
+import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionViewModel
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
+import com.alvaroquintana.edadperruna.utils.expandImage
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.openAppOnPlayStore
 import org.koin.android.scope.lifecycleScope
@@ -36,9 +39,54 @@ class ResultFragment : Fragment() {
         binding = ResultFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
+        val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
+        glideLoadBase64((activity as MainActivity), icon, imageBreed)
+        imageBreed.setOnClickListener { resultViewModel.onDogLongClicked() }
+
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener { resultViewModel.navigateHome() }
 
+        writeResult(root)
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).setupToolbar(getString(R.string.completed), hasSettings = false, hasBackButton = true)
+        (activity as MainActivity).setupBackground(MainActivity.Screen.RESULT)
+
+        resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
+        resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
+        resultViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
+    }
+
+    private fun navigate(navigation: ResultViewModel.Navigation?) {
+        (activity as MainActivity).apply {
+            when (navigation) {
+                ResultViewModel.Navigation.Home -> {
+                    val action = ResultFragmentDirections.actionNavigationResultToHome("","")
+                    findNavController().navigate(action)
+                }
+                ResultViewModel.Navigation.Expand -> {
+                    expandImage(activity, binding.imageBreed, icon!!)
+                }
+            }
+        }
+    }
+
+    private fun progressVisibility(isVisible: Boolean) {
+        binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+
+    private fun loadAd(model: ResultViewModel.UiModel) {
+        if (model is ResultViewModel.UiModel.ShowAd && model.show) {
+            (activity as MainActivity).showInstersticialAd()
+        }
+    }
+
+    private fun writeResult(root: View) {
         val textTime: TextView = root.findViewById(R.id.textTime)
         when {
             dogYears == 0 -> {
@@ -55,9 +103,6 @@ class ResultFragment : Fragment() {
                 textTime.text = String.format(resources.getString(R.string.time_year_month), y, m)
             }
         }
-
-        val imageBreed: AspectRatioImageView = root.findViewById(R.id.imageBreed)
-        glideLoadBase64((activity as MainActivity), icon, imageBreed)
 
         val textBreed: TextView = root.findViewById(R.id.textBreed)
         textBreed.text = name
@@ -91,51 +136,5 @@ class ResultFragment : Fragment() {
             totalMonths < 84 -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[2] // adulta: 12 meses a 7 años (84 meses)
             else -> textResultCategory.text = resources.getStringArray(R.array.breed_step)[3] // senior: 7 años o mas (+84 meses)
         }
-
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        (activity as MainActivity).setupToolbar(getString(R.string.completed), hasSettings = false, hasBackButton = true)
-        (activity as MainActivity).setupBackground(MainActivity.Screen.RESULT)
-
-        resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
-        resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
-        resultViewModel.list.observe(viewLifecycleOwner, Observer(::fillAppList))
-        resultViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
-    }
-
-    private fun fillAppList(appList: MutableList<App>) {
-        binding.otherAppText.visibility = View.VISIBLE
-        binding.recyclerviewOtherApps.adapter = AppListAdapter(
-            activity as MainActivity,
-            appList,
-            resultViewModel::onAppClicked
-        )
-    }
-
-    private fun navigate(navigation: ResultViewModel.Navigation?) {
-        (activity as MainActivity).apply {
-            when (navigation) {
-                ResultViewModel.Navigation.Home -> {
-                    val action = ResultFragmentDirections.actionNavigationResultToHome("","")
-                    findNavController().navigate(action)
-                }
-                is ResultViewModel.Navigation.Open -> {
-                    openAppOnPlayStore(requireContext(), navigation.url)
-                }
-            }
-        }
-    }
-
-    private fun progressVisibility(isVisible: Boolean) {
-        binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun loadAd(model: ResultViewModel.UiModel) {
-        if (model is ResultViewModel.UiModel.ShowAd && model.show)
-            (activity as MainActivity).showInstersticialAd()
     }
 }

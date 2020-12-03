@@ -14,6 +14,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
+import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.glideLoadURL
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import org.koin.android.scope.lifecycleScope
@@ -63,7 +64,7 @@ class HomeFragment : Fragment() {
         val breedText: TextView = root.findViewById(R.id.textBreed)
         if(image != "" && name != "") {
             breedText.text = name
-            glideLoadURL((activity as MainActivity), image, imageBreed)
+            glideLoadBase64((activity as MainActivity), image, imageBreed)
             imageBreed.visibility = View.VISIBLE
         } else {
             breedText.text = getString(R.string.select_breed)

@@ -1,5 +1,6 @@
 package com.alvaroquintana.edadperruna.ui.breedDescription
 
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import arrow.core.Either
@@ -31,7 +32,6 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
         _progress.value = true
         _showingAds.value = UiModel.ShowAd(!getPaymentDone())
         _progress.value = false
-
     }
 
     fun getDescription(breedId: String) {
@@ -45,8 +45,13 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
         _navigation.value = Navigation.Home(dog)
     }
 
+    fun onDogLongClicked() {
+        _navigation.value = Navigation.Expand
+    }
+
     sealed class Navigation {
         data class Home(val breed : Dog): Navigation()
+        object Expand: Navigation()
     }
 
     sealed class UiModel {

@@ -10,9 +10,12 @@ import android.os.Build
 import android.util.Log
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
+import com.alvaroquintana.edadperruna.ui.MainActivity
+import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 
 
 fun hideKeyboard(activity: Activity) {
@@ -91,4 +94,8 @@ fun openAppOnPlayStore(context: Context, appPackageName: String) {
     } catch (notFoundException: ActivityNotFoundException) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
     }
+}
+
+fun expandImage(activity: Activity, imageView: ImageView, icon: String) {
+    ImagePreviewer().show(activity, imageView, icon)
 }
