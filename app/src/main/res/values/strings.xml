@@ -33,6 +33,12 @@
     <string name="image_stamp">stamp image</string>
     <string name="loading_image">loading image</string>
 
+    <string name="human_years">Human years</string>
+    <string name="juvenil">Juvenile\nPuppy</string>
+    <string name="adult">Adult</string>
+    <string name="senior">Senior</string>
+    <string name="dog_years">Dog years</string>
+    <string name="life_resumen">%s have average life expectancy %s years</string>
     <string name="time_year_month">%1$s y %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>

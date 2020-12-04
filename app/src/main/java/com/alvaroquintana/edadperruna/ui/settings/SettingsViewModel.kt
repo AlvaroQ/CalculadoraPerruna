@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.*
+import com.alvaroquintana.usecases.GetPaymentDone
+import com.alvaroquintana.usecases.SetPaymentDone
+import com.alvaroquintana.usecases.UpdateBreedDescription
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val setPaymentDone: SetPaymentDone,

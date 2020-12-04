@@ -77,7 +77,6 @@ class SettingsFragment : PreferenceFragmentCompat(), PurchasesUpdatedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).setupToolbar(getString(R.string.settings), hasSettings = false, hasBackButton = true)
-        (activity as MainActivity).setupBackground(MainActivity.Screen.SETTINGS)
         settingsViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
         settingsViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
     }

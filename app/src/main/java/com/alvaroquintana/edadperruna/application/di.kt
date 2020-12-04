@@ -12,8 +12,6 @@ import com.alvaroquintana.edadperruna.data.database.RoomDataSource
 import com.alvaroquintana.edadperruna.data.localfiles.FileLocalDb
 import com.alvaroquintana.edadperruna.data.server.DataBaseBaseSourceImpl
 import com.alvaroquintana.edadperruna.managers.SharedPrefsDataSource
-import com.alvaroquintana.edadperruna.ui.MainActivity
-import com.alvaroquintana.edadperruna.ui.MainViewModel
 import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionFragment
 import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionViewModel
 import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragment
@@ -67,9 +65,6 @@ val dataModule = module {
 }
 
 private val scopesModule = module {
-    scope(named<MainActivity>()) {
-        viewModel { MainViewModel() }
-    }
 
     scope(named<HomeFragment>()) {
         viewModel { HomeViewModel(get()) }

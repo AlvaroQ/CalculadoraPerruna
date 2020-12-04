@@ -3,8 +3,10 @@
     <dimen name="height_status_bar_and_action_bar">72dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fragment_main_choose_breed_vertical_margin">24dp</dimen>
-    <dimen name="fragment_main_box_horixontal_margin">60dp</dimen>
+    <dimen name="fragment_main_choose_breed_text_vertical_margin">30dp</dimen>
+    <dimen name="fragment_main_choose_breed_vertical_margin">70dp</dimen>
+    <dimen name="fragment_main_choose_breed_time_vertical_margin">20dp</dimen>
+    <dimen name="fragment_main_box_horixontal_margin">30dp</dimen>
 
 
     <!--Text sizes -->
@@ -13,4 +15,5 @@
     <dimen name="medium">18sp</dimen>
     <dimen name="small">16sp</dimen>
     <dimen name="very_small">14sp</dimen>
+    <dimen name="graphic">9sp</dimen>
 </resources>

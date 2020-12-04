@@ -1,13 +1,10 @@
 package com.alvaroquintana.edadperruna.ui.breedDescription
 
-import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import arrow.core.Either
 import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
 import com.alvaroquintana.usecases.GetBreedsDescription
 import com.alvaroquintana.usecases.GetPaymentDone
 import kotlinx.coroutines.launch
@@ -45,13 +42,8 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
         _navigation.value = Navigation.Home(dog)
     }
 
-    fun onDogLongClicked() {
-        _navigation.value = Navigation.Expand
-    }
-
     sealed class Navigation {
         data class Home(val breed : Dog): Navigation()
-        object Expand: Navigation()
     }
 
     sealed class UiModel {

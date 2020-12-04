@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.result.ResultFragment">
 
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/stamp_iso"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/image_stamp" />
@@ -19,133 +20,269 @@
         android:layout_width="80dp"
         android:layout_height="60dp"
         android:src="@drawable/stamp_certified"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/image_stamp"  />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="parent" >
 
-        <TextView
-            android:id="@+id/textTime"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="10 años y 3 meses"
-            android:gravity="center"
-            android:textAppearance="@style/Regular.TextColor.Medium"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="parent" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardBreedImage"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingTop="70dp"
+            android:paddingBottom="20dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            app:layout_constraintTop_toBottomOf="@+id/textTime"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardElevation="12dp"
-            app:cardCornerRadius="12dp">
+            android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/textTime"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                tools:text="10 años y 3 meses"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:paddingTop="6dp"
+                android:textAppearance="@style/Regular.TextColor.Medium"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageBreed"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardBreedImage"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                app:layout_constraintTop_toBottomOf="@+id/textTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cardElevation="12dp"
+                app:cardCornerRadius="12dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:src="@tools:sample/avatars"
-                    android:contentDescription="@string/dog_image"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textBreed"
+                    <ImageView
+                        android:id="@+id/imageBreed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:src="@tools:sample/avatars"
+                        android:contentDescription="@string/dog_image"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textBreed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Alaskan Malanule"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/activity_horizontal_margin"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:background="@drawable/item_text_gradient"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textEqualTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/equal_to"
+                android:textAppearance="@style/Bold.TextColor.Large"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/cardBreedImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="40 años y 20 meses"
+                android:textAppearance="@style/Regular.TextColor.Medium"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="6dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/textEqualTo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textResultDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/of_people"
+                android:background="@color/white"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textAppearance="@style/Regular.TextColor.Medium"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/textResult"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageInfo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_info"
+                app:layout_constraintEnd_toEndOf="@+id/textResult"
+                app:layout_constraintTop_toTopOf="@+id/textResult" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardGraph"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                app:layout_constraintTop_toBottomOf="@+id/textResultDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cardElevation="12dp"
+                app:cardCornerRadius="12dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Alaskan Malanule"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/activity_horizontal_margin"
-                    android:paddingBottom="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:background="@drawable/item_text_gradient"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/human_years"
+                        android:textAppearance="@style/Regular.TextColorLight.Grapic"
+                        android:paddingTop="6dp"
+                        android:paddingStart="8dp"
+                        android:elevation="1dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="RtlSymmetry" />
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/reportingChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="26dp"
+                        android:background="@color/white"
+                        android:elevation="0dp" />
 
-        <TextView
-            android:id="@+id/textEqualTo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/equal_to"
-            android:textAppearance="@style/Bold.TextColor.Large"
-            android:gravity="center"
-            android:layout_marginTop="50dp"
-            app:layout_constraintTop_toBottomOf="@+id/cardBreedImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:id="@+id/textTitleJuvenil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/juvenil"
+                        android:textAppearance="@style/Regular.TextColorGraph.Grapic"
+                        android:gravity="center"
+                        android:elevation="10dp"
+                        android:layout_marginTop="18dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textTitleAdulto"/>
 
-        <TextView
-            android:id="@+id/textResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="40 años y 20 meses"
-            android:textAppearance="@style/Regular.TextColor.Medium"
-            android:gravity="center"
-            android:layout_marginTop="50dp"
-            app:layout_constraintTop_toBottomOf="@+id/textEqualTo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:id="@+id/textTitleAdulto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/adult"
+                        android:textAppearance="@style/Regular.TextColorGraph.Grapic"
+                        android:gravity="center"
+                        android:elevation="10dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="60dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
-        <TextView
-            android:id="@+id/textResultDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/of_people"
-            android:textAppearance="@style/Regular.TextColor.Medium"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/textResult"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/senior"
+                        android:textAppearance="@style/Regular.TextColorGraph.Grapic"
+                        android:gravity="center"
+                        android:elevation="10dp"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textTitleAdulto"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/textResultCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Su perro se encuentra en la vejez"
-            android:textAppearance="@style/Regular.TextColor.Medium"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@+id/textResultDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-            android:id="@+id/textResultInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save_puppy"
-            android:gravity="center"
-            android:textAppearance="@style/Regular.TextColor.Medium"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@+id/textResultCategory"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dog_years"
+                        android:textAppearance="@style/Regular.TextColorLight.Grapic"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="2dp"
+                        android:elevation="1dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="RtlSymmetry" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardMoreData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/cardGraph"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="24dp"
+                app:cardElevation="12dp"
+                app:cardCornerRadius="12dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/activity_horizontal_margin">
+                    <TextView
+                        android:id="@+id/textResultCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Su perro se encuentra en la vejez"
+                        android:textAppearance="@style/Regular.TextColor.Medium"
+                        android:gravity="center"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/textLifeCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Alaskan malamute tiene una esparanza de vida media de 9 años"
+                        android:textAppearance="@style/Regular.TextColor.Medium"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        app:layout_constraintTop_toBottomOf="@+id/textResultCategory"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:id="@+id/textResultInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save_puppy"
+                        android:gravity="center"
+                        android:textAppearance="@style/Regular.TextColor.Medium"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        app:layout_constraintTop_toBottomOf="@+id/textLifeCategory"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/btnSubmit"
@@ -158,8 +295,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-    <ImageView
 
+    <ImageView
         android:id="@+id/imagenLoading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

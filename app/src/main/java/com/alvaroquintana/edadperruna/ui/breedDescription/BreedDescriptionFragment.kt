@@ -5,22 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.alvaroquintana.edadperruna.databinding.BreedDescriptionFragmentBinding
-import com.alvaroquintana.edadperruna.ui.MainActivity
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragmentArgs
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListViewModel
-import com.alvaroquintana.edadperruna.utils.expandImage
+import com.alvaroquintana.edadperruna.databinding.BreedDescriptionFragmentBinding
+import com.alvaroquintana.edadperruna.ui.MainActivity
+import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragmentArgs
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.edadperruna.utils.glideLoadURL
+import org.koin.android.scope.lifecycleScope
+import org.koin.android.viewmodel.scope.viewModel
 
 class BreedDescriptionFragment : Fragment() {
     private lateinit var binding : BreedDescriptionFragmentBinding
@@ -40,13 +38,8 @@ class BreedDescriptionFragment : Fragment() {
         val textBreed: TextView = root.findViewById(R.id.textBreed)
         textBreed.text = name
 
-        val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
-        imageBreed.setOnClickListener { breedDescriptionViewModel.onDogLongClicked() }
-
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
-        btnSubmit.setOnClickListener {
-            breedDescriptionViewModel.navigateToHome(dog)
-        }
+        btnSubmit.setOnClickListener { breedDescriptionViewModel.navigateToHome(dog) }
 
         return root
     }
@@ -72,21 +65,15 @@ class BreedDescriptionFragment : Fragment() {
             glideLoadBase64(requireContext(), icon, binding.imageBreed)
         }
 
-        binding.layoutImageResume.visibility = View.VISIBLE
+        binding.cardResume.visibility = View.VISIBLE
         binding.imageSizeDescription.text = breedDescription.mainInformation?.sizeBreed
         binding.imageLifeDescription.text = String.format(getString(R.string.life_expectative_text), breedDescription.mainInformation?.lifeExpectancy?.expectancy!!)
-
         binding.textBreedDescription.text = breedDescription.shortDescription
 
         if(breedDescription.fci?.group == 0L) {
-            binding.textfciTitle.visibility = View.GONE
-            binding.layoutGroupFCI.visibility = View.GONE
-            binding.layoutSectionFCI.visibility = View.GONE
+            binding.cardFCI.visibility = View.GONE
         } else {
-            binding.textfciTitle.visibility = View.VISIBLE
-            binding.layoutGroupFCI.visibility = View.VISIBLE
-            binding.layoutSectionFCI.visibility = View.VISIBLE
-
+            binding.cardFCI.visibility = View.VISIBLE
             binding.textTitleGroup.text = String.format(getString(R.string.fci_group), breedDescription.fci?.group)
             binding.textGroup.text = breedDescription.fci?.groupType
             binding.textTitleSection.text = String.format(getString(R.string.fci_section), breedDescription.fci?.section)
@@ -94,25 +81,23 @@ class BreedDescriptionFragment : Fragment() {
         }
 
         if(breedDescription.otherNames?.size == 0) {
-            binding.textOtherNamesTitle.visibility = View.GONE
-            binding.textOtherNames.visibility = View.GONE
+            binding.cardOtherNames.visibility = View.GONE
         } else {
-            binding.textOtherNamesTitle.visibility = View.VISIBLE
-            binding.textOtherNames.visibility = View.VISIBLE
+            binding.cardOtherNames.visibility = View.VISIBLE
             binding.textOtherNames.text = breedDescription.otherNames?.joinToString(", ")
         }
 
         if(breedDescription.commonDiseases?.size == 0) {
-            binding.textDiseasesTitle.visibility = View.GONE
-            binding.textDiseases.visibility = View.GONE
+            binding.cardDiseases.visibility = View.GONE
         } else {
-            binding.textDiseasesTitle.visibility = View.VISIBLE
-            binding.textDiseases.visibility = View.VISIBLE
+            binding.cardDiseases.visibility = View.VISIBLE
             binding.textDiseases.text = breedDescription.commonDiseases?.joinToString(", ")
         }
+        binding.btnSubmit.isEnabled = true
     }
 
     private fun progressVisibility(isVisible: Boolean) {
+        glideLoadGif(activity as MainActivity, binding.imagenLoading)
         binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
@@ -122,18 +107,13 @@ class BreedDescriptionFragment : Fragment() {
     }
 
     private fun navigate(navigation: BreedDescriptionViewModel.Navigation?) {
-        (activity as MainActivity).apply {
-            when (navigation) {
-                is BreedDescriptionViewModel.Navigation.Home -> {
-                    val action = BreedDescriptionFragmentDirections.actionNavigationBreedDescriptionToHome(
-                        navigation.breed.icon!!,
-                        navigation.breed.name!!,
-                        navigation.breed.life!!)
-                    findNavController().navigate(action)
-                }
-                BreedDescriptionViewModel.Navigation.Expand -> {
-                    expandImage(activity, binding.imageBreed, icon!!)
-                }
+        when (navigation) {
+            is BreedDescriptionViewModel.Navigation.Home -> {
+                val action = BreedDescriptionFragmentDirections.actionNavigationBreedDescriptionToHome(
+                    navigation.breed.icon!!,
+                    navigation.breed.name!!,
+                    navigation.breed.life!!)
+                findNavController().navigate(action)
             }
         }
     }

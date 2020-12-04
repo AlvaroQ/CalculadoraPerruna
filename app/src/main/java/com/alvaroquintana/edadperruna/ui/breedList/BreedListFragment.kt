@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -12,7 +11,6 @@ import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.BreedListFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
-import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 import com.alvaroquintana.edadperruna.utils.expandImage
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import org.koin.android.scope.lifecycleScope
@@ -35,9 +33,7 @@ class BreedListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         (activity as MainActivity).setupToolbar(getString(R.string.choose_breed), hasSettings = false, hasBackButton = true)
-        (activity as MainActivity).setupBackground(MainActivity.Screen.BREED_LIST)
 
         breedListViewModel.init()
         breedListViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))

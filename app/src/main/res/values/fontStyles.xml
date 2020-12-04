@@ -20,6 +20,9 @@
     <style name="Regular.TextColor">
         <item name="android:textColor">@color/textColorLight</item>
     </style>
+    <style name="Regular.TextColorGraph">
+        <item name="android:textColor">@color/textColorGrapic</item>
+    </style>
 
     <!-- TextColor -->
     <style name="Bold.TextColor.VeryLarge" >
@@ -85,4 +88,11 @@
         <item name="android:textSize">@dimen/very_small</item>
     </style>
 
+    <!-- Grapic -->
+    <style name="Regular.TextColorLight.Grapic" >
+        <item name="android:textSize">@dimen/graphic</item>
+    </style>
+    <style name="Regular.TextColorGraph.Grapic" >
+        <item name="android:textSize">@dimen/graphic</item>
+    </style>
 </resources>

@@ -14,7 +14,6 @@ import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
 
 
@@ -31,7 +30,7 @@ fun getCircularProgressDrawable(context: Context) : CircularProgressDrawable {
         start()
     }
 }
-fun log(tag:String?, msg:String?, error:Throwable? = null){
+fun log(tag: String?, msg: String?, error: Throwable? = null){
     if (BuildConfig.BUILD_TYPE != "release") {
         if (error != null){
             Log.e(tag, msg, error)
@@ -54,15 +53,17 @@ fun rateApp(context: Context) {
     val goToMarket = Intent(Intent.ACTION_VIEW, uri)
     goToMarket.addFlags(
         Intent.FLAG_ACTIVITY_NO_HISTORY or
-            Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-            Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+    )
     try {
         context.startActivity(goToMarket)
     } catch (e: ActivityNotFoundException) {
         context.startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-            Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"))
+                Uri.parse("http://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
+            )
         )
     }
 }
@@ -82,7 +83,12 @@ fun shareApp(points: Int, context: Context) {
                 ${shareMessage} https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}
                 """.trimIndent()
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.choose_one)))
+        context.startActivity(
+            Intent.createChooser(
+                shareIntent,
+                context.getString(R.string.choose_one)
+            )
+        )
     } catch (e: Exception) {
         log(context.getString(R.string.share), e.toString())
     }
@@ -90,10 +96,25 @@ fun shareApp(points: Int, context: Context) {
 
 fun openAppOnPlayStore(context: Context, appPackageName: String) {
     try {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=$appPackageName")
+            )
+        )
     } catch (notFoundException: ActivityNotFoundException) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+            )
+        )
     }
+}
+
+fun openURL(context: Context, url: String) {
+    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(browserIntent)
 }
 
 fun expandImage(activity: Activity, imageView: ImageView, icon: String) {

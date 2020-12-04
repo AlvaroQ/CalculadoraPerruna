@@ -86,7 +86,10 @@ allprojects {
 
 
                 // In-app purchase remove ads
-                billingclient       : "com.android.billingclient:billing-ktx:${libsversions.billing_version}"
+                billingclient       : "com.android.billingclient:billing-ktx:${libsversions.billing_version}",
+
+                // MPAndroidChart
+                MPAndroidChart       : "com.github.PhilJay:MPAndroidChart:v3.1.0"
         ]
 
         detektPlugin = [

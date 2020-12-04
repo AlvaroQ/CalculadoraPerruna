@@ -47,7 +47,7 @@ class HomeViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewMode
             handleFailure(Error.ErrorMonthEmpty)
             isCorrect = false
         }
-        if(month != "" && (month.toInt() < 0 || month.toInt() > 12)) {
+        if(month != "" && (month.toInt() < 0 || month.toInt() > 11)) {
             handleFailure(Error.ErrorMonthIlegal)
             isCorrect = false
         }

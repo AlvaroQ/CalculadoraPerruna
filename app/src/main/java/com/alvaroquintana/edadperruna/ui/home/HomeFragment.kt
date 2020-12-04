@@ -15,7 +15,6 @@ import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
-import com.alvaroquintana.edadperruna.utils.glideLoadURL
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
@@ -49,7 +48,7 @@ class HomeFragment : Fragment() {
 
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener {
-            val dog = Dog(icon = image!!, name = name!!)
+            val dog = Dog(icon = image!!, name = name!!, life = life)
 
             if(homeViewModel.checkErrors(
                     dog,
@@ -76,9 +75,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         (activity as MainActivity).setupToolbar(getString(R.string.app_name),hasSettings = true, hasBackButton = false)
-        (activity as MainActivity).setupBackground(MainActivity.Screen.MAIN)
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
@@ -89,12 +86,12 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).apply {
             when (navigation) {
                 HomeViewModel.Navigation.BreedList -> {
-                    hideKeyboard(activity as MainActivity)
+                    hideKeyboard(this)
                     val action = HomeFragmentDirections.actionNavigationHomeToBreedList()
                     findNavController().navigate(action)
                 }
                 is HomeViewModel.Navigation.Result -> {
-                    hideKeyboard(activity as MainActivity)
+                    hideKeyboard(this)
                     val action = HomeFragmentDirections.actionNavigationHomeToResult(
                         editTextYear.text.toString().toInt(),
                         editTextMonth.text.toString().toInt(),

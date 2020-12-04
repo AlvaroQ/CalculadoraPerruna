@@ -17,13 +17,10 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
 
 class MainActivity : BaseActivity() {
     private val binding by viewBinding(MainActivityBinding::inflate)
     private lateinit var navController : NavController
-    val mainViewModel: MainViewModel by lifecycleScope.viewModel(this)
 
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var rewardedAd: RewardedAd
@@ -54,29 +51,6 @@ class MainActivity : BaseActivity() {
             }
         } else {
             binding.imagenSettings.visibility = View.GONE
-        }
-
-    }
-
-    fun setupBackground(screen: Screen) {
-        when(screen) {
-            Screen.MAIN -> {
-                //binding.imageBackground.visibility = View.VISIBLE
-                // binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
-            }
-            Screen.BREED_LIST -> {
-                // binding.imageBackground.visibility = View.GONE
-            }
-            Screen.RESULT -> {
-                // binding.imageBackground.visibility = View.VISIBLE
-                // binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_result))
-            }
-            Screen.SETTINGS -> {
-                // binding.imageBackground.visibility = View.GONE
-            }
-            Screen.DESCRIPTION -> {
-               // binding.imageBackground.visibility = View.GONE
-            }
         }
     }
 

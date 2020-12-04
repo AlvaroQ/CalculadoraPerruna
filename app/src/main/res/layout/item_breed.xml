@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
-    android:background="@color/colorPrimary"
+    android:background="@color/white"
     android:orientation="vertical"
     android:layout_margin="2dp"
     android:padding="2dp">
@@ -31,7 +31,7 @@
         android:lines="2"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/item_text_gradient"
         app:layout_constraintTop_toBottomOf="@+id/dogImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
