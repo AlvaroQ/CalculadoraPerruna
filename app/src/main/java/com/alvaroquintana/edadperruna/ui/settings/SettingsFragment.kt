@@ -51,9 +51,9 @@ class SettingsFragment : PreferenceFragmentCompat(), PurchasesUpdatedListener {
 
         // deleteAds
         val deleteAds: Preference? = findPreference("delete_ads")
+        if(settingsViewModel.getPaymentDone()) deleteAds?.isVisible = false
         deleteAds?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            //loadAllSKUs()
-            settingsViewModel.savePaymentDone()
+            loadAllSKUs()
             false
         }
 

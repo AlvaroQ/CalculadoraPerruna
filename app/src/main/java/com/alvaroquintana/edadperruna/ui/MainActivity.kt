@@ -9,6 +9,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.alvaroquintana.edadperruna.common.viewBinding
 import com.alvaroquintana.edadperruna.databinding.MainActivityBinding
+import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -52,6 +53,13 @@ class MainActivity : BaseActivity() {
         } else {
             binding.imagenSettings.visibility = View.GONE
         }
+
+
+        if(title == getString(R.string.settings)){
+            binding.imageBackground.setImageDrawable(getDrawable(R.drawable.splash_gradient))
+        } else {
+            binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
+        }
     }
 
     fun showAd(show: Boolean) {
@@ -77,6 +85,7 @@ class MainActivity : BaseActivity() {
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = getString(R.string.INTERSTICIAL_RESULT)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
+        Analytics.analyticsScreenViewed(Analytics.SHOW_AD_INTERSTICIAL)
     }
 
     fun showRewardAd() {
@@ -84,6 +93,7 @@ class MainActivity : BaseActivity() {
         val adLoadCallback: RewardedAdLoadCallback = object : RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
                 rewardedAd.show(activity, null)
+                Analytics.analyticsScreenViewed(Analytics.SHOW_AD_BONIFICATION)
             }
 
             override fun onRewardedAdFailedToLoad(adError: LoadAdError) {

@@ -10,4 +10,10 @@ class SharedPreferencesRepository(private val sharedPreferencesLocalDataSource: 
         set(value) {
             sharedPreferencesLocalDataSource.paymentDone = value
         }
+
+    var screenViewer: Int
+        get() = sharedPreferencesLocalDataSource.screenViewer
+        set(value) {
+            sharedPreferencesLocalDataSource.screenViewer = value
+        }
 }

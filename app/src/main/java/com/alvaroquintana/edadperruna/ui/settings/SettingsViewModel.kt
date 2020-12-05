@@ -10,7 +10,7 @@ import com.alvaroquintana.usecases.UpdateBreedDescription
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val setPaymentDone: SetPaymentDone,
-                        private val getPaymentDone: GetPaymentDone,
+                        val getPaymentDone: GetPaymentDone,
                         private val updateBreedDescription: UpdateBreedDescription) : ScopedViewModel() {
 
     private val _showingAds = MutableLiveData<UiModel>()

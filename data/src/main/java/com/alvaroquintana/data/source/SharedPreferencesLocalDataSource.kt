@@ -4,4 +4,5 @@ interface SharedPreferencesLocalDataSource  {
 
     var paymentDone: Boolean
 
+    var screenViewer: Int
 }

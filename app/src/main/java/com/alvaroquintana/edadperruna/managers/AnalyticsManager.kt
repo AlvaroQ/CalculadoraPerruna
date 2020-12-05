@@ -76,6 +76,9 @@ object Analytics {
     const val SCREEN_DESCRIPTION = "screen_description"
     const val SCREEN_MORE_APPS = "screen_more_apps"
 
+    const val SHOW_AD_INTERSTICIAL = "show_instersticial_ad"
+    const val SHOW_AD_BONIFICATION = "show_bonification_ad"
+
     // CLICKED
     const val BTN_RESULT = "btn_play_again"
 }

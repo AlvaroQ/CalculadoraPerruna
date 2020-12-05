@@ -12,7 +12,12 @@ open class SharedPrefsDataSource (context: Context): SharedPreferencesLocalDataS
         get() = sharedPreferences.getBoolean(PAYMENT_DONE, false)
         set(value) = sharedPreferences.edit().putBoolean(PAYMENT_DONE, value).apply()
 
+    override var screenViewer: Int
+        get() = sharedPreferences.getInt(SCREEN_VIEWER, 0)
+        set(value) = sharedPreferences.edit().putInt(SCREEN_VIEWER, value).apply()
+
     companion object {
         const val PAYMENT_DONE = "payment_done"
+        const val SCREEN_VIEWER = "screen_viewer"
     }
 }

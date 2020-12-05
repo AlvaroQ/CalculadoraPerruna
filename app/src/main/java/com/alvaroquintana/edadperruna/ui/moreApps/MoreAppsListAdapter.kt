@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.common.inflate
+import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.openAppOnPlayStore
 
@@ -28,6 +29,7 @@ class MoreAppsListAdapter(
         holder.appDecription.text = app.description
         glideLoadBase64(context,  app.image, holder.appImage)
         holder.itemContainer.setOnClickListener {
+            Analytics.analyticsAppRecommendedOpen(app.url!!)
             openAppOnPlayStore(context, app.url!!)
         }
     }

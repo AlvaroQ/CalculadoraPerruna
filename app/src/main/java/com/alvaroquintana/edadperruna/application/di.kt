@@ -72,15 +72,19 @@ private val scopesModule = module {
     }
 
     scope(named<BreedListFragment>()) {
-        viewModel { BreedListViewModel(get(), get()) }
+        viewModel { BreedListViewModel(get(), get(), get(), get()) }
         scoped { GetPaymentDone(get()) }
         scoped { GetBreedList(get()) }
+        scoped { GetScreenViewer(get()) }
+        scoped { SetScreenViewer(get()) }
     }
 
     scope(named<BreedDescriptionFragment>()) {
-        viewModel { BreedDescriptionViewModel(get(), get()) }
+        viewModel { BreedDescriptionViewModel(get(), get(), get(), get()) }
         scoped { GetPaymentDone(get()) }
         scoped { GetBreedsDescription(get()) }
+        scoped { GetScreenViewer(get()) }
+        scoped { SetScreenViewer(get()) }
     }
 
     scope(named<ResultFragment>()) {

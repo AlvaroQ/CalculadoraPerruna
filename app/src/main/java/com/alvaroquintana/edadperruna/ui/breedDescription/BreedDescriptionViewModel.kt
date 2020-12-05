@@ -7,10 +7,15 @@ import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetBreedsDescription
 import com.alvaroquintana.usecases.GetPaymentDone
+import com.alvaroquintana.usecases.GetScreenViewer
+import com.alvaroquintana.usecases.SetScreenViewer
 import kotlinx.coroutines.launch
 
 class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
-                                private val getBreedDescription: GetBreedsDescription) : ScopedViewModel() {
+                                private val getBreedDescription: GetBreedsDescription,
+                                private val getScreenViewer: GetScreenViewer,
+                                private val setScreenViewer: SetScreenViewer
+) : ScopedViewModel() {
 
     private val _navigation = MutableLiveData<Navigation>()
     val navigation: LiveData<Navigation> = _navigation
@@ -27,8 +32,18 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
     init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_RESULT)
         _progress.value = true
-        _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+        _showingAds.value = shouldBeShowAd()
         _progress.value = false
+    }
+
+    private fun shouldBeShowAd(): UiModel.ShowAd{
+        val numberScreenViewer = getScreenViewer()
+        setScreenViewer(numberScreenViewer + 1)
+        return if(numberScreenViewer % 3 == 0 && !getPaymentDone()) {
+            UiModel.ShowAd(true)
+        } else {
+            UiModel.ShowAd(false)
+        }
     }
 
     fun getDescription(breedId: String) {
