@@ -11,8 +11,8 @@ buildscript {
             'compileSdk'            : 30,
             'minSdk'                : 23,
             'targetSdk'             : 30,
-            'name'                  : '4.2.3',
-            'code'                  : 423,
+            'name'                  : '5.0.0',
+            'code'                  : 500,
             'buildtoolsVersion'     : '30.0.2',
     ]
     ext.libsversions = [
