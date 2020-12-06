@@ -12,8 +12,10 @@ abstract class DogDatabase : RoomDatabase() {
         fun build(context: Context) = Room.databaseBuilder(
             context,
             DogDatabase::class.java,
-            "dog-db"
-        ).build()
+            "dog-db")
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigrationFrom(1, 2)
+            .build()
     }
 
     abstract fun dogDao(): DogDao
