@@ -9,7 +9,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/textInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fragment_main_choose_breed_text_vertical_margin"
@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textAppearance="@style/Regular.TextColorLight.VeryLarge" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintSelectBreed"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -30,7 +30,7 @@
         android:layout_marginStart="@dimen/fragment_main_box_horixontal_margin"
         android:layout_marginEnd="@dimen/fragment_main_box_horixontal_margin"
         android:background="@drawable/border"
-        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        app:layout_constraintTop_toBottomOf="@+id/textInfo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" >
 
@@ -39,7 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             tools:src="@tools:sample/avatars"
-            android:layout_alignParentStart="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="@string/dog_image"/>
 
         <ImageView
@@ -47,21 +49,24 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_expand_more"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="6dp"
             android:contentDescription="@string/expand" />
 
         <TextView
             android:id="@+id/textBreed"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="@string/select_breed"
             android:textAppearance="@style/Regular.TextColorLight.Medium"
-            android:layout_marginStart="8dp"
-            android:layout_toStartOf="@+id/imageExpand"
-            android:layout_toEndOf="@+id/imageBreed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageBreed"
+            app:layout_constraintEnd_toStartOf="@+id/imageExpand"
             android:gravity="center"/>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fieldYear"

@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -119,4 +120,12 @@ fun openURL(context: Context, url: String) {
 
 fun expandImage(activity: Activity, imageView: ImageView, icon: String) {
     ImagePreviewer().show(activity, imageView, icon)
+}
+
+fun getScreenHeight(): Float {
+    return Resources.getSystem().displayMetrics.heightPixels.toFloat()
+}
+
+fun getScreenWidth(): Float {
+    return Resources.getSystem().displayMetrics.widthPixels.toFloat()
 }

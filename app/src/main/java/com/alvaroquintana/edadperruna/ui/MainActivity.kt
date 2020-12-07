@@ -22,6 +22,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 class MainActivity : BaseActivity() {
     private val binding by viewBinding(MainActivityBinding::inflate)
     private lateinit var navController : NavController
+    var appOpened = false
 
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var rewardedAd: RewardedAd

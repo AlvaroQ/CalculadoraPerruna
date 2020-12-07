@@ -1,6 +1,8 @@
 package com.alvaroquintana.edadperruna.ui.home
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,8 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
+import com.alvaroquintana.edadperruna.utils.getScreenHeight
+import com.alvaroquintana.edadperruna.utils.getScreenWidth
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import org.koin.android.scope.lifecycleScope
@@ -32,15 +36,21 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
 
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
 
+        if(!(activity as MainActivity).appOpened) {
+            loadAnimationScreen()
+            (activity as MainActivity).appOpened = true
+        }
+
         val parentLayout: ConstraintLayout = root.findViewById(R.id.parentLayout)
         parentLayout.setOnClickListener { hideKeyboard(activity as MainActivity) }
 
-        val constraintSelectBreed: RelativeLayout = root.findViewById(R.id.constraintSelectBreed)
+        val constraintSelectBreed: ConstraintLayout = root.findViewById(R.id.constraintSelectBreed)
         constraintSelectBreed.setOnClickListener { homeViewModel.navigateToBreedList() }
 
         editTextMonth = root.findViewById(R.id.editTextMonth)
@@ -75,11 +85,32 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).setupToolbar(getString(R.string.app_name),hasSettings = true, hasBackButton = false)
+        (activity as MainActivity).setupToolbar(
+            getString(R.string.app_name),
+            hasSettings = true,
+            hasBackButton = false
+        )
 
         homeViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         homeViewModel.error.observe(viewLifecycleOwner, Observer(::showError))
         homeViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
+    }
+
+    private fun loadAnimationScreen() {
+        binding.textInfo.x = getScreenWidth()
+        binding.textInfo.animate().translationX(0f).setDuration(500).start()
+
+        binding.constraintSelectBreed.x = -getScreenWidth()
+        binding.constraintSelectBreed.animate().translationX(0f).setDuration(500).setStartDelay(500).start()
+
+        binding.fieldYear.x = -getScreenWidth()
+        binding.fieldYear.animate().translationX(0f).setDuration(500).setStartDelay(600).start()
+
+        binding.fieldMonth.x = -getScreenWidth()
+        binding.fieldMonth.animate().translationX(0f).setDuration(500).setStartDelay(700).start()
+
+        binding.btnSubmit.y = getScreenHeight()
+        binding.btnSubmit.animate().translationY(0f).setDuration(500).setStartDelay(800) .start()
     }
 
     private fun navigate(navigation: HomeViewModel.Navigation?) {
