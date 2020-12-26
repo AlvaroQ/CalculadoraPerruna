@@ -35,7 +35,7 @@ class ResultFragment : Fragment() {
 
     private val dogYears by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).years } }
     private val dogMonths by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).months } }
-    private val icon by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).icon } }
+    private val image by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).image } }
     private val name by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).name } }
     private val life by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).life } }
 
@@ -48,7 +48,7 @@ class ResultFragment : Fragment() {
 
         // Image breed selected
         val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
-        glideLoadBase64(requireActivity(), icon, imageBreed)
+        glideLoadBase64(requireActivity(), image, imageBreed)
         imageBreed.setOnClickListener { resultViewModel.onDogLongClicked() }
 
         // Text breed selected
@@ -93,7 +93,7 @@ class ResultFragment : Fragment() {
                     findNavController().navigate(action)
                 }
                 ResultViewModel.Navigation.Expand -> {
-                    expandImage(activity, binding.imageBreed, icon!!)
+                    expandImage(activity, binding.imageBreed, image!!)
                 }
             }
         }

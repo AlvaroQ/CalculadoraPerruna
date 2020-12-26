@@ -11,7 +11,7 @@ import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.common.inflate
 import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.glideLoadURL
 
 class BreedListAdapter(private var context: Context,
                        var breedList: MutableList<Dog>,
@@ -27,10 +27,10 @@ class BreedListAdapter(private var context: Context,
     override fun onBindViewHolder(holder: BreedListViewHolder, position: Int) {
         val breed = breedList[position]
         holder.dogName.text = breed.name
-        glideLoadBase64(context,  breed.icon, holder.dogImage)
+        glideLoadURL(context,  breed.image, holder.dogImage)
         holder.itemContainer.setOnClickListener { clickListener(position, breed) }
         holder.itemContainer.setOnLongClickListener {
-            longClickListener(holder.dogImage, breed.icon!!)
+            longClickListener(holder.dogImage, breed.image!!)
             true
         }
     }

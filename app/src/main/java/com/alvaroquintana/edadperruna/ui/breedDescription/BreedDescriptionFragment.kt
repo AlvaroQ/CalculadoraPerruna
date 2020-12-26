@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,7 +25,7 @@ class BreedDescriptionFragment : Fragment() {
     private lateinit var binding : BreedDescriptionFragmentBinding
     private val breedDescriptionViewModel: BreedDescriptionViewModel by lifecycleScope.viewModel(this)
 
-    private val icon by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).icon } }
+    private val image by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).image } }
     private val name by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).name } }
     private val id by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).idBreed } }
     lateinit var dog: Dog
@@ -34,6 +35,9 @@ class BreedDescriptionFragment : Fragment() {
 
         binding = BreedDescriptionFragmentBinding.inflate(inflater, container, false)
         val root = binding.root
+
+        val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
+        glideLoadURL(requireContext(), image, imageBreed)
 
         val textBreed: TextView = root.findViewById(R.id.textBreed)
         textBreed.text = name
@@ -57,13 +61,7 @@ class BreedDescriptionFragment : Fragment() {
     }
 
     private fun fillBreedDescription(breedDescription: Dog) {
-        dog = Dog(name = name, icon = icon, life = breedDescription.mainInformation?.lifeExpectancy?.expectancy?.toString())
-
-        if(breedDescription.image != "") {
-            glideLoadURL(requireContext(), breedDescription.image, binding.imageBreed)
-        } else {
-            glideLoadBase64(requireContext(), icon, binding.imageBreed)
-        }
+        dog = Dog(name = name, image = image, life = breedDescription.mainInformation?.lifeExpectancy?.expectancy?.toString())
 
         binding.cardResume.visibility = View.VISIBLE
         binding.imageSizeDescription.text = breedDescription.mainInformation?.sizeBreed
@@ -110,7 +108,7 @@ class BreedDescriptionFragment : Fragment() {
         when (navigation) {
             is BreedDescriptionViewModel.Navigation.Home -> {
                 val action = BreedDescriptionFragmentDirections.actionNavigationBreedDescriptionToHome(
-                    navigation.breed.icon!!,
+                    navigation.breed.image!!,
                     navigation.breed.name!!,
                     navigation.breed.life!!)
                 findNavController().navigate(action)

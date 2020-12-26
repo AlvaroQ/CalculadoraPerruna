@@ -14,8 +14,8 @@
 
     <com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
         android:id="@+id/dogImage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:contentDescription="@string/dog_image"
         app:ratio="0.5"
         app:layout_constraintEnd_toEndOf="parent"

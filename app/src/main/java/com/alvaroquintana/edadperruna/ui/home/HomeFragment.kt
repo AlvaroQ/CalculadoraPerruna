@@ -1,8 +1,6 @@
 package com.alvaroquintana.edadperruna.ui.home
 
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +14,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
-import com.alvaroquintana.edadperruna.utils.getScreenHeight
-import com.alvaroquintana.edadperruna.utils.getScreenWidth
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
-import com.alvaroquintana.edadperruna.utils.hideKeyboard
+import com.alvaroquintana.edadperruna.utils.*
 import org.koin.android.scope.lifecycleScope
 import org.koin.android.viewmodel.scope.viewModel
 
@@ -30,7 +25,7 @@ class HomeFragment : Fragment() {
     private lateinit var editTextMonth: EditText
     private lateinit var editTextYear: EditText
 
-    private val image by lazy { arguments?.let { fromBundle(it).icon } }
+    private val image by lazy { arguments?.let { fromBundle(it).image } }
     private val name by lazy { arguments?.let { fromBundle(it).name } }
     private val life by lazy { arguments?.let { fromBundle(it).life } }
 
@@ -58,7 +53,7 @@ class HomeFragment : Fragment() {
 
         val btnSubmit: Button = root.findViewById(R.id.btnSubmit)
         btnSubmit.setOnClickListener {
-            val dog = Dog(icon = image!!, name = name!!, life = life)
+            val dog = Dog(image = image!!, name = name!!, life = life)
 
             if(homeViewModel.checkErrors(
                     dog,
@@ -73,7 +68,7 @@ class HomeFragment : Fragment() {
         val breedText: TextView = root.findViewById(R.id.textBreed)
         if(image != "" && name != "") {
             breedText.text = name
-            glideLoadBase64((activity as MainActivity), image, imageBreed)
+            glideLoadURL(requireContext(), image, imageBreed)
             imageBreed.visibility = View.VISIBLE
         } else {
             breedText.text = getString(R.string.select_breed)
@@ -126,7 +121,7 @@ class HomeFragment : Fragment() {
                     val action = HomeFragmentDirections.actionNavigationHomeToResult(
                         editTextYear.text.toString().toInt(),
                         editTextMonth.text.toString().toInt(),
-                        navigation.breed.icon!!,
+                        navigation.breed.image!!,
                         navigation.breed.name!!,
                         navigation.breed.life!!
                     )

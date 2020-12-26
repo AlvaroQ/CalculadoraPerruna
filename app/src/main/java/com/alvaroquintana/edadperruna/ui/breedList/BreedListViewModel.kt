@@ -64,7 +64,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList,
 
     sealed class Navigation {
         data class BreedDescription(val idBreed: Int, val breed : Dog): Navigation()
-        data class Expand(val imageView: ImageView, val icon: String): Navigation()
+        data class Expand(val imageView: ImageView, val image: String): Navigation()
     }
 
     sealed class UiModel {

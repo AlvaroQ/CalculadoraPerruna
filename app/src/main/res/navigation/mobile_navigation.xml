@@ -25,7 +25,7 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
         <argument
-            android:name="icon"
+            android:name="image"
             app:argType="string"
             android:defaultValue="" />
         <argument
@@ -54,7 +54,7 @@
             app:exitAnim="@android:anim/fade_out"  />
 
         <argument
-            android:name="icon"
+            android:name="image"
             app:argType="string"
             android:defaultValue="" />
         <argument
@@ -82,7 +82,7 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"  />
         <argument
-            android:name="icon"
+            android:name="image"
             app:argType="string"
             android:defaultValue="" />
         <argument
@@ -113,7 +113,7 @@
             app:argType="integer"
             android:defaultValue="0" />
         <argument
-            android:name="icon"
+            android:name="image"
             app:argType="string"
             android:defaultValue="" />
         <argument

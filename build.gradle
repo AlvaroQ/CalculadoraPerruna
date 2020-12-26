@@ -11,12 +11,12 @@ buildscript {
             'compileSdk'            : 30,
             'minSdk'                : 23,
             'targetSdk'             : 30,
-            'name'                  : '5.0.1',
-            'code'                  : 501,
+            'name'                  : '5.1.0',
+            'code'                  : 510,
             'buildtoolsVersion'     : '30.0.2',
     ]
     ext.libsversions = [
-            'gradle_version'         : '4.2.0-beta01',
+            'gradle_version'         : '4.2.0-beta02',
             'koin_version'           : '2.1.5',
             'preference_version'     : '1.1.1',
             'google_services_version': '4.3.4',
