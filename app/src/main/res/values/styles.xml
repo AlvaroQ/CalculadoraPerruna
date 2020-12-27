@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -55,15 +55,15 @@
     </style>
 
     <style name="buttonStyle">
-        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
-        <item name="rippleColor">@color/colorPrimaryDark</item>
+        <item name="android:backgroundTint">@color/textColorDark</item>
+        <item name="rippleColor">@color/textColorDark</item>
         <item name="android:textAppearance">@style/Regular.TextColorLight.Medium</item>
     </style>
 
     <style name="EditTextTheme">
-        <item name="colorControlNormal">@color/textColor</item>
+        <item name="colorControlNormal">@color/textColorDark</item>
         <item name="hintTextColor">@color/textColorLight</item>
-        <item name="colorAccent">@color/textColorLight</item>
+        <item name="colorAccent">@color/textColorDark</item>
         <item name="android:textColorHint">@color/textColorLight</item>
         <item name="boxStrokeWidthFocused">4dp</item>
         <item name="boxStrokeWidth">1dp</item>
@@ -78,5 +78,11 @@
 
     <style name="PreferenceScreen" parent="AppTheme">
         <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">@color/white</item>
+        <item name="checkedIconTint">@color/white</item>
+        <item name="chipBackgroundColor">@color/textColorDark</item>
     </style>
 </resources>

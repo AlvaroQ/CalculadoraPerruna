@@ -18,7 +18,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): 
     LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 
 inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(
-    initialValue: List<T>,
+    initialValue: List<T> = emptyList(),
     crossinline areItemsTheSame: (T, T) -> Boolean = { old, new -> old == new },
     crossinline areContentsTheSame: (T, T) -> Boolean = { old, new -> old == new }
 ) =

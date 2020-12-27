@@ -9,8 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
 import com.alvaroquintana.edadperruna.utils.glideLoadBase64
+import com.alvaroquintana.edadperruna.utils.glideLoadURL
 
 class ImagePreviewer {
 
@@ -18,8 +18,8 @@ class ImagePreviewer {
         val background: BitmapDrawable = ImagePreviewerUtils.getBlurredScreenDrawable(context, source.rootView)
         val dialogView: View = LayoutInflater.from(context).inflate(R.layout.view_image_previewer, null)
 
-        val imageView: AspectRatioImageView = dialogView.findViewById(R.id.imageBreed) as AspectRatioImageView
-        glideLoadBase64(context, icon, imageView)
+        val imageView: ImageView = dialogView.findViewById(R.id.imageBreed)
+        glideLoadURL(context, icon, imageView)
 
         val dialog = Dialog(context, R.style.ImagePreviewerTheme)
         dialog.window?.setBackgroundDrawable(background)

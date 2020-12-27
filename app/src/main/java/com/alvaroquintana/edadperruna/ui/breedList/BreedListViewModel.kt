@@ -30,7 +30,7 @@ class BreedListViewModel(private val getBreedList: GetBreedList,
     private val _navigation = MutableLiveData<Navigation>()
     val navigation: LiveData<Navigation> = _navigation
 
-    fun init() {
+    init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_BREED_LIST)
         launch {
             _progress.value = true

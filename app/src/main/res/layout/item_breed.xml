@@ -9,19 +9,20 @@
     android:foreground="?attr/selectableItemBackground"
     android:background="@color/white"
     android:orientation="vertical"
-    android:layout_margin="2dp"
-    android:padding="2dp">
+    android:layout_margin="1dp">
 
-    <com.alvaroquintana.edadperruna.ui.components.AspectRatioImageView
+    <ImageView
         android:id="@+id/dogImage"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/dog_image"
-        app:ratio="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         tools:src="@tools:sample/avatars" />
     <TextView
         android:id="@+id/dogName"
@@ -32,7 +33,7 @@
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
         android:background="@drawable/item_text_gradient"
-        app:layout_constraintTop_toBottomOf="@+id/dogImage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"

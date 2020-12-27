@@ -14,6 +14,7 @@
 
     <color name="textColor">#000000</color>
     <color name="textColorLight">#2C2C2C</color>
+    <color name="textColorDark">#6B51A5</color>
     <color name="textColorGrapic">#0050C8</color>
     <color name="settongsIconColor">#000000</color>
 </resources>

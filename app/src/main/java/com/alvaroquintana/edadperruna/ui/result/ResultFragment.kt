@@ -14,8 +14,8 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.ResultFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.utils.expandImage
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
+import com.alvaroquintana.edadperruna.utils.glideLoadURL
 import com.alvaroquintana.edadperruna.utils.openURL
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -48,7 +48,7 @@ class ResultFragment : Fragment() {
 
         // Image breed selected
         val imageBreed: ImageView = root.findViewById(R.id.imageBreed)
-        glideLoadBase64(requireActivity(), image, imageBreed)
+        glideLoadURL(requireContext(), image, imageBreed)
         imageBreed.setOnClickListener { resultViewModel.onDogLongClicked() }
 
         // Text breed selected

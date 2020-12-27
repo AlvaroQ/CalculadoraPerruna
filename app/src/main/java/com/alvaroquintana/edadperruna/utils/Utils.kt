@@ -16,7 +16,10 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
+inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
 
 fun hideKeyboard(activity: Activity) {
     val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?

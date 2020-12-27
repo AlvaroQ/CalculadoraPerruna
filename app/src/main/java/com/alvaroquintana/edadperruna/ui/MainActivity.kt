@@ -37,6 +37,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun setupToolbar(title: String, hasSettings: Boolean, hasBackButton: Boolean = false) {
+        binding.appBarLayoutMain.visibility = View.VISIBLE
         binding.toolbarTitle.text = title
         if(hasBackButton) {
             binding.backButton.visibility = View.VISIBLE
@@ -56,10 +57,10 @@ class MainActivity : BaseActivity() {
         }
 
 
-        if(title == getString(R.string.settings)){
-            binding.imageBackground.setImageDrawable(getDrawable(R.drawable.splash_gradient))
-        } else {
-            binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
+        when (title) {
+            getString(R.string.settings) -> binding.imageBackground.setImageDrawable(getDrawable(R.drawable.splash_gradient))
+            getString(R.string.choose_breed) -> binding.appBarLayoutMain.visibility = View.GONE
+            else -> binding.imageBackground.setImageDrawable(getDrawable(R.drawable.wallpaper_main))
         }
     }
 
@@ -122,9 +123,7 @@ class MainActivity : BaseActivity() {
             R.id.navigation_breed_description -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_navigation_breed_description_to_breed_list)
             }
-            else -> {
-                finish()
-            }
+            else -> finish()
         }
     }
 

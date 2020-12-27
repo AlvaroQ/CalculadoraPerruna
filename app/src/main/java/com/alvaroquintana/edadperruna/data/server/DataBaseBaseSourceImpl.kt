@@ -2,11 +2,12 @@ package com.alvaroquintana.edadperruna.data.server
 
 import android.util.Log
 import com.alvaroquintana.data.source.DataBaseSource
-import com.alvaroquintana.domain.*
+import com.alvaroquintana.domain.App
+import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.data.localfiles.FileLocalDb
-import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE
 import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE_APPS
+import com.alvaroquintana.edadperruna.utils.fromJson
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.database.DataSnapshot
@@ -17,7 +18,6 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -97,5 +97,4 @@ class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource 
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         }
     }
-    private inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
 }

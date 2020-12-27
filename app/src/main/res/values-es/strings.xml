@@ -34,7 +34,7 @@
     <string name="loading_image">loading image</string>
 
     <string name="human_years">Años humanos</string>
-    <string name="juvenil">Juvenil\ncachorro</string>
+    <string name="juvenil">Cachorro</string>
     <string name="adult">Adulto</string>
     <string name="senior">Senior</string>
     <string name="dog_years">Años caninos</string>
@@ -79,4 +79,16 @@
     <string name="share">Me ha gustado esta aplicación</string>
     <string name="share_summary">Descarga esta aplicación y aprende del mundo canino</string>
     <string name="choose_one">Elige una:</string>
+    <string name="advance_search">Búsqueda avanzada</string>
+    <string name="by_other_names">Por todos los nombres</string>
+    <string name="by_size">Por tamaño</string>
+    <string name="very_big">Muy grande</string>
+    <string name="big">Grande</string>
+    <string name="middle">Mediano</string>
+    <string name="small">Pequeño</string>
+    <string name="order_by">Ordenar</string>
+    <string name="ascending">Ascendentemente</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Aplicar</string>
+    <string name="descending">Descendentemente</string>
 </resources>

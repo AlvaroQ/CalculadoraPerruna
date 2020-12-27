@@ -3,10 +3,6 @@ package com.alvaroquintana.edadperruna.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.alvaroquintana.domain.FCI
-import com.alvaroquintana.domain.MainInformation
-import com.alvaroquintana.domain.PhysicalCharacteristics
 
 @Entity(tableName = "dogs")
 data class Dog(
@@ -19,5 +15,8 @@ data class Dog(
     val image: String,
 
     @ColumnInfo(name = "name")
-    val name: String
+    val name: String,
+
+    @ColumnInfo(name = "otherNames")
+    val otherNames: MutableList<String>
 )

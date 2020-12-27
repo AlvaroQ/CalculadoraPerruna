@@ -34,7 +34,7 @@
     <string name="loading_image">loading image</string>
 
     <string name="human_years">Human years</string>
-    <string name="juvenil">Juvenile\nPuppy</string>
+    <string name="juvenil">Puppy</string>
     <string name="adult">Adult</string>
     <string name="senior">Senior</string>
     <string name="dog_years">Dog years</string>
@@ -81,4 +81,16 @@
     <string name="share">I like this app</string>
     <string name="share_summary">Download this app and learn about dogs</string>
     <string name="choose_one">choose one:</string>
+    <string name="advance_search">Búsqueda avanzada</string>
+    <string name="by_other_names">Por otros nombres</string>
+    <string name="by_size">Por tamaño</string>
+    <string name="very_big">Muy grande</string>
+    <string name="big">Grande</string>
+    <string name="middle">Mediano</string>
+    <string name="small">Pequeño</string>
+    <string name="order_by">Ordenar</string>
+    <string name="ascending">Ascendentemente</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Aplicar</string>
+    <string name="descending">Descendentemente</string>
 </resources>

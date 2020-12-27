@@ -13,6 +13,9 @@
     <style name="Bold.TextColorLight">
         <item name="android:textColor">@color/textColorLight</item>
     </style>
+    <style name="Bold.TextColorDark">
+        <item name="android:textColor">@color/textColorDark</item>
+    </style>
 
     <style name="Regular.TextColorLight">
         <item name="android:textColor">@color/textColor</item>
@@ -20,8 +23,8 @@
     <style name="Regular.TextColor">
         <item name="android:textColor">@color/textColorLight</item>
     </style>
-    <style name="Regular.TextColorGraph">
-        <item name="android:textColor">@color/textColorGrapic</item>
+    <style name="Regular.TextColorDark">
+        <item name="android:textColor">@color/textColorDark</item>
     </style>
 
     <!-- TextColor -->
@@ -89,10 +92,16 @@
     </style>
 
     <!-- Grapic -->
-    <style name="Regular.TextColorLight.Grapic" >
-        <item name="android:textSize">@dimen/graphic</item>
+    <style name="Bold.TextColorDark.Large" >
+        <item name="android:textSize">@dimen/large</item>
     </style>
-    <style name="Regular.TextColorGraph.Grapic" >
-        <item name="android:textSize">@dimen/graphic</item>
+    <style name="Regular.TextColorDark.Medium" >
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Regular.TextColorDark.Small" >
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Regular.TextColorDark.VerySmall" >
+        <item name="android:textSize">@dimen/very_small</item>
     </style>
 </resources>
