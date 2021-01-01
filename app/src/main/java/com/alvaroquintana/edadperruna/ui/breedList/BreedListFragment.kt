@@ -70,24 +70,28 @@ class BreedListFragment : Fragment() {
         return root
     }
     private fun orderBy() {
-        isOrderByDescending = !isOrderByDescending
-        binding.imageAdvanceFilter.animate().rotation(binding.imageAdvanceFilter.rotation + 180f)
+        if(this::allBreedList.isInitialized) {
+            isOrderByDescending = !isOrderByDescending
+            binding.imageAdvanceFilter.animate().rotation(binding.imageAdvanceFilter.rotation + 180f)
 
-        if(isOrderByDescending) allBreedList.sortByDescending { it.name }
-        else allBreedList.sortBy { it.name }
+            if (isOrderByDescending) allBreedList.sortByDescending { it.name }
+            else allBreedList.sortBy { it.name }
 
-        updateRecyclerList(allBreedList)
+            updateRecyclerList(allBreedList)
+        }
     }
 
     private fun filterByName(textName: String) {
         val newList: MutableList<Dog> = mutableListOf()
-        for (item in allBreedList) {
-            if (item.name!!.toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT)) ||
-                    item.otherNames.toString().toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT))) {
-                newList.add(item)
+        if(this::allBreedList.isInitialized) {
+            for (item in allBreedList) {
+                if (item.name!!.toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT)) ||
+                        item.otherNames.toString().toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT))) {
+                    newList.add(item)
+                }
             }
+            updateRecyclerList(newList)
         }
-        updateRecyclerList(newList)
     }
 
     private fun updateRecyclerList(newList: MutableList<Dog>) {

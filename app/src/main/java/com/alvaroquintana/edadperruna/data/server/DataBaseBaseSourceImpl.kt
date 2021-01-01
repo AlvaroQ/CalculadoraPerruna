@@ -53,7 +53,8 @@ class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource 
                 .get()
                 .addOnSuccessListener { result ->
                     val breed = result.toObject(Dog::class.java)
-                    continuation.resume(breed!!)
+                    if(breed == null) continuation.resume(Dog())
+                    else continuation.resume(breed)
                 }
                 .addOnFailureListener { exception ->
                     log("DataBaseSourceImpl", "Failed to read value.", exception.cause)
