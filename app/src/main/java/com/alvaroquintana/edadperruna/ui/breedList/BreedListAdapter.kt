@@ -14,7 +14,7 @@ import com.alvaroquintana.edadperruna.common.inflate
 import com.alvaroquintana.edadperruna.utils.glideLoadURL
 
 class BreedListAdapter(private var context: Context,
-                       private val clickListener: (Int, Dog) -> Unit,
+                       private val clickListener: (Dog) -> Unit,
                        private val longClickListener: (ImageView, String) -> Unit,
 ) : RecyclerView.Adapter<BreedListAdapter.BreedListViewHolder>() {
     var data: List<Dog> by basicDiffUtil(areItemsTheSame = { old, new -> old.breedId == new.breedId })
@@ -29,7 +29,7 @@ class BreedListAdapter(private var context: Context,
 
         holder.dogName.text = breed.name
         glideLoadURL(context,  breed.image, holder.dogImage)
-        holder.itemContainer.setOnClickListener { clickListener(position, breed) }
+        holder.itemContainer.setOnClickListener { clickListener(breed) }
         holder.itemContainer.setOnLongClickListener {
             longClickListener(holder.dogImage, breed.image!!)
             true

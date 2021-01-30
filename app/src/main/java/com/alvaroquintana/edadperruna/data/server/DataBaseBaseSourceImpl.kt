@@ -7,6 +7,7 @@ import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.data.localfiles.FileLocalDb
 import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE_APPS
+import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE_ES_BREED
 import com.alvaroquintana.edadperruna.utils.fromJson
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -23,13 +24,12 @@ import kotlin.coroutines.resume
 
 
 class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource {
-    private val esBreedCollectionPath = "breedES"
 
     // Read from the database
     override suspend fun getBreedList(): MutableList<Dog> {
         return suspendCancellableCoroutine { continuation ->
             FirebaseFirestore.getInstance()
-                .collection(esBreedCollectionPath)
+                .collection(PATH_REFERENCE_ES_BREED)
                 .orderBy("name", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener {
@@ -49,7 +49,7 @@ class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource 
     override suspend fun getBreedDescription(breedId: String): Dog? {
         return suspendCancellableCoroutine {continuation ->
             val db = FirebaseFirestore.getInstance()
-            db.collection(esBreedCollectionPath).document(breedId)
+            db.collection(PATH_REFERENCE_ES_BREED).document(breedId)
                 .get()
                 .addOnSuccessListener { result ->
                     val breed = result.toObject(Dog::class.java)
@@ -92,7 +92,7 @@ class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource 
         val listES = gson.fromJson<List<Dog>>(breedsES)
         val db = FirebaseFirestore.getInstance()
         for (breed in listES){
-            db.collection(esBreedCollectionPath).document(breed.breedId!!)
+            db.collection(PATH_REFERENCE_ES_BREED).document(breed.breedId!!)
                 .set(breed)
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }

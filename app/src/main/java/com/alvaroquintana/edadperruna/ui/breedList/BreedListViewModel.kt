@@ -54,8 +54,8 @@ class BreedListViewModel(private val getBreedList: GetBreedList,
         return getBreedList.invoke()
     }
 
-    fun onDogClicked(idBreed: Int, dog: Dog) {
-        _navigation.value = Navigation.BreedDescription(idBreed, dog)
+    fun onDogClicked(dog: Dog) {
+        _navigation.value = Navigation.BreedDescription(dog.breedId?.toInt()!!, dog)
     }
 
     fun onDogLongClicked(imageView: ImageView, icon: String) {
