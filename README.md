@@ -4,6 +4,8 @@
     <img src="https://github.com/AlvaroQ/CalculadoraPerruna/blob/master/captures/dog_calculator_landing.png" width="800">
 </p>
 
+Vídeo promocion: https://youtu.be/0nIL4seuEfQ
+
 Android Single-Activity MVVM Architecture with Navigation Component and KOTLIN
  - Follow SOLID principles
  - Koin dependency injector
