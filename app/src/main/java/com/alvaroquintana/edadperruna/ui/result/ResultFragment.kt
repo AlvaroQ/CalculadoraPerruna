@@ -25,13 +25,12 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ResultFragment : Fragment() {
     private lateinit var binding: ResultFragmentBinding
-    private val resultViewModel: ResultViewModel by lifecycleScope.viewModel(this)
+    private val resultViewModel: ResultViewModel by viewModel()
 
     private val dogYears by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).years } }
     private val dogMonths by lazy { arguments?.let { ResultFragmentArgs.fromBundle(it).months } }
@@ -82,10 +81,9 @@ class ResultFragment : Fragment() {
 
         resultViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         resultViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
-        resultViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
 
-    private fun navigate(navigation: ResultViewModel.Navigation?) {
+    private fun navigate(navigation: ResultViewModel.Navigation) {
         (activity as MainActivity).apply {
             when (navigation) {
                 ResultViewModel.Navigation.Home -> {
@@ -102,12 +100,6 @@ class ResultFragment : Fragment() {
     private fun progressVisibility(isVisible: Boolean) {
         glideLoadGif(activity as MainActivity, binding.imagenLoading)
         binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun loadAd(model: ResultViewModel.UiModel) {
-        if (model is ResultViewModel.UiModel.ShowAd && model.show) {
-            (activity as MainActivity).showInstersticialAd()
-        }
     }
 
     private fun writeChart(root: View) {

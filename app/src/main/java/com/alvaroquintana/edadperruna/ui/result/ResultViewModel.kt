@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.GetPaymentDone
 import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.launch
 import kotlin.math.ln
 
-class ResultViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
+class ResultViewModel() : ScopedViewModel() {
 
     private val _navigation = MutableLiveData<Navigation>()
     val navigation: LiveData<Navigation> = _navigation
@@ -26,7 +25,7 @@ class ResultViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewMo
         Analytics.analyticsScreenViewed(Analytics.SCREEN_RESULT)
         launch {
             _progress.value = true
-            _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+            _showingAds.value = UiModel.ShowAd(true)
             _progress.value = false
         }
     }

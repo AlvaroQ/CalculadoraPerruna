@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,19 +18,18 @@ import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.utils.expandImage
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.edadperruna.utils.hideKeyboard
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
 class BreedListFragment : Fragment() {
     private lateinit var binding: BreedListFragmentBinding
-    private val breedListViewModel: BreedListViewModel by lifecycleScope.viewModel(this)
+    private val breedListViewModel: BreedListViewModel by viewModel()
 
     lateinit var allBreedList: MutableList<Dog>
     lateinit var adapter: BreedListAdapter
-    var isOrderByDescending = false
-    var spanCount = 3
+    private var isOrderByDescending = false
+    private var spanCount = 3
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -123,7 +121,7 @@ class BreedListFragment : Fragment() {
         binding.imageLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
-    private fun navigate(navigation: BreedListViewModel.Navigation?) {
+    private fun navigate(navigation: BreedListViewModel.Navigation) {
         hideKeyboard(requireActivity())
         (activity as MainActivity).apply {
             when (navigation) {
@@ -143,7 +141,7 @@ class BreedListFragment : Fragment() {
 
     private fun loadAd(model: BreedListViewModel.UiModel) {
         if (model is BreedListViewModel.UiModel.ShowAd && model.show) {
-            (activity as MainActivity).showRewardAd()
+            (activity as MainActivity).showRewardAd(model.show)
             (activity as MainActivity).showAd(model.show)
         }
     }

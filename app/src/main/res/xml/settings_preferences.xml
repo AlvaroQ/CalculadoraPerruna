@@ -10,12 +10,6 @@
             app:isPreferenceVisible="false"
             app:icon="@drawable/ic_moon"/>
         <Preference
-            app:key="delete_ads"
-            app:title="@string/settings_delete_ads"
-            app:summary="@string/settings_delete_ads_summary"
-            app:iconSpaceReserved="true"
-            app:icon="@drawable/ic_monetization"/>
-        <Preference
             app:key="rate_app"
             app:title="@string/settings_rate_app"
             app:summary="@string/settings_rate_app_summary"
@@ -38,10 +32,4 @@
             app:title="@string/settings_version"
             app:iconSpaceReserved="true"
             app:icon="@drawable/ic_version"/>
-        <Preference
-            app:key="update_breeds"
-            app:title="@string/update_breeds"
-            app:iconSpaceReserved="true"
-            app:isPreferenceVisible="false"
-            app:icon="@drawable/ic_update"/>
 </PreferenceScreen>

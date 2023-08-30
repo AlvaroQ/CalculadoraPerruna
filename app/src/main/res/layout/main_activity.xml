@@ -81,13 +81,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout="@layout/main_fragment" >
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/mobile_navigation"
-            app:defaultNavHost="true" />
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/mobile_navigation" />
     </FrameLayout>
 
     <com.google.android.gms.ads.AdView

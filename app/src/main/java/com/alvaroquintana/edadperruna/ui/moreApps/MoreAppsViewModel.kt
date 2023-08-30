@@ -6,12 +6,9 @@ import com.alvaroquintana.domain.App
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetAppsRecommended
-import com.alvaroquintana.usecases.GetPaymentDone
 import kotlinx.coroutines.launch
 
-class MoreAppsViewModel(private val getAppsRecommended: GetAppsRecommended,
-                        private val getPaymentDone: GetPaymentDone
-) : ScopedViewModel() {
+class MoreAppsViewModel(private val getAppsRecommended: GetAppsRecommended) : ScopedViewModel() {
 
     private val _progress = MutableLiveData<UiModel>()
     val progress: LiveData<UiModel> = _progress
@@ -27,13 +24,13 @@ class MoreAppsViewModel(private val getAppsRecommended: GetAppsRecommended,
         launch {
             _progress.value = UiModel.Loading(true)
             _list.value = appsRecommended()
-            _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+            _showingAds.value = UiModel.ShowAd(true)
             _progress.value = UiModel.Loading(false)
         }
     }
 
     private suspend fun appsRecommended(): MutableList<App> {
-        return getAppsRecommended.invoke()
+        return getAppsRecommended()
     }
 
     sealed class UiModel {

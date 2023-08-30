@@ -15,15 +15,13 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.BreedDescriptionFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.breedList.BreedListFragmentArgs
-import com.alvaroquintana.edadperruna.utils.glideLoadBase64
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
 import com.alvaroquintana.edadperruna.utils.glideLoadURL
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BreedDescriptionFragment : Fragment() {
     private lateinit var binding : BreedDescriptionFragmentBinding
-    private val breedDescriptionViewModel: BreedDescriptionViewModel by lifecycleScope.viewModel(this)
+    private val breedDescriptionViewModel: BreedDescriptionViewModel by viewModel()
 
     private val image by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).image } }
     private val name by lazy { arguments?.let { BreedListFragmentArgs.fromBundle(it).name } }
@@ -55,17 +53,16 @@ class BreedDescriptionFragment : Fragment() {
         breedDescriptionViewModel.getDescription(id!!)
 
         breedDescriptionViewModel.progress.observe(viewLifecycleOwner, Observer(::progressVisibility))
-        breedDescriptionViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
         breedDescriptionViewModel.navigation.observe(viewLifecycleOwner, Observer(::navigate))
         breedDescriptionViewModel.breedData.observe(viewLifecycleOwner, Observer(::fillBreedDescription))
     }
 
-    private fun fillBreedDescription(breedDescription: Dog) {
-        dog = Dog(name = name, image = image, life = breedDescription.mainInformation?.lifeExpectancy?.expectancy?.toString())
+    private fun fillBreedDescription(breedDescription: Dog?) {
+        dog = Dog(name = name, image = image, life = breedDescription?.mainInformation?.lifeExpectancy?.expectancy?.toString())
 
         binding.cardResume.visibility = View.VISIBLE
-        binding.imageSizeDescription.text = breedDescription.mainInformation?.sizeBreed
-        binding.imageLifeDescription.text = String.format(getString(R.string.life_expectative_text), breedDescription.mainInformation?.lifeExpectancy?.expectancy!!)
+        binding.imageSizeDescription.text = breedDescription?.mainInformation?.sizeBreed
+        binding.imageLifeDescription.text = String.format(getString(R.string.life_expectative_text), breedDescription?.mainInformation?.lifeExpectancy?.expectancy!!)
         binding.textBreedDescription.text = breedDescription.shortDescription
 
         if(breedDescription.fci?.group == 0L) {
@@ -99,12 +96,7 @@ class BreedDescriptionFragment : Fragment() {
         binding.imagenLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
-    private fun loadAd(model: BreedDescriptionViewModel.UiModel) {
-        if (model is BreedDescriptionViewModel.UiModel.ShowAd && model.show)
-            (activity as MainActivity).showInstersticialAd()
-    }
-
-    private fun navigate(navigation: BreedDescriptionViewModel.Navigation?) {
+    private fun navigate(navigation: BreedDescriptionViewModel.Navigation) {
         when (navigation) {
             is BreedDescriptionViewModel.Navigation.Home -> {
                 val action = BreedDescriptionFragmentDirections.actionNavigationBreedDescriptionToHome(

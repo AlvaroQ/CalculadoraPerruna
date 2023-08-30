@@ -1,14 +1,11 @@
 package com.alvaroquintana.edadperruna.data.server
 
-import android.util.Log
 import com.alvaroquintana.data.source.DataBaseSource
 import com.alvaroquintana.domain.App
 import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.BuildConfig
-import com.alvaroquintana.edadperruna.data.localfiles.FileLocalDb
 import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE_APPS
 import com.alvaroquintana.edadperruna.utils.Constants.PATH_REFERENCE_ES_BREED
-import com.alvaroquintana.edadperruna.utils.fromJson
 import com.alvaroquintana.edadperruna.utils.log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.database.DataSnapshot
@@ -18,12 +15,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.gson.Gson
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 
-class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource {
+class DataBaseBaseSourceImpl : DataBaseSource {
 
     // Read from the database
     override suspend fun getBreedList(): MutableList<Dog> {
@@ -82,20 +78,6 @@ class DataBaseBaseSourceImpl(private val localDb: FileLocalDb) : DataBaseSource 
                         FirebaseCrashlytics.getInstance().recordException(Throwable(error.toException()))
                     }
                 })
-        }
-    }
-
-    override suspend fun updateBreeeds() {
-        val TAG = "UPLOAD_BREEDS"
-        val gson = Gson()
-        val breedsES = localDb.loadJSONFromAsset("breed_dog")?:""
-        val listES = gson.fromJson<List<Dog>>(breedsES)
-        val db = FirebaseFirestore.getInstance()
-        for (breed in listES){
-            db.collection(PATH_REFERENCE_ES_BREED).document(breed.breedId!!)
-                .set(breed)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         }
     }
 }

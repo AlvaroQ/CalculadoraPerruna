@@ -11,12 +11,11 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.databinding.MoreAppsFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.utils.glideLoadGif
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MoreAppsFragment : Fragment() {
     private lateinit var binding: MoreAppsFragmentBinding
-    private val moreAppsViewModel: MoreAppsViewModel by lifecycleScope.viewModel(this)
+    private val moreAppsViewModel: MoreAppsViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -31,6 +30,7 @@ class MoreAppsFragment : Fragment() {
         (activity as MainActivity).setupToolbar(getString(R.string.more_apps), hasSettings = false, hasBackButton = true)
         moreAppsViewModel.list.observe(viewLifecycleOwner, Observer(::fillList))
         moreAppsViewModel.progress.observe(viewLifecycleOwner, Observer(::updateProgress))
+        moreAppsViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
         moreAppsViewModel.showingAds.observe(viewLifecycleOwner, Observer(::loadAd))
     }
 

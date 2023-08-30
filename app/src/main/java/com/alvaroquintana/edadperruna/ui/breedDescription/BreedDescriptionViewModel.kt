@@ -6,13 +6,11 @@ import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.usecases.GetBreedsDescription
-import com.alvaroquintana.usecases.GetPaymentDone
 import com.alvaroquintana.usecases.GetScreenViewer
 import com.alvaroquintana.usecases.SetScreenViewer
 import kotlinx.coroutines.launch
 
-class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
-                                private val getBreedDescription: GetBreedsDescription,
+class BreedDescriptionViewModel(private val getBreedDescription: GetBreedsDescription,
                                 private val getScreenViewer: GetScreenViewer,
                                 private val setScreenViewer: SetScreenViewer
 ) : ScopedViewModel() {
@@ -23,8 +21,8 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
     private val _progress = MutableLiveData<Boolean>()
     val progress: LiveData<Boolean> = _progress
 
-    private val _breedData = MutableLiveData<Dog>()
-    val breedData: LiveData<Dog> = _breedData
+    private val _breedData = MutableLiveData<Dog?>()
+    val breedData: LiveData<Dog?> = _breedData
 
     private val _showingAds = MutableLiveData<UiModel>()
     val showingAds: LiveData<UiModel> = _showingAds
@@ -39,7 +37,7 @@ class BreedDescriptionViewModel(private val getPaymentDone: GetPaymentDone,
     private fun shouldBeShowAd(): UiModel.ShowAd{
         val numberScreenViewer = getScreenViewer()
         setScreenViewer(numberScreenViewer + 1)
-        return if(numberScreenViewer % 3 == 0 && !getPaymentDone()) {
+        return if(numberScreenViewer != 0 && numberScreenViewer % 4 == 0) {
             UiModel.ShowAd(true)
         } else {
             UiModel.ShowAd(false)

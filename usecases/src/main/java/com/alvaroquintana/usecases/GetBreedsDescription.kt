@@ -5,6 +5,6 @@ import com.alvaroquintana.domain.Dog
 
 class GetBreedsDescription(private val breedRepository: BreedRepository) {
 
-    suspend fun invoke(breedId: String): Dog? = breedRepository.getBreedDescription(breedId)
+    suspend operator fun invoke(breedId: String): Dog? = breedRepository.getBreedDescription(breedId)
 
 }

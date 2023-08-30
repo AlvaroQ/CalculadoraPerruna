@@ -62,10 +62,8 @@
 
     <style name="EditTextTheme">
         <item name="colorControlNormal">@color/textColorDark</item>
-        <item name="hintTextColor">@color/textColorLight</item>
         <item name="colorAccent">@color/textColorDark</item>
         <item name="android:textColorHint">@color/textColorLight</item>
-        <item name="boxStrokeWidthFocused">4dp</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeColor">@drawable/selector_text_input</item>
     </style>
@@ -82,7 +80,6 @@
 
     <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:textColor">@color/white</item>
-        <item name="checkedIconTint">@color/white</item>
         <item name="chipBackgroundColor">@color/textColorDark</item>
     </style>
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,13 +16,12 @@ import com.alvaroquintana.edadperruna.databinding.MainFragmentBinding
 import com.alvaroquintana.edadperruna.ui.MainActivity
 import com.alvaroquintana.edadperruna.ui.home.HomeFragmentArgs.Companion.fromBundle
 import com.alvaroquintana.edadperruna.utils.*
-import org.koin.android.scope.lifecycleScope
-import org.koin.android.viewmodel.scope.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
     private lateinit var binding: MainFragmentBinding
-    private val homeViewModel: HomeViewModel by lifecycleScope.viewModel(this)
+    private val homeViewModel: HomeViewModel by viewModel()
     private lateinit var editTextMonth: EditText
     private lateinit var editTextYear: EditText
 
@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
         binding.btnSubmit.animate().translationY(0f).setDuration(500).setStartDelay(800) .start()
     }
 
-    private fun navigate(navigation: HomeViewModel.Navigation?) {
+    private fun navigate(navigation: HomeViewModel.Navigation) {
         (activity as MainActivity).apply {
             when (navigation) {
                 HomeViewModel.Navigation.BreedList -> {
@@ -135,9 +135,7 @@ class HomeFragment : Fragment() {
         (activity as MainActivity).apply {
             when(error) {
                 HomeViewModel.Error.ErrorBreedEmpty -> {
-                    binding.constraintSelectBreed.background = getDrawable(
-                        R.drawable.border_error
-                    )
+                    binding.constraintSelectBreed.background = AppCompatResources.getDrawable(requireContext(), R.drawable.border_error)
                 }
                 HomeViewModel.Error.ErrorYearEmpty -> {
                     binding.fieldYear.error = getString(R.string.fill_year)

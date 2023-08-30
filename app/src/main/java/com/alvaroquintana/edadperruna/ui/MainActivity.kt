@@ -1,18 +1,20 @@
 package com.alvaroquintana.edadperruna.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.alvaroquintana.edadperruna.common.viewBinding
 import com.alvaroquintana.edadperruna.databinding.MainActivityBinding
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.edadperruna.utils.log
+import com.alvaroquintana.edadperruna.utils.showBonificado
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -24,16 +26,31 @@ class MainActivity : BaseActivity() {
     private lateinit var navController : NavController
     var appOpened = false
 
-    private lateinit var mInterstitialAd: InterstitialAd
-    private lateinit var rewardedAd: RewardedAd
+    private var rewardedAd: RewardedAd? = null
     lateinit var activity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(binding.root)
         activity = this
-        loadInstersticialAd()
-        navController = findNavController(R.id.nav_host_fragment)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+
+        MobileAds.initialize(this)
+        RewardedAd.load(this, getString(R.string.BONIFICADO_LIST), AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("GameActivity", adError.toString())
+                FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
+                rewardedAd = null
+            }
+
+            override fun onAdLoaded(ad: RewardedAd) {
+                Log.d("GameActivity", "Ad was loaded.")
+                rewardedAd = ad
+            }
+        })
     }
 
     fun setupToolbar(title: String, hasSettings: Boolean, hasBackButton: Boolean = false) {
@@ -74,36 +91,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun showInstersticialAd() {
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
-        } else {
-            log("TAG", "The interstitial wasn't loaded yet.")
-            FirebaseCrashlytics.getInstance().recordException(Throwable("The interstitial wasn't loaded"))
-        }
-    }
-
-    private fun loadInstersticialAd() {
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.INTERSTICIAL_RESULT)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
-        Analytics.analyticsScreenViewed(Analytics.SHOW_AD_INTERSTICIAL)
-    }
-
-    fun showRewardAd() {
-        rewardedAd = RewardedAd(activity, getString(R.string.BONIFICADO_LIST))
-        val adLoadCallback: RewardedAdLoadCallback = object : RewardedAdLoadCallback() {
-            override fun onRewardedAdLoaded() {
-                rewardedAd.show(activity, null)
-                Analytics.analyticsScreenViewed(Analytics.SHOW_AD_BONIFICATION)
-            }
-
-            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
-                log("ResultActivity - loadAd", "Ad failed to load.")
-            }
-        }
-        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
+    fun showRewardAd(show: Boolean) {
+        showBonificado(this, show, rewardedAd)
     }
 
     override fun onBackPressed() {
@@ -125,9 +114,5 @@ class MainActivity : BaseActivity() {
             }
             else -> finish()
         }
-    }
-
-    enum class Screen {
-        MAIN, BREED_LIST, RESULT, DESCRIPTION, SETTINGS
     }
 }

@@ -5,6 +5,6 @@ import com.alvaroquintana.domain.App
 
 class GetAppsRecommended(private val appsRecommendedRepository: AppsRecommendedRepository) {
 
-    suspend fun invoke(): MutableList<App> = appsRecommendedRepository.getAppsRecommended()
+    suspend operator fun invoke(): MutableList<App> = appsRecommendedRepository.getAppsRecommended()
 
 }

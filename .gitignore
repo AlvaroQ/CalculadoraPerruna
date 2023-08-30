@@ -1,3 +1,13 @@
 *.json
 captures/background.png
 captures/dog.png
+.gradle/6.7.1/gc.properties
+.gradle/
+.idea/
+app/firma/
+app/src/main/assets/._.DS_Store
+app/src/main/assets/.DS_Store
+app/src/main/res/values/secrets.xml
+app/release/
+captures/dog_calculator_landing.xcf
+captures/Calculadora Perruna.mp4

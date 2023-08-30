@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.alvaroquintana.domain.Dog
 import com.alvaroquintana.edadperruna.common.ScopedViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.GetPaymentDone
 
-class HomeViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewModel() {
+class HomeViewModel : ScopedViewModel() {
 
     private val _showingAds = MutableLiveData<UiModel>()
     val showingAds: LiveData<UiModel> = _showingAds
@@ -20,7 +19,7 @@ class HomeViewModel(private val getPaymentDone: GetPaymentDone) : ScopedViewMode
 
     init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_HOME)
-        _showingAds.value = UiModel.ShowAd(!getPaymentDone())
+        _showingAds.value = UiModel.ShowAd(true)
     }
 
     fun navigateToBreedList() {

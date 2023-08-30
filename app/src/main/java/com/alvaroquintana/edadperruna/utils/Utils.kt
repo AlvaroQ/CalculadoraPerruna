@@ -9,6 +9,7 @@ import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -16,6 +17,9 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.helpers.ImagePreviewer
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -40,6 +44,26 @@ fun log(tag: String?, msg: String?, error: Throwable? = null){
             Log.e(tag, msg, error)
         } else {
             Log.d(tag, msg!!)
+        }
+    }
+}
+
+fun showBanner(show: Boolean, adView: AdView){
+    if(show) {
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+    } else {
+        adView.visibility = View.GONE
+    }
+}
+fun showBonificado(activity: Activity, show: Boolean, rewardedAd: RewardedAd?) {
+    if(show) {
+        rewardedAd?.let { ad ->
+            ad.show(activity) { rewardItem ->
+                Log.d("loadBonificado", "User earned the reward. rewardAmount=$rewardItem.amount, rewardType=$rewardItem.type")
+            }
+        } ?: run {
+            Log.d("loadBonificado", "The rewarded ad wasn't ready yet.")
         }
     }
 }
