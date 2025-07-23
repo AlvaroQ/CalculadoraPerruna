@@ -21,7 +21,6 @@ import com.alvaroquintana.edadperruna.utils.hideKeyboard
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-
 class BreedListFragment : Fragment() {
     private lateinit var binding: BreedListFragmentBinding
     private val breedListViewModel: BreedListViewModel by viewModel()
@@ -83,8 +82,8 @@ class BreedListFragment : Fragment() {
         val newList: MutableList<Dog> = mutableListOf()
         if(this::allBreedList.isInitialized) {
             for (item in allBreedList) {
-                if (item.name!!.toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT)) ||
-                        item.otherNames.toString().toUpperCase(Locale.ROOT).contains(textName.toUpperCase(Locale.ROOT))) {
+                if (item.name!!.uppercase(Locale.ROOT).contains(textName.uppercase(Locale.ROOT)) ||
+                        item.otherNames.toString().uppercase(Locale.ROOT).contains(textName.uppercase(Locale.ROOT))) {
                     newList.add(item)
                 }
             }
