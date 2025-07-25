@@ -104,9 +104,11 @@ dependencies {
     implementation "io.insert-koin:koin-android:${libsversions.koin_version}"
     implementation "com.google.android.gms:play-services-ads:24.4.0"
 
-    implementation androidLibs.values()
 //    ksp "com.github.bumptech.glide:glide:4.14.2"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation androidLibs.values()
     implementation ui.values()
     implementation androidKtxLibs.values()
     implementation firebaseLibs.values()

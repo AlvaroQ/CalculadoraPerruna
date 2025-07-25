@@ -20,6 +20,7 @@ fun glideLoadURL(context: Context, url: String?, where: ImageView) {
         .setDefaultRequestOptions(RequestOptions().timeout(30000))
         .load(url)
         .error(getCircularProgressDrawable(context))
+        .into(where)
 }
 
 fun glideLoadBase64(context: Context, imageBytes: String?, where: ImageView) {
