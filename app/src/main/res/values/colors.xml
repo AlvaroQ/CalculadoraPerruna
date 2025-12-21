@@ -1,20 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FCE0FF</color>
-    <color name="colorPrimaryDark">#BCA5EF</color>
-    <color name="colorAccent">#121281</color>
-    <color name="borderColor">#000000</color>
+    <!-- Primary Colors - Deep Purple -->
+    <color name="md_theme_light_primary">#6750A4</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EADDFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
+
+    <!-- Secondary Colors - Teal -->
+    <color name="md_theme_light_secondary">#625B71</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#E8DEF8</color>
+    <color name="md_theme_light_onSecondaryContainer">#1D192B</color>
+
+    <!-- Tertiary Colors -->
+    <color name="md_theme_light_tertiary">#7D5260</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_light_onTertiaryContainer">#31111D</color>
+
+    <!-- Error Colors -->
+    <color name="md_theme_light_error">#B3261E</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#F9DEDC</color>
+    <color name="md_theme_light_onErrorContainer">#410E0B</color>
+
+    <!-- Background & Surface -->
+    <color name="md_theme_light_background">#FFFBFE</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
+    <color name="md_theme_light_surface">#FFFBFE</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+    <color name="md_theme_light_surfaceVariant">#E7E0EC</color>
+    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
+
+    <!-- Outline & Inverse -->
+    <color name="md_theme_light_outline">#79747E</color>
+    <color name="md_theme_light_outlineVariant">#CAC4D0</color>
+    <color name="md_theme_light_inverseSurface">#313033</color>
+    <color name="md_theme_light_inverseOnSurface">#F4EFF4</color>
+    <color name="md_theme_light_inversePrimary">#D0BCFF</color>
+
+    <!-- Surface Containers -->
+    <color name="md_theme_light_surfaceContainerLowest">#FFFFFF</color>
+    <color name="md_theme_light_surfaceContainerLow">#F7F2F7</color>
+    <color name="md_theme_light_surfaceContainer">#F3EDF7</color>
+    <color name="md_theme_light_surfaceContainerHigh">#ECE6F0</color>
+    <color name="md_theme_light_surfaceContainerHighest">#E6E0E9</color>
+
+    <!-- Scrim -->
+    <color name="md_theme_light_scrim">#000000</color>
+
+    <!-- =========================================== -->
+    <!-- Legacy colors (para compatibilidad) -->
+    <!-- =========================================== -->
+    <color name="colorPrimary">@color/md_theme_light_primary</color>
+    <color name="colorPrimaryDark">@color/md_theme_light_primaryContainer</color>
+    <color name="colorAccent">@color/md_theme_light_tertiary</color>
+
+    <!-- Text Colors -->
+    <color name="textColor">@color/md_theme_light_onBackground</color>
+    <color name="textColorLight">@color/md_theme_light_onSurfaceVariant</color>
+    <color name="textColorDark">@color/md_theme_light_primary</color>
+    <color name="textColorGrapic">#0050C8</color>
+
+    <!-- UI Elements -->
+    <color name="borderColor">@color/md_theme_light_outline</color>
     <color name="backgroundTransparent">#00FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="settingsIconColor">@color/md_theme_light_onSurfaceVariant</color>
+
+    <!-- Chart Colors -->
     <color name="blue">#0050C8</color>
     <color name="red">#F44336</color>
     <color name="yellow">#FFC107</color>
-    <color name="green">#00FF48</color>
-    <color name="white">#FFFFFF</color>
-    <color name="light_purple">#4D512D87</color>
+    <color name="green">#00C853</color>
+    <color name="light_purple">#4D6750A4</color>
 
-    <color name="textColor">#000000</color>
-    <color name="textColorLight">#2C2C2C</color>
-    <color name="textColorDark">#6B51A5</color>
-    <color name="textColorGrapic">#0050C8</color>
-    <color name="settongsIconColor">#000000</color>
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Card & Surface elevations -->
+    <color name="cardBackground">@color/md_theme_light_surfaceContainerLow</color>
+    <color name="cardBackgroundElevated">@color/md_theme_light_surfaceContainer</color>
+
+    <!-- Ripple -->
+    <color name="rippleColor">#1F6750A4</color>
 </resources>

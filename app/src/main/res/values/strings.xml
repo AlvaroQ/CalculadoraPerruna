@@ -38,7 +38,7 @@
     <string name="adult">Adult</string>
     <string name="senior">Senior</string>
     <string name="dog_years">Dog years</string>
-    <string name="life_resumen">%s have average life expectancy %s years</string>
+    <string name="life_resumen">%1$s have average life expectancy %2$s years</string>
     <string name="time_year_month">%1$s y %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>
@@ -73,9 +73,23 @@
     <string name="settings_share">Share with your friends</string>
     <string name="settings_share_summary">Share with your friend this application to play with them</string>
     <string name="more_apps">More applications</string>
-    <string name="settings_dark_mode">Mode</string>
-    <string name="night_mode">Night mode</string>
-    <string name="day_mode">Day mode</string>
+    <string name="settings_dark_mode">Theme</string>
+    <string name="night_mode">Dark</string>
+    <string name="day_mode">Light</string>
+    <string name="system_mode">System default</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_about">About</string>
+
+    <string-array name="theme_entries">
+        <item>@string/day_mode</item>
+        <item>@string/night_mode</item>
+        <item>@string/system_mode</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
     <string name="update_breeds" translatable="false">Actualizar razas perrunas</string>
 
     <string name="share">I like this app</string>

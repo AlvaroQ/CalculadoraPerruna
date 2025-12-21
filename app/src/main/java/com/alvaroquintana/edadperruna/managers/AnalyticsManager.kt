@@ -3,33 +3,39 @@ package com.alvaroquintana.edadperruna.managers
 import android.content.Context
 import android.os.Bundle
 import com.alvaroquintana.edadperruna.BuildConfig
-import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 
 object Analytics {
-    lateinit var mFirebase: FirebaseAnalytics
-    lateinit var ctx: Context
+    private var mFirebase: FirebaseAnalytics? = null
+    private var isInitialized = false
 
     fun initialize(ctx: Context) {
-        Analytics.ctx = ctx
-        mFirebase = FirebaseAnalytics.getInstance(ctx.applicationContext)
+        if (!isInitialized) {
+            mFirebase = FirebaseAnalytics.getInstance(ctx.applicationContext)
+            isInitialized = true
+        }
+    }
+
+    private fun getUID(): String {
+        return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
     fun analyticsScreenViewed(screenTitle: String) {
-
+        if (!isInitialized) return
         logEvent(
             Event("screen_viewed")
-            .with("uid", (ctx as BaseActivity).getUID())
+            .with("uid", getUID())
             .with("screen_title", screenTitle)
             .with("app_version", BuildConfig.VERSION_NAME)
             .with("app_name", BuildConfig.APPLICATION_ID))
     }
 
     fun analyticsDogTraslateFinished(years: Int, months: Int) {
-
+        if (!isInitialized) return
         logEvent(
             Event("game_finished")
-            .with("uid", (ctx as BaseActivity).getUID())
+            .with("uid", getUID())
             .with("years", years.toString())
             .with("months", months.toString())
             .with("app_version", BuildConfig.VERSION_NAME)
@@ -37,27 +43,27 @@ object Analytics {
     }
 
     fun analyticsClicked(btnDescription: String) {
-
+        if (!isInitialized) return
         logEvent(
             Event("clicked")
-            .with("uid", (ctx as BaseActivity).getUID())
+            .with("uid", getUID())
             .with("component", btnDescription)
             .with("app_version", BuildConfig.VERSION_NAME)
             .with("app_name", BuildConfig.APPLICATION_ID))
     }
 
     fun analyticsAppRecommendedOpen(appName: String) {
-
+        if (!isInitialized) return
         logEvent(
             Event("app_recommended_open")
-            .with("uid", (ctx as BaseActivity).getUID())
+            .with("uid", getUID())
             .with("app_name", appName)
             .with("app_version", BuildConfig.VERSION_NAME)
             .with("app_name", BuildConfig.APPLICATION_ID))
     }
 
     private fun logEvent(event: Event) {
-        mFirebase.logEvent(event.eventName, event.bundle)
+        mFirebase?.logEvent(event.eventName, event.bundle)
     }
 
     private class Event(val eventName: String) {

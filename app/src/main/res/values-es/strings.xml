@@ -38,7 +38,7 @@
     <string name="adult">Adulto</string>
     <string name="senior">Senior</string>
     <string name="dog_years">Años caninos</string>
-    <string name="life_resumen">Esperanza media de vida de %s: %s años</string>
+    <string name="life_resumen">Esperanza media de vida de %1$s: %2$s años</string>
     <string name="time_year_month">%1$s y %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>
@@ -72,9 +72,23 @@
     <string name="more_apps">Más aplicaciones</string>
     <string name="settings_share">Compartir con mis amigos</string>
     <string name="settings_share_summary">Comparte con tus amigos esta aplicación para jugar con ellos</string>
-    <string name="settings_dark_mode">Cambiar modo</string>
-    <string name="night_mode">Modo noche</string>
-    <string name="day_mode">Modo día</string>
+    <string name="settings_dark_mode">Tema</string>
+    <string name="night_mode">Oscuro</string>
+    <string name="day_mode">Claro</string>
+    <string name="system_mode">Predeterminado del sistema</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_about">Acerca de</string>
+
+    <string-array name="theme_entries">
+        <item>@string/day_mode</item>
+        <item>@string/night_mode</item>
+        <item>@string/system_mode</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
 
     <string name="share">Me ha gustado esta aplicación</string>
     <string name="share_summary">Descarga esta aplicación y aprende del mundo canino</string>

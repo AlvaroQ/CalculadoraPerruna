@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'// Added Firebase Crashlytics plugin.
+apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.devtools.ksp'
 
 android {
@@ -92,9 +92,7 @@ android {
 
     buildFeatures {
         buildConfig = true
-    }
-    buildFeatures {
-        viewBinding true
+        compose true
     }
 }
 
@@ -104,19 +102,39 @@ dependencies {
     implementation project(":domain")
     implementation project(":usecases")
 
+    // Dependency Injection
     implementation "io.insert-koin:koin-android:${libsversions.koin_version}"
+
+    // Google Services
     implementation "com.google.android.gms:play-services-ads:24.4.0"
 
-//    ksp "com.github.bumptech.glide:glide:4.14.2"
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    // Core dependencies
     implementation androidLibs.values()
     implementation ui.values()
     implementation androidKtxLibs.values()
     implementation firebaseLibs.values()
     implementation kotlinLibs.values()
     implementation libs.values()
+
+    // Splash Screen API
+    implementation "androidx.core:core-splashscreen:1.0.1"
+
+    // Jetpack Compose
+    implementation platform(composeLibs.composeBom)
+    implementation composeLibs.composeUi
+    implementation composeLibs.composeUiGraphics
+    implementation composeLibs.composeUiToolingPreview
+    implementation composeLibs.composeMaterial3
+    implementation composeLibs.composeActivity
+    implementation composeLibs.composeNavigation
+    implementation composeLibs.composeLifecycle
+    implementation composeLibs.composeViewModel
+    implementation composeLibs.koinCompose
+    implementation composeLibs.coil
+    implementation "androidx.compose.runtime:runtime-livedata"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
 }
 configurations.configureEach {
     exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
