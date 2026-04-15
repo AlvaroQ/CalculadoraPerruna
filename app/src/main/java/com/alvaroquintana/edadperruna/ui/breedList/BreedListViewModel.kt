@@ -1,71 +1,76 @@
 package com.alvaroquintana.edadperruna.ui.breedList
 
-import android.widget.ImageView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.domain.Dog
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alvaroquintana.edadperruna.core.data.network.ConnectivityObserver
+import com.alvaroquintana.edadperruna.core.domain.model.Dog
+import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
+import com.alvaroquintana.edadperruna.managers.AdManager
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.GetBreedList
-import com.alvaroquintana.usecases.GetScreenViewer
-import com.alvaroquintana.usecases.SetScreenViewer
+import com.alvaroquintana.edadperruna.ui.common.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BreedListViewModel(private val getBreedList: GetBreedList,
-                         private val getScreenViewer: GetScreenViewer,
-                         private val setScreenViewer: SetScreenViewer
-) : ScopedViewModel() {
+@HiltViewModel
+class BreedListViewModel @Inject constructor(
+    private val breedRepository: BreedRepository,
+    private val adManager: AdManager,
+    private val connectivityObserver: ConnectivityObserver,
+) : ViewModel() {
 
-    private val _showingAds = MutableLiveData<UiModel>()
-    val showingAds: LiveData<UiModel> = _showingAds
+    private val _uiState = MutableStateFlow<UiState<List<Dog>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<Dog>>> = _uiState.asStateFlow()
 
-    private val _progress = MutableLiveData<Boolean>()
-    val progress: LiveData<Boolean> = _progress
+    private val _showAd = MutableStateFlow(false)
+    val showAd: StateFlow<Boolean> = _showAd.asStateFlow()
 
-    private val _list = MutableLiveData<MutableList<Dog>>()
-    val list: LiveData<MutableList<Dog>> = _list
+    private val _showNoInternet = MutableStateFlow(false)
+    val showNoInternet: StateFlow<Boolean> = _showNoInternet.asStateFlow()
 
-    private val _navigation = MutableLiveData<Navigation>()
-    val navigation: LiveData<Navigation> = _navigation
+    private val _events = Channel<BreedListEvent>(Channel.BUFFERED)
+    val events = _events.receiveAsFlow()
 
     init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_BREED_LIST)
-        launch {
-            _progress.value = true
-            _list.value = getBreedList()
-            _showingAds.value = shouldBeShowAd()
-            _progress.value = false
+        loadBreeds()
+    }
+
+    fun loadBreeds() {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            if (!connectivityObserver.isOnline) {
+                _showNoInternet.value = true
+            }
+            breedRepository.getBreedList()
+                .catch { _uiState.value = UiState.Error(it.message ?: "") }
+                .collect { dogs ->
+                    _uiState.value = UiState.Success(dogs)
+                    _showAd.value = adManager.shouldShowAd()
+                }
         }
     }
 
-    private fun shouldBeShowAd(): UiModel.ShowAd{
-        val numberScreenViewer = getScreenViewer()
-        setScreenViewer(numberScreenViewer + 1)
-        return if(numberScreenViewer != 0 && numberScreenViewer % 4 == 0) {
-            UiModel.ShowAd(true)
-        } else {
-            UiModel.ShowAd(false)
-        }
-    }
-
-    private suspend fun getBreedList(): MutableList<Dog> {
-        return getBreedList.invoke()
+    fun dismissNoInternet() {
+        _showNoInternet.value = false
     }
 
     fun onDogClicked(dog: Dog) {
-        _navigation.value = Navigation.BreedDescription(dog.breedId?.toInt()!!, dog)
+        _events.trySend(BreedListEvent.NavigateToDescription(dog))
     }
 
-    fun onDogLongClicked(imageView: ImageView, icon: String) {
-        _navigation.value = Navigation.Expand(imageView, icon)
+    fun onDogLongClicked(imageUrl: String) {
+        _events.trySend(BreedListEvent.ExpandImage(imageUrl))
     }
 
-    sealed class Navigation {
-        data class BreedDescription(val idBreed: Int, val breed : Dog): Navigation()
-        data class Expand(val imageView: ImageView, val image: String): Navigation()
-    }
-
-    sealed class UiModel {
-        data class ShowAd(val show: Boolean) : UiModel()
+    sealed interface BreedListEvent {
+        data class NavigateToDescription(val dog: Dog) : BreedListEvent
+        data class ExpandImage(val imageUrl: String) : BreedListEvent
     }
 }

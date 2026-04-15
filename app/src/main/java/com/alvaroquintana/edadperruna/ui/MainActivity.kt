@@ -1,12 +1,10 @@
 package com.alvaroquintana.edadperruna.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.navigation.AppNavigation
@@ -17,17 +15,15 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
     private var rewardedAd: RewardedAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-
-        // Apply saved theme preference
-        applyThemeFromPreferences()
 
         enableEdgeToEdge()
 
@@ -42,18 +38,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun applyThemeFromPreferences() {
-        val preferences = getSharedPreferences("${packageName}_preferences", Context.MODE_PRIVATE)
-        val themeValue = preferences.getString("theme_mode", "system")
-        val mode = when (themeValue) {
-            "light" -> AppCompatDelegate.MODE_NIGHT_NO
-            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
-            "system" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-        AppCompatDelegate.setDefaultNightMode(mode)
-    }
-
     private fun loadRewardedAd() {
         RewardedAd.load(
             this,
@@ -61,8 +45,7 @@ class MainActivity : ComponentActivity() {
             AdRequest.Builder().build(),
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("MainActivity", adError.toString())
-                    FirebaseCrashlytics.getInstance().recordException(Throwable(adError.message))
+                    Log.d("MainActivity", "Ad failed to load: ${adError.message}")
                     rewardedAd = null
                 }
 

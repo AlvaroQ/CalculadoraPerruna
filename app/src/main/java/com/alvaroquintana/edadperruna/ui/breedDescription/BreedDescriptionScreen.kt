@@ -10,52 +10,46 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Pets
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.alvaroquintana.domain.Dog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.R
-import org.koin.androidx.compose.koinViewModel
+import com.alvaroquintana.edadperruna.ui.common.UiState
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
+import com.alvaroquintana.edadperruna.ui.components.GradientOverlay
+import com.alvaroquintana.edadperruna.ui.components.InfoChip
+import com.alvaroquintana.edadperruna.ui.components.NoInternetDialog
+import com.alvaroquintana.edadperruna.ui.components.PerrunoAsyncImage
+import com.alvaroquintana.edadperruna.ui.components.PerrunoButton
+import com.alvaroquintana.edadperruna.ui.components.PerrunoCard
+import com.alvaroquintana.edadperruna.ui.components.PerrunoCardVariant
+import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
+import com.alvaroquintana.edadperruna.ui.components.ShimmerBox
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreedDescriptionScreen(
     image: String,
@@ -63,347 +57,265 @@ fun BreedDescriptionScreen(
     idBreed: String,
     onBackClick: () -> Unit,
     onSelectBreed: (image: String, name: String, life: String) -> Unit,
-    viewModel: BreedDescriptionViewModel = koinViewModel()
+    viewModel: BreedDescriptionViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    val progress by viewModel.progress.observeAsState(false)
-    val breedData by viewModel.breedData.observeAsState()
-    val navigation by viewModel.navigation.observeAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showAd by viewModel.showAd.collectAsStateWithLifecycle()
+    val showNoInternet by viewModel.showNoInternet.collectAsStateWithLifecycle()
 
-    var dog by remember { mutableStateOf<Dog?>(null) }
+    val isLoading = uiState is UiState.Loading
+    val breedData = (uiState as? UiState.Success)?.data
 
     LaunchedEffect(idBreed) {
-        viewModel.getDescription(idBreed)
+        viewModel.loadBreed(idBreed)
     }
 
-    LaunchedEffect(breedData) {
-        breedData?.let {
-            dog = Dog(
-                name = name,
-                image = image,
-                life = it.mainInformation?.lifeExpectancy?.expectancy?.toString()
-            )
-        }
-    }
-
-    LaunchedEffect(navigation) {
-        navigation?.let {
-            when (it) {
-                is BreedDescriptionViewModel.Navigation.Home -> {
-                    onSelectBreed(
-                        it.breed.image ?: "",
-                        it.breed.name ?: "",
-                        it.breed.life ?: ""
-                    )
-                }
+    // No Internet Dialog
+    if (showNoInternet) {
+        NoInternetDialog(
+            onDismiss = { viewModel.dismissNoInternet() },
+            onRetry = {
+                viewModel.dismissNoInternet()
+                viewModel.loadBreed(idBreed)
             }
-        }
+        )
+    }
+
+    val dog = breedData?.let {
+        Dog(
+            name = name,
+            image = image,
+            life = it.mainInformation?.lifeExpectancy?.expectancy?.toString() ?: ""
+        )
     }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(name) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = stringResource(R.string.back_btn)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
-                )
+            PerrunoTopBar(
+                title = name,
+                onBack = onBackClick
             )
         }
     ) { paddingValues ->
+        AdaptiveContainer(modifier = Modifier.padding(paddingValues)) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
-                    .padding(bottom = 80.dp)
+                    .padding(PerrunoTokens.Spacing.lg)
+                    .padding(bottom = PerrunoTokens.Spacing.huge + PerrunoTokens.Spacing.xl)
             ) {
-                // Breed Image Card
-                Card(
+                // Breed Image Card with themed gradient overlay
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(220.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                    ),
-                    shape = RoundedCornerShape(12.dp)
+                        .height(PerrunoTokens.Spacing.huge * 5)
+                        .background(Color.White, PerrunoShapes.md)
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(context)
-                                .data(image)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = stringResource(R.string.dog_image),
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(12.dp))
-                        )
+                    PerrunoAsyncImage(
+                        imageUrl = image,
+                        contentDescription = stringResource(R.string.dog_image),
+                        shape = PerrunoShapes.md,
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(60.dp)
-                                .align(Alignment.BottomCenter)
-                                .background(
-                                    Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color.Transparent,
-                                            Color.Black.copy(alpha = 0.7f)
-                                        )
-                                    )
-                                )
-                        )
-
-                        Text(
-                            text = name,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.BottomCenter)
-                                .padding(16.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                if (progress) {
-                    Box(
+                    GradientOverlay(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    }
+                            .height(PerrunoTokens.Spacing.huge + PerrunoTokens.Spacing.xl)
+                            .align(Alignment.BottomCenter),
+                        startColor = PerrunoTheme.colors.gradientOverlayStart,
+                        endColor = PerrunoTheme.colors.gradientOverlayEnd
+                    )
+
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .padding(PerrunoTokens.Spacing.lg)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
+
+                if (isLoading) {
+                    // Shimmer loading layout
+                    ShimmerBox(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(PerrunoTokens.Spacing.huge + PerrunoTokens.Spacing.xxxl),
+                        shape = PerrunoShapes.md
+                    )
+                    Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
+                    ShimmerBox(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(PerrunoTokens.Spacing.huge * 3),
+                        shape = PerrunoShapes.md
+                    )
                 } else {
                     breedData?.let { breed ->
-                        // Resume Card
-                        Card(
+                        // Info chips — Size and Life Expectancy
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                            horizontalArrangement = Arrangement.spacedBy(
+                                PerrunoTokens.Spacing.md,
+                                Alignment.CenterHorizontally
+                            )
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
+                            breed.mainInformation?.sizeBreed?.let { sizeValue ->
+                                InfoChip(
+                                    icon = Icons.Rounded.Pets,
+                                    value = sizeValue,
+                                    label = stringResource(R.string.size),
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+
+                            breed.mainInformation?.lifeExpectancy?.let { life ->
+                                InfoChip(
+                                    icon = Icons.Rounded.Schedule,
+                                    value = stringResource(
+                                        R.string.life_expectative_text,
+                                        life.expectancy ?: 0
+                                    ),
+                                    label = stringResource(R.string.life_expectative),
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
+
+                        // Description card
+                        if (breed.shortDescription.isNotEmpty()) {
+                            PerrunoCard(
+                                variant = PerrunoCardVariant.Elevated,
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceEvenly
-                                ) {
-                                    // Size
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text(
-                                            text = stringResource(R.string.size),
-                                            style = MaterialTheme.typography.titleSmall,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Card(
-                                            modifier = Modifier.size(80.dp),
-                                            shape = RoundedCornerShape(40.dp),
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = MaterialTheme.colorScheme.primaryContainer
-                                            )
-                                        ) {
-                                            Box(
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Text(
-                                                    text = breed.mainInformation?.sizeBreed ?: "",
-                                                    style = MaterialTheme.typography.bodySmall,
-                                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                    textAlign = TextAlign.Center
-                                                )
-                                            }
-                                        }
-                                    }
-
-                                    // Life Expectancy
-                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text(
-                                            text = stringResource(R.string.life_expectative),
-                                            style = MaterialTheme.typography.titleSmall,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Spacer(modifier = Modifier.height(8.dp))
-                                        Card(
-                                            modifier = Modifier.size(80.dp),
-                                            shape = RoundedCornerShape(40.dp),
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = MaterialTheme.colorScheme.primaryContainer
-                                            )
-                                        ) {
-                                            Box(
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Text(
-                                                    text = stringResource(
-                                                        R.string.life_expectative_text,
-                                                        breed.mainInformation?.lifeExpectancy?.expectancy ?: 0
-                                                    ),
-                                                    style = MaterialTheme.typography.bodySmall,
-                                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                    textAlign = TextAlign.Center
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
                                 Text(
-                                    text = breed.shortDescription ?: "",
+                                    text = breed.shortDescription,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
+                        }
 
                         // FCI Card
                         if (breed.fci?.group != 0L) {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surface
-                                ),
-                                shape = RoundedCornerShape(12.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                            PerrunoCard(
+                                variant = PerrunoCardVariant.Elevated,
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Column(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "FCI",
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = PerrunoTokens.Spacing.sm)
+                                )
+
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.sm))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
                                     Text(
-                                        text = "FCI",
-                                        style = MaterialTheme.typography.titleSmall,
-                                        fontWeight = FontWeight.Bold,
+                                        text = stringResource(R.string.fci_group, breed.fci?.group?.toInt() ?: 0),
+                                        style = MaterialTheme.typography.bodySmall,
                                         textAlign = TextAlign.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
+                                        modifier = Modifier.width(PerrunoTokens.Spacing.huge + PerrunoTokens.Spacing.xxxl)
                                     )
-
-                                    HorizontalDivider()
-
-                                    Row(
+                                    Text(
+                                        text = breed.fci?.groupType ?: "",
+                                        style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.fci_group, breed.fci?.group?.toInt() ?: 0),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.width(80.dp)
-                                        )
-                                        Text(
-                                            text = breed.fci?.groupType ?: "",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .padding(start = 8.dp)
-                                        )
-                                    }
+                                            .weight(1f)
+                                            .padding(start = PerrunoTokens.Spacing.sm)
+                                    )
+                                }
 
-                                    HorizontalDivider()
+                                Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.sm))
+                                HorizontalDivider()
+                                Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.sm))
 
-                                    Row(
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.fci_section, breed.fci?.section?.toInt() ?: 0),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.width(PerrunoTokens.Spacing.huge + PerrunoTokens.Spacing.xxxl)
+                                    )
+                                    Text(
+                                        text = breed.fci?.sectionType ?: "",
+                                        style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.fci_section, breed.fci?.section?.toInt() ?: 0),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            textAlign = TextAlign.Center,
-                                            modifier = Modifier.width(80.dp)
-                                        )
-                                        Text(
-                                            text = breed.fci?.sectionType ?: "",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            modifier = Modifier
-                                                .weight(1f)
-                                                .padding(start = 8.dp)
-                                        )
-                                    }
+                                            .weight(1f)
+                                            .padding(start = PerrunoTokens.Spacing.sm)
+                                    )
                                 }
                             }
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
                         }
 
                         // Other Names Card
-                        if (!breed.otherNames.isNullOrEmpty()) {
+                        if (breed.otherNames.isNotEmpty()) {
                             InfoCard(
                                 title = stringResource(R.string.other_names),
-                                content = breed.otherNames?.joinToString(", ") ?: ""
+                                content = breed.otherNames.joinToString(", ")
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
                         }
 
                         // Common Diseases Card
-                        if (!breed.commonDiseases.isNullOrEmpty()) {
+                        if (breed.commonDiseases.isNotEmpty()) {
                             InfoCard(
                                 title = stringResource(R.string.common_diseases),
-                                content = breed.commonDiseases?.joinToString(", ") ?: ""
+                                content = breed.commonDiseases.joinToString(", ")
                             )
                         }
                     }
                 }
             }
 
-            // Select Breed Button
-            Button(
-                onClick = { dog?.let { viewModel.navigateToHome(it) } },
-                enabled = dog != null,
+            // Select Breed Button — pinned to bottom
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
                     .align(Alignment.BottomCenter)
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
+                    .padding(horizontal = PerrunoTokens.Spacing.lg, vertical = PerrunoTokens.Spacing.md)
             ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_check),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
+                PerrunoButton(
                     text = stringResource(R.string.select_breed),
-                    style = MaterialTheme.typography.labelLarge
+                    onClick = {
+                        dog?.let {
+                            onSelectBreed(it.image, it.name, it.life)
+                        }
+                    },
+                    icon = ImageVector.vectorResource(R.drawable.ic_check),
+                    enabled = dog != null,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
+        }
         }
     }
 }
@@ -413,35 +325,32 @@ private fun InfoCard(
     title: String,
     content: String
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    PerrunoCard(
+        variant = PerrunoCardVariant.Elevated,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall.copy(
+                fontWeight = FontWeight.Bold
+            ),
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = PerrunoTokens.Spacing.sm)
+        )
 
-            HorizontalDivider()
+        HorizontalDivider()
 
-            Text(
-                text = content,
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-        }
+        Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.sm))
+
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }

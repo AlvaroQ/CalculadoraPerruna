@@ -1,11 +1,10 @@
 package com.alvaroquintana.edadperruna.ui.settings
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,16 +17,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,52 +30,43 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.utils.Constants
 import com.alvaroquintana.edadperruna.utils.rateApp
 import com.alvaroquintana.edadperruna.utils.shareApp
-import org.koin.androidx.compose.koinViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
+import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit,
-    viewModel: SettingsViewModel = koinViewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val preferences = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
-    var currentTheme by remember { mutableStateOf(preferences.getString("theme_mode", "system") ?: "system") }
+    val currentTheme by viewModel.themeMode.collectAsStateWithLifecycle()
     var showThemeDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.settings)) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = stringResource(R.string.back_btn)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
-                )
+            PerrunoTopBar(
+                title = stringResource(R.string.settings),
+                onBack = onBackClick
             )
         }
     ) { paddingValues ->
+        AdaptiveContainer(modifier = Modifier.padding(paddingValues)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
             // Appearance Section
@@ -104,17 +90,6 @@ fun SettingsScreen(
             )
 
             SettingsItem(
-                icon = R.drawable.ic_store,
-                title = stringResource(R.string.settings_more_apps),
-                subtitle = stringResource(R.string.settings_more_apps_summary),
-                onClick = {
-                    try {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_MORE_APPS)))
-                    } catch (_: ActivityNotFoundException) { }
-                }
-            )
-
-            SettingsItem(
                 icon = R.drawable.ic_share,
                 title = stringResource(R.string.settings_share),
                 subtitle = stringResource(R.string.settings_share_summary),
@@ -128,13 +103,13 @@ fun SettingsScreen(
                 onClick = { }
             )
         }
+        }
 
         if (showThemeDialog) {
             ThemeSelectionDialog(
                 currentTheme = currentTheme,
                 onThemeSelected = { theme ->
-                    currentTheme = theme
-                    preferences.edit().putString("theme_mode", theme).apply()
+                    viewModel.setThemeMode(theme)
                     applyTheme(theme)
                     showThemeDialog = false
                 },
@@ -150,7 +125,11 @@ private fun SettingsCategoryHeader(title: String) {
         text = title,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 16.dp, top = 24.dp, bottom = 8.dp)
+        modifier = Modifier.padding(
+            start = PerrunoTokens.Spacing.lg,
+            top = PerrunoTokens.Spacing.xxl,
+            bottom = PerrunoTokens.Spacing.sm
+        )
     )
 }
 
@@ -165,16 +144,25 @@ private fun SettingsItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = PerrunoTokens.Spacing.lg, vertical = PerrunoTokens.Spacing.lg),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(icon),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
+        // Icon with badge background
+        Box(
+            modifier = Modifier
+                .size(PerrunoTokens.Spacing.xxxl + PerrunoTokens.Spacing.sm)
+                .clip(PerrunoShapes.sm)
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(icon),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(PerrunoTokens.Spacing.xl)
+            )
+        }
+        Spacer(modifier = Modifier.width(PerrunoTokens.Spacing.lg))
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
@@ -182,7 +170,7 @@ private fun SettingsItem(
                 color = MaterialTheme.colorScheme.onSurface
             )
             if (subtitle.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.xxs))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
@@ -215,14 +203,14 @@ private fun ThemeSelectionDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onThemeSelected(value) }
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = PerrunoTokens.Spacing.sm),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = currentTheme == value,
                             onClick = { onThemeSelected(value) }
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(PerrunoTokens.Spacing.sm))
                         Text(text = label)
                     }
                 }
@@ -232,7 +220,8 @@ private fun ThemeSelectionDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.cancel))
             }
-        }
+        },
+        shape = PerrunoShapes.lg
     )
 }
 

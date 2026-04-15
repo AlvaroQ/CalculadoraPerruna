@@ -1,81 +1,66 @@
 package com.alvaroquintana.edadperruna.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.domain.Dog
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
+import androidx.lifecycle.ViewModel
+import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.managers.Analytics
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import javax.inject.Inject
 
-class HomeViewModel : ScopedViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
 
-    private val _showingAds = MutableLiveData<UiModel>()
-    val showingAds: LiveData<UiModel> = _showingAds
-
-    private val _navigation = MutableLiveData<Navigation>()
-    val navigation: LiveData<Navigation> = _navigation
-
-    private val mError = MutableLiveData<Error>()
-    val error: LiveData<Error> = mError
+    private val _events = Channel<HomeEvent>(Channel.BUFFERED)
+    val events = _events.receiveAsFlow()
 
     init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_HOME)
-        _showingAds.value = UiModel.ShowAd(true)
     }
 
     fun navigateToBreedList() {
-        _navigation.value = Navigation.BreedList
+        _events.trySend(HomeEvent.NavigateToBreedList)
     }
 
     fun navigateToResult(dog: Dog) {
         Analytics.analyticsClicked(Analytics.BTN_RESULT)
-        _navigation.value = Navigation.Result(dog)
+        _events.trySend(HomeEvent.NavigateToResult(dog))
     }
 
-    fun checkErrors(dog: Dog, year: String, month: String) : Boolean {
+    fun checkErrors(dog: Dog, year: String, month: String): Boolean {
         var isCorrect = true
 
-        if(dog.name == "") {
-            handleFailure(Error.ErrorBreedEmpty)
+        if (dog.name.isNullOrEmpty()) {
+            _events.trySend(HomeEvent.ShowError(HomeError.BreedEmpty))
             isCorrect = false
         }
-        if(year == "") {
-            handleFailure(Error.ErrorYearEmpty)
+        if (year.isEmpty()) {
+            _events.trySend(HomeEvent.ShowError(HomeError.YearEmpty))
             isCorrect = false
         }
-        if(month == "") {
-            handleFailure(Error.ErrorMonthEmpty)
+        if (month.isEmpty()) {
+            _events.trySend(HomeEvent.ShowError(HomeError.MonthEmpty))
             isCorrect = false
         }
-        if(month != "" && (month.toInt() < 0 || month.toInt() > 11)) {
-            handleFailure(Error.ErrorMonthIlegal)
+        val monthInt = month.toIntOrNull()
+        if (month.isNotEmpty() && (monthInt == null || monthInt < 0 || monthInt > 11)) {
+            _events.trySend(HomeEvent.ShowError(HomeError.MonthIllegal))
             isCorrect = false
         }
 
         return isCorrect
     }
 
-    private fun handleFailure(error: Error) {
-        when (error) {
-            is Error.ErrorBreedEmpty -> mError.value = Error.ErrorBreedEmpty
-            is Error.ErrorYearEmpty -> mError.value = Error.ErrorYearEmpty
-            is Error.ErrorMonthEmpty -> mError.value = Error.ErrorMonthEmpty
-            is Error.ErrorMonthIlegal -> mError.value = Error.ErrorMonthIlegal
-        }
+    sealed interface HomeEvent {
+        data class NavigateToResult(val breed: Dog) : HomeEvent
+        data object NavigateToBreedList : HomeEvent
+        data class ShowError(val error: HomeError) : HomeEvent
     }
 
-    sealed class Navigation {
-        data class Result(val breed : Dog): Navigation()
-        object BreedList : Navigation()
-    }
-
-    sealed class Error {
-        object ErrorBreedEmpty : Error()
-        object ErrorYearEmpty : Error()
-        object ErrorMonthEmpty : Error()
-        object ErrorMonthIlegal : Error()
-    }
-
-    sealed class UiModel {
-        data class ShowAd(val show: Boolean) : UiModel()
+    sealed interface HomeError {
+        data object BreedEmpty : HomeError
+        data object YearEmpty : HomeError
+        data object MonthEmpty : HomeError
+        data object MonthIllegal : HomeError
     }
 }

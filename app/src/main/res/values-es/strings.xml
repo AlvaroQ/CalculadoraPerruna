@@ -5,20 +5,25 @@
     <string name="breed">Raza</string>
     <string name="year_title">Año(s)</string>
     <string name="month_title">Mes(es)</string>
-    <string name="set_mode">Mode night</string>
+    <string name="set_mode">Modo nocturno</string>
     <string name="calculate">Calcular</string>
-    <string name="select_breed">Seleccione raza</string>
+    <string name="select_breed">Seleccionar raza</string>
     <string name="dog_image">Imagen de la raza de perro</string>
-    <string name="section_dog_description">Introduzca la edad y raza de su perro para convertirlo a la edad que tendría si fuese una persona.</string>
-    <string name="section_human_description">Introduzca su edad para traducirlo a la edad que tendría si fuese la raza seleccionada.</string>
-    <string name="choose_breed">Escoge una raza</string>
+    <string name="section_dog_description">Introduce la edad y raza de tu perro para calcular la edad que tendría si fuese una persona.</string>
+    <string name="hero_title">Calcula la edad humana\nde tu perro</string>
+    <string name="hero_subtitle">Selecciona la raza e ingresa su edad</string>
+    <string name="age_section_title">Edad de tu perro</string>
+    <string name="calculate_human_age">Calcular Edad Humana</string>
+    <string name="formula_hint">Basado en la fórmula logarítmica canina</string>
+    <string name="section_human_description">Introduce tu edad para traducirla a la edad que tendrías si fueses la raza seleccionada.</string>
+    <string name="choose_breed">Elige una raza</string>
     <string name="back_btn">Volver</string>
-    <string name="expand">expandir</string>
+    <string name="expand">Ampliar</string>
     <string name="completed">Estudio completado</string>
     <string name="try_again">Intentar de nuevo</string>
-    <string name="save_puppy">¡Cuide de mucho su mascota!</string>
-    <string name="fill_year">Rellene los años de su perro</string>
-    <string name="fill_month">Rellene los meses de su perro</string>
+    <string name="save_puppy">¡Cuida mucho de tu mascota!</string>
+    <string name="fill_year">Rellena los años de tu perro</string>
+    <string name="fill_month">Rellena los meses de tu perro</string>
     <string name="ilegal_month">Los meses introducidos no son correctos</string>
     <string name="other_apps">Otras aplicaciones</string>
 
@@ -30,8 +35,8 @@
     <string name="other_names">Otros nombres</string>
     <string name="common_diseases">Enfermedades comunes</string>
 
-    <string name="image_stamp">Imagen estampado</string>
-    <string name="loading_image">loading image</string>
+    <string name="image_stamp">Imagen de estampado</string>
+    <string name="loading_image">Cargando imagen</string>
 
     <string name="human_years">Años humanos</string>
     <string name="juvenil">Cachorro</string>
@@ -55,23 +60,20 @@
     </plurals>
 
     <string-array name="breed_step">
-        <item>Su perro es un cachorro</item> // 0 a 3 meses
-        <item>Su perro se encuentra en el período juvenil</item> // 3 meses a 1 año
-        <item>Su perro se encuentra en la edad adulta</item> // 1 a 7 años
-        <item>Su perro se encuentra en el período senior</item> // 7 años o mas
+        <item>Tu perro es un cachorro</item>
+        <item>Tu perro se encuentra en el período juvenil</item>
+        <item>Tu perro se encuentra en la edad adulta</item>
+        <item>Tu perro se encuentra en el período senior</item>
     </string-array>
 
     <!-- Settings screen -->
-    <string name="settings_version">Version</string>
+    <string name="settings_version">Versión</string>
     <string name="settings_delete_ads">Quitar anuncios</string>
     <string name="settings_delete_ads_summary">Quitar anuncios para siempre</string>
     <string name="settings_rate_app">Valorar la aplicación</string>
-    <string name="settings_rate_app_summary">Ir al play store para puntuar la app</string>
-    <string name="settings_more_apps">Más aplicaciones</string>
-    <string name="settings_more_apps_summary">Aplicaciones gratuitas recomendadas</string>
-    <string name="more_apps">Más aplicaciones</string>
-    <string name="settings_share">Compartir con mis amigos</string>
-    <string name="settings_share_summary">Comparte con tus amigos esta aplicación para jugar con ellos</string>
+    <string name="settings_rate_app_summary">Ir a Play Store para puntuar la app</string>
+    <string name="settings_share">Compartir con tus amigos</string>
+    <string name="settings_share_summary">Comparte con tus amigos esta aplicación para disfrutar juntos</string>
     <string name="settings_dark_mode">Tema</string>
     <string name="night_mode">Oscuro</string>
     <string name="day_mode">Claro</string>
@@ -101,8 +103,25 @@
     <string name="middle">Mediano</string>
     <string name="small">Pequeño</string>
     <string name="order_by">Ordenar</string>
-    <string name="ascending">Ascendentemente</string>
-    <string name="reset">Reset</string>
+    <string name="ascending">Ascendente</string>
+    <string name="reset">Restablecer</string>
     <string name="apply">Aplicar</string>
-    <string name="descending">Descendentemente</string>
+    <string name="descending">Descendente</string>
+
+    <!-- Accessibility content descriptions -->
+    <string name="cd_navigate_back">Volver atrás</string>
+    <string name="cd_search_breed">Buscar raza…</string>
+    <string name="cd_clear_search">Borrar búsqueda</string>
+    <string name="cd_sort_ascending">Orden ascendente</string>
+    <string name="cd_sort_descending">Orden descendente</string>
+    <string name="cd_switch_to_list">Cambiar a lista</string>
+    <string name="cd_switch_to_grid">Cambiar a cuadrícula</string>
+
+    <!-- Connectivity -->
+    <string name="no_internet_title">Sin conexión a Internet</string>
+    <string name="no_internet_message">Comprueba tu conexión a Internet e inténtalo de nuevo.</string>
+    <string name="retry">Reintentar</string>
+    <string name="dismiss">Cerrar</string>
+    <string name="error_generic">Ha ocurrido un error</string>
+    <string name="error_loading_data">No se han podido cargar los datos</string>
 </resources>

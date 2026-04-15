@@ -1,65 +1,57 @@
 package com.alvaroquintana.edadperruna.ui.breedDescription
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.domain.Dog
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alvaroquintana.edadperruna.core.data.network.ConnectivityObserver
+import com.alvaroquintana.edadperruna.core.domain.model.Dog
+import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
+import com.alvaroquintana.edadperruna.managers.AdManager
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.usecases.GetBreedsDescription
-import com.alvaroquintana.usecases.GetScreenViewer
-import com.alvaroquintana.usecases.SetScreenViewer
+import com.alvaroquintana.edadperruna.ui.common.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BreedDescriptionViewModel(private val getBreedDescription: GetBreedsDescription,
-                                private val getScreenViewer: GetScreenViewer,
-                                private val setScreenViewer: SetScreenViewer
-) : ScopedViewModel() {
+@HiltViewModel
+class BreedDescriptionViewModel @Inject constructor(
+    private val breedRepository: BreedRepository,
+    private val adManager: AdManager,
+    private val connectivityObserver: ConnectivityObserver,
+) : ViewModel() {
 
-    private val _navigation = MutableLiveData<Navigation>()
-    val navigation: LiveData<Navigation> = _navigation
+    private val _uiState = MutableStateFlow<UiState<Dog?>>(UiState.Loading)
+    val uiState: StateFlow<UiState<Dog?>> = _uiState.asStateFlow()
 
-    private val _progress = MutableLiveData<Boolean>()
-    val progress: LiveData<Boolean> = _progress
+    private val _showAd = MutableStateFlow(false)
+    val showAd: StateFlow<Boolean> = _showAd.asStateFlow()
 
-    private val _breedData = MutableLiveData<Dog?>()
-    val breedData: LiveData<Dog?> = _breedData
-
-    private val _showingAds = MutableLiveData<UiModel>()
-    val showingAds: LiveData<UiModel> = _showingAds
+    private val _showNoInternet = MutableStateFlow(false)
+    val showNoInternet: StateFlow<Boolean> = _showNoInternet.asStateFlow()
 
     init {
-        Analytics.analyticsScreenViewed(Analytics.SCREEN_RESULT)
-        _progress.value = true
-        _showingAds.value = shouldBeShowAd()
-        _progress.value = false
+        Analytics.analyticsScreenViewed(Analytics.SCREEN_DESCRIPTION)
     }
 
-    private fun shouldBeShowAd(): UiModel.ShowAd{
-        val numberScreenViewer = getScreenViewer()
-        setScreenViewer(numberScreenViewer + 1)
-        return if(numberScreenViewer != 0 && numberScreenViewer % 4 == 0) {
-            UiModel.ShowAd(true)
-        } else {
-            UiModel.ShowAd(false)
+    fun loadBreed(breedId: String) {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            if (!connectivityObserver.isOnline) {
+                _showNoInternet.value = true
+            }
+            _showAd.value = adManager.shouldShowAd()
+            breedRepository.getBreedDescription(breedId)
+                .catch { _uiState.value = UiState.Error(it.message ?: "") }
+                .collect { dog ->
+                    _uiState.value = UiState.Success(dog)
+                }
         }
     }
 
-    fun getDescription(breedId: String) {
-        launch {
-            val breedDescription = getBreedDescription.invoke(breedId)
-            _breedData.value = breedDescription
-        }
-    }
-
-    fun navigateToHome(dog: Dog) {
-        _navigation.value = Navigation.Home(dog)
-    }
-
-    sealed class Navigation {
-        data class Home(val breed : Dog): Navigation()
-    }
-
-    sealed class UiModel {
-        data class ShowAd(val show: Boolean) : UiModel()
+    fun dismissNoInternet() {
+        _showNoInternet.value = false
     }
 }

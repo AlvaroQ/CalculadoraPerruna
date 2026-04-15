@@ -9,11 +9,17 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
+// ============================================================
+// M3 Color Schemes — Golden Paws
+// ============================================================
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -87,6 +93,70 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = md_theme_dark_surfaceContainerHighest,
 )
 
+// ============================================================
+// PerrunoColors — custom semantic tokens beyond M3
+// ============================================================
+
+data class PerrunoColors(
+    val chartLine: Color,
+    val chartFill: Color,
+    val chartAxis: Color,
+    val chartMarker: Color,
+    val pawAccent: Color,
+    val shimmerBase: Color,
+    val shimmerHighlight: Color,
+    val gradientOverlayStart: Color,
+    val gradientOverlayEnd: Color,
+    val buttonGradientStart: Color,
+    val buttonGradientEnd: Color,
+    val buttonContent: Color,
+)
+
+private val LightPerrunoColors = PerrunoColors(
+    chartLine = ChartBlue,
+    chartFill = ChartBlue.copy(alpha = 0.12f),
+    chartAxis = md_theme_light_outlineVariant,
+    chartMarker = md_theme_light_primary,
+    pawAccent = Color(0xFFB8860B),
+    shimmerBase = md_theme_light_surfaceContainerHigh,
+    shimmerHighlight = md_theme_light_surfaceContainerLowest,
+    gradientOverlayStart = md_theme_light_surface.copy(alpha = 0f),
+    gradientOverlayEnd = md_theme_light_surface,
+    buttonGradientStart = md_theme_dark_primary,
+    buttonGradientEnd = md_theme_dark_onPrimaryContainer,
+    buttonContent = md_theme_dark_onPrimary,
+)
+
+private val DarkPerrunoColors = PerrunoColors(
+    chartLine = ChartBlueDark,
+    chartFill = ChartBlueDark.copy(alpha = 0.15f),
+    chartAxis = md_theme_dark_outlineVariant,
+    chartMarker = md_theme_dark_primary,
+    pawAccent = Color(0xFFFFD180),
+    shimmerBase = md_theme_dark_surfaceContainerHigh,
+    shimmerHighlight = md_theme_dark_surfaceContainerHighest,
+    gradientOverlayStart = md_theme_dark_surface.copy(alpha = 0f),
+    gradientOverlayEnd = md_theme_dark_surface,
+    buttonGradientStart = md_theme_light_primary,
+    buttonGradientEnd = md_theme_light_onPrimaryContainer,
+    buttonContent = md_theme_light_onPrimary,
+)
+
+val LocalPerrunoColors = staticCompositionLocalOf { LightPerrunoColors }
+
+// ============================================================
+// PerrunoTheme accessor
+// ============================================================
+
+object PerrunoTheme {
+    val colors: PerrunoColors
+        @Composable get() = LocalPerrunoColors.current
+}
+
+// ============================================================
+// CalculadoraPerrunaTheme
+// ============================================================
+
 @Composable
 fun CalculadoraPerrunaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -102,20 +172,23 @@ fun CalculadoraPerrunaTheme(
         else -> LightColorScheme
     }
 
+    val perrunoColors = if (darkTheme) DarkPerrunoColors else LightPerrunoColors
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.surface.toArgb()
-            window.navigationBarColor = colorScheme.surfaceContainer.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
+            (view.context as? Activity)?.window?.let { window ->
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+                WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalPerrunoColors provides perrunoColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

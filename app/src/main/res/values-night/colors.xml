@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors - Deep Purple Dark -->
-    <color name="md_theme_light_primary">#D0BCFF</color>
-    <color name="md_theme_light_onPrimary">#381E72</color>
-    <color name="md_theme_light_primaryContainer">#4F378B</color>
-    <color name="md_theme_light_onPrimaryContainer">#EADDFF</color>
+    <!-- ============================================================ -->
+    <!-- Golden Paws — Dark Theme                                     -->
+    <!-- ============================================================ -->
 
-    <!-- Secondary Colors -->
-    <color name="md_theme_light_secondary">#CCC2DC</color>
-    <color name="md_theme_light_onSecondary">#332D41</color>
-    <color name="md_theme_light_secondaryContainer">#4A4458</color>
-    <color name="md_theme_light_onSecondaryContainer">#E8DEF8</color>
+    <!-- Primary — warm golden amber on deep charcoal -->
+    <color name="md_theme_light_primary">#FFD180</color>
+    <color name="md_theme_light_onPrimary">#5E3C00</color>
+    <color name="md_theme_light_primaryContainer">#875500</color>
+    <color name="md_theme_light_onPrimaryContainer">#FFDEA8</color>
 
-    <!-- Tertiary Colors -->
-    <color name="md_theme_light_tertiary">#EFB8C8</color>
-    <color name="md_theme_light_onTertiary">#492532</color>
-    <color name="md_theme_light_tertiaryContainer">#633B48</color>
-    <color name="md_theme_light_onTertiaryContainer">#FFD8E4</color>
+    <!-- Secondary -->
+    <color name="md_theme_light_secondary">#DEC3A2</color>
+    <color name="md_theme_light_onSecondary">#3E2D16</color>
+    <color name="md_theme_light_secondaryContainer">#56432A</color>
+    <color name="md_theme_light_onSecondaryContainer">#FADEBB</color>
+
+    <!-- Tertiary — sage green dark -->
+    <color name="md_theme_light_tertiary">#B8CFAD</color>
+    <color name="md_theme_light_onTertiary">#24371F</color>
+    <color name="md_theme_light_tertiaryContainer">#3A4E34</color>
+    <color name="md_theme_light_onTertiaryContainer">#D3ECC8</color>
 
     <!-- Error Colors -->
-    <color name="md_theme_light_error">#F2B8B5</color>
-    <color name="md_theme_light_onError">#601410</color>
-    <color name="md_theme_light_errorContainer">#8C1D18</color>
-    <color name="md_theme_light_onErrorContainer">#F9DEDC</color>
+    <color name="md_theme_light_error">#FFB4AB</color>
+    <color name="md_theme_light_onError">#690005</color>
+    <color name="md_theme_light_errorContainer">#93000A</color>
+    <color name="md_theme_light_onErrorContainer">#FFDAD6</color>
 
-    <!-- Background & Surface -->
-    <color name="md_theme_light_background">#1C1B1F</color>
-    <color name="md_theme_light_onBackground">#E6E1E5</color>
-    <color name="md_theme_light_surface">#1C1B1F</color>
-    <color name="md_theme_light_onSurface">#E6E1E5</color>
-    <color name="md_theme_light_surfaceVariant">#49454F</color>
-    <color name="md_theme_light_onSurfaceVariant">#CAC4D0</color>
+    <!-- Background & Surface — deep charcoal warm -->
+    <color name="md_theme_light_background">#17120C</color>
+    <color name="md_theme_light_onBackground">#EEE1CC</color>
+    <color name="md_theme_light_surface">#17120C</color>
+    <color name="md_theme_light_onSurface">#EEE1CC</color>
+    <color name="md_theme_light_surfaceVariant">#50453A</color>
+    <color name="md_theme_light_onSurfaceVariant">#D4C5B0</color>
 
     <!-- Outline & Inverse -->
-    <color name="md_theme_light_outline">#938F99</color>
-    <color name="md_theme_light_outlineVariant">#49454F</color>
-    <color name="md_theme_light_inverseSurface">#E6E1E5</color>
-    <color name="md_theme_light_inverseOnSurface">#313033</color>
-    <color name="md_theme_light_inversePrimary">#6750A4</color>
+    <color name="md_theme_light_outline">#9D8E79</color>
+    <color name="md_theme_light_outlineVariant">#50453A</color>
+    <color name="md_theme_light_inverseSurface">#EEE1CC</color>
+    <color name="md_theme_light_inverseOnSurface">#352F27</color>
+    <color name="md_theme_light_inversePrimary">#B8860B</color>
 
     <!-- Surface Containers -->
-    <color name="md_theme_light_surfaceContainerLowest">#0F0D13</color>
-    <color name="md_theme_light_surfaceContainerLow">#1D1B20</color>
-    <color name="md_theme_light_surfaceContainer">#211F26</color>
-    <color name="md_theme_light_surfaceContainerHigh">#2B2930</color>
-    <color name="md_theme_light_surfaceContainerHighest">#36343B</color>
+    <color name="md_theme_light_surfaceContainerLowest">#110D07</color>
+    <color name="md_theme_light_surfaceContainerLow">#1F1B13</color>
+    <color name="md_theme_light_surfaceContainer">#241F17</color>
+    <color name="md_theme_light_surfaceContainerHigh">#2E2921</color>
+    <color name="md_theme_light_surfaceContainerHighest">#39342B</color>
 
     <!-- Scrim -->
     <color name="md_theme_light_scrim">#000000</color>
 
     <!-- =========================================== -->
-    <!-- Legacy colors (para compatibilidad - dark) -->
+    <!-- Legacy colors (para compatibilidad - dark)  -->
     <!-- =========================================== -->
     <color name="colorPrimary">@color/md_theme_light_primary</color>
     <color name="colorPrimaryDark">@color/md_theme_light_primaryContainer</color>
@@ -60,7 +64,6 @@
     <color name="textColor">@color/md_theme_light_onBackground</color>
     <color name="textColorLight">@color/md_theme_light_onSurfaceVariant</color>
     <color name="textColorDark">@color/md_theme_light_primary</color>
-    <color name="textColorGrapic">#82B1FF</color>
 
     <!-- UI Elements -->
     <color name="borderColor">@color/md_theme_light_outline</color>
@@ -68,22 +71,6 @@
     <color name="white">#FFFFFF</color>
     <color name="settingsIconColor">@color/md_theme_light_onSurfaceVariant</color>
 
-    <!-- Chart Colors (más vibrantes para dark mode) -->
-    <color name="blue">#82B1FF</color>
-    <color name="red">#FF8A80</color>
-    <color name="yellow">#FFE57F</color>
-    <color name="green">#69F0AE</color>
-    <color name="light_purple">#4DD0BCFF</color>
-
-    <!-- Status Colors -->
-    <color name="success">#69F0AE</color>
-    <color name="warning">#FFD54F</color>
-    <color name="info">#64B5F6</color>
-
-    <!-- Card & Surface elevations -->
-    <color name="cardBackground">@color/md_theme_light_surfaceContainerLow</color>
-    <color name="cardBackgroundElevated">@color/md_theme_light_surfaceContainer</color>
-
     <!-- Ripple -->
-    <color name="rippleColor">#1FD0BCFF</color>
+    <color name="rippleColor">#1FFFD180</color>
 </resources>

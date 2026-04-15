@@ -1,88 +1,69 @@
 package com.alvaroquintana.edadperruna.ui.breedList
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.alvaroquintana.domain.Dog
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alvaroquintana.edadperruna.R
-import org.koin.androidx.compose.koinViewModel
+import com.alvaroquintana.edadperruna.ui.common.UiState
+import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
+import com.alvaroquintana.edadperruna.ui.components.BreedGridItem
+import com.alvaroquintana.edadperruna.ui.components.NoInternetDialog
+import com.alvaroquintana.edadperruna.ui.components.PerrunoSearchBar
+import com.alvaroquintana.edadperruna.ui.components.ShimmerBox
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
 import java.util.Locale
+
+private const val STAGGER_CAP = 20
 
 @Composable
 fun BreedListScreen(
     onBackClick: () -> Unit,
-    onBreedSelected: (image: String, name: String, life: String) -> Unit,
+    onBreedSelected: (breedId: String, image: String, name: String, life: String) -> Unit,
     onBreedLongClick: (image: String) -> Unit = {},
-    viewModel: BreedListViewModel = koinViewModel()
+    viewModel: BreedListViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    val progress by viewModel.progress.observeAsState(false)
-    val breedList by viewModel.list.observeAsState(mutableListOf())
-    val navigation by viewModel.navigation.observeAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showAd by viewModel.showAd.collectAsStateWithLifecycle()
+    val showNoInternet by viewModel.showNoInternet.collectAsStateWithLifecycle()
+
+    val isLoading = uiState is UiState.Loading
+    val isError = uiState is UiState.Error
+    val breedList = (uiState as? UiState.Success)?.data ?: emptyList()
 
     var searchText by remember { mutableStateOf("") }
     var isOrderDescending by remember { mutableStateOf(false) }
     var spanCount by remember { mutableIntStateOf(3) }
-    var filterRotation by remember { mutableStateOf(0f) }
-
-    val animatedRotation by animateFloatAsState(
-        targetValue = filterRotation,
-        label = "filterRotation"
-    )
 
     // Filter and sort breeds
     val displayedBreeds = remember(breedList, searchText, isOrderDescending) {
@@ -90,8 +71,8 @@ fun BreedListScreen(
             breedList.toMutableList()
         } else {
             breedList.filter { dog ->
-                dog.name?.uppercase(Locale.ROOT)?.contains(searchText.uppercase(Locale.ROOT)) == true ||
-                dog.otherNames?.toString()?.uppercase(Locale.ROOT)?.contains(searchText.uppercase(Locale.ROOT)) == true
+                dog.name.uppercase(Locale.ROOT).contains(searchText.uppercase(Locale.ROOT)) ||
+                dog.otherNames.toString().uppercase(Locale.ROOT).contains(searchText.uppercase(Locale.ROOT))
             }.toMutableList()
         }
 
@@ -103,204 +84,159 @@ fun BreedListScreen(
         filtered
     }
 
-    // Handle navigation
-    LaunchedEffect(navigation) {
-        navigation?.let {
-            when (it) {
-                is BreedListViewModel.Navigation.BreedDescription -> {
+    // Handle events
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is BreedListViewModel.BreedListEvent.NavigateToDescription -> {
                     onBreedSelected(
-                        it.breed.image ?: "",
-                        it.breed.name ?: "",
-                        it.breed.life ?: ""
+                        event.dog.breedId,
+                        event.dog.image,
+                        event.dog.name,
+                        event.dog.life
                     )
                 }
-                is BreedListViewModel.Navigation.Expand -> {
-                    onBreedLongClick(it.image)
+                is BreedListViewModel.BreedListEvent.ExpandImage -> {
+                    onBreedLongClick(event.imageUrl)
                 }
             }
         }
     }
 
+    // No Internet Dialog
+    if (showNoInternet) {
+        NoInternetDialog(
+            onDismiss = { viewModel.dismissNoInternet() },
+            onRetry = {
+                viewModel.dismissNoInternet()
+                viewModel.loadBreeds()
+            }
+        )
+    }
+
     Scaffold { paddingValues ->
+        AdaptiveContainer(modifier = Modifier.padding(paddingValues)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
         ) {
-            // Search Bar
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-                ),
-                shape = RoundedCornerShape(28.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_back),
-                            contentDescription = stringResource(R.string.back_btn),
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+            PerrunoSearchBar(
+                query = searchText,
+                onQueryChange = { searchText = it },
+                onBack = onBackClick,
+                onSortToggle = { isOrderDescending = !isOrderDescending },
+                isSortDescending = isOrderDescending,
+                onGridToggle = { spanCount = if (spanCount == 5) 1 else spanCount + 1 },
+                spanCount = spanCount
+            )
 
-                    BasicTextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 8.dp),
-                        singleLine = true,
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurface
+            when {
+                isLoading -> {
+                    // Shimmer placeholder grid matching the real grid layout
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(spanCount),
+                        contentPadding = PaddingValues(
+                            horizontal = PerrunoTokens.Spacing.sm,
+                            vertical = PerrunoTokens.Spacing.sm
                         ),
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                        decorationBox = { innerTextField ->
-                            Box {
-                                if (searchText.isEmpty()) {
-                                    Text(
-                                        text = stringResource(R.string.advance_search),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                                innerTextField()
-                            }
-                        }
-                    )
-
-                    IconButton(
-                        onClick = {
-                            isOrderDescending = !isOrderDescending
-                            filterRotation += 180f
-                        }
+                        horizontalArrangement = Arrangement.spacedBy(PerrunoTokens.Spacing.xs),
+                        verticalArrangement = Arrangement.spacedBy(PerrunoTokens.Spacing.xs),
+                        modifier = Modifier.fillMaxSize(),
+                        userScrollEnabled = false
                     ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_filter),
-                            contentDescription = stringResource(R.string.advance_search),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.rotate(animatedRotation)
-                        )
+                        items(spanCount * 6) {
+                            ShimmerBox(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(0.75f),
+                                shape = PerrunoShapes.md
+                            )
+                        }
                     }
-
-                    IconButton(
-                        onClick = {
-                            spanCount = if (spanCount == 5) 1 else spanCount + 1
-                        }
+                }
+                isError -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_grid),
-                            contentDescription = stringResource(R.string.settings),
-                            tint = MaterialTheme.colorScheme.onSurface
+                        Text(
+                            text = stringResource(R.string.error_loading_data),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(PerrunoTokens.Spacing.xl)
                         )
                     }
                 }
-            }
-
-            // Content
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                if (progress) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                } else {
+                else -> {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(spanCount),
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = PerrunoTokens.Spacing.sm,
+                            vertical = PerrunoTokens.Spacing.sm
+                        ),
+                        horizontalArrangement = Arrangement.spacedBy(PerrunoTokens.Spacing.xs),
+                        verticalArrangement = Arrangement.spacedBy(PerrunoTokens.Spacing.xs),
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        items(displayedBreeds, key = { it.breedId ?: it.name ?: "" }) { dog ->
-                            BreedItem(
+                        itemsIndexed(
+                            displayedBreeds,
+                            key = { _, dog -> dog.breedId.ifEmpty { dog.name } }
+                        ) { index, dog ->
+                            StaggeredBreedItem(
+                                index = index,
                                 dog = dog,
                                 onClick = { viewModel.onDogClicked(dog) },
-                                onLongClick = { dog.image?.let { onBreedLongClick(it) } }
+                                onLongClick = {
+                                    if (dog.image.isNotEmpty()) viewModel.onDogLongClicked(dog.image)
+                                }
                             )
                         }
                     }
                 }
             }
+        }
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun BreedItem(
-    dog: Dog,
+private fun StaggeredBreedItem(
+    index: Int,
+    dog: com.alvaroquintana.edadperruna.core.domain.model.Dog,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    val context = LocalContext.current
+    val cappedIndex = index.coerceAtMost(STAGGER_CAP - 1)
+    val delayMs = cappedIndex * PerrunoTokens.Motion.STAGGER_MS
 
-    Card(
+    var visible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(dog.breedId) {
+        kotlinx.coroutines.delay(delayMs.toLong())
+        visible = true
+    }
+
+    val alpha by animateFloatAsState(
+        targetValue = if (visible) 1f else 0f,
+        animationSpec = tween(durationMillis = PerrunoTokens.Motion.MEDIUM_MS),
+        label = "breedItemAlpha_$index"
+    )
+
+    // Wrap in Box so combinedClickable handles both tap and long-press,
+    // while BreedGridItem receives a no-op to avoid double-firing.
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .alpha(alpha)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick
-            ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-        ),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            )
     ) {
-        Box {
-            AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(dog.image)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = stringResource(R.string.dog_image),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-            )
-
-            // Gradient overlay
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .align(Alignment.BottomCenter)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
-                            )
-                        )
-                    )
-            )
-
-            // Name
-            Text(
-                text = dog.name ?: "",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            )
-        }
+        BreedGridItem(
+            name = dog.name,
+            imageUrl = dog.image,
+        )
     }
 }
