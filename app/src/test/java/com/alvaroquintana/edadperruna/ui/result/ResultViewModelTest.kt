@@ -1,103 +1,62 @@
 package com.alvaroquintana.edadperruna.ui.result
 
+import com.alvaroquintana.edadperruna.core.domain.age.AgePoint
+import com.alvaroquintana.edadperruna.core.domain.age.DogAgeCalculator
+import com.alvaroquintana.edadperruna.core.domain.age.HumanAge
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 
 class ResultViewModelTest {
 
-    private val viewModel = ResultViewModel()
+    private lateinit var calculator: DogAgeCalculator
+    private lateinit var viewModel: ResultViewModel
 
-    @Test
-    fun `translateToHuman with 0 years and 0 months returns 0`() {
-        val result = viewModel.translateToHuman(0, 0)
-        assertEquals(0, result.years)
-        assertEquals(0, result.months)
+    @Before
+    fun setUp() {
+        calculator = mockk(relaxed = true)
+        viewModel = ResultViewModel(calculator)
     }
 
     @Test
-    fun `translateToHuman with 0 years and 1 month returns 1 year`() {
-        val result = viewModel.translateToHuman(0, 1)
-        assertEquals(1, result.years)
-    }
+    fun `translateToHuman delegates to calculator and returns its result`() {
+        val expected = HumanAge(62, 1)
+        every { calculator.toHumanAge(7, 0) } returns expected
 
-    @Test
-    fun `translateToHuman with 1 year and 0 months returns 31`() {
-        val result = viewModel.translateToHuman(1, 0)
-        assertEquals(31, result.years)
-    }
-
-    @Test
-    fun `translateToHuman with 7 years returns approximately 62`() {
         val result = viewModel.translateToHuman(7, 0)
-        // 16 * ln(7) + 31 ≈ 62.12
-        assertEquals(62, result.years)
+
+        assertEquals(expected, result)
+        verify(exactly = 1) { calculator.toHumanAge(7, 0) }
     }
 
     @Test
-    fun `generateChartData has 23 points from 0 to 22`() {
-        val data = viewModel.generateChartData()
-        assertEquals(23, data.size)
-        assertEquals(0f, data.first().dogYears)
-        assertEquals(22f, data.last().dogYears)
+    fun `getMarkerPoint delegates to calculator and returns its result`() {
+        val expected = AgePoint(2.5f, 45.66f)
+        every { calculator.toHumanAgePoint(2, 6) } returns expected
+
+        val result = viewModel.getMarkerPoint(2, 6)
+
+        assertEquals(expected, result)
+        verify(exactly = 1) { calculator.toHumanAgePoint(2, 6) }
     }
 
     @Test
-    fun `generateChartData first point is 0,0`() {
-        val data = viewModel.generateChartData()
-        assertEquals(0f, data[0].dogYears)
-        assertEquals(0f, data[0].humanYears)
+    fun `generateChartData delegates to calculator humanAgeCurve`() {
+        val expected = listOf(AgePoint(0f, 0f), AgePoint(1f, 31f), AgePoint(2f, 42.09f))
+        every { calculator.humanAgeCurve() } returns expected
+
+        val result = viewModel.generateChartData()
+
+        assertEquals(expected, result)
+        verify(exactly = 1) { calculator.humanAgeCurve() }
     }
 
     @Test
-    fun `getMarkerPoint with 0,0 returns origin`() {
-        val point = viewModel.getMarkerPoint(0, 0)
-        assertEquals(0f, point.dogYears)
-        assertEquals(0f, point.humanYears)
-    }
-
-    @Test
-    fun `getMarkerPoint with 1 year returns dog=1, human=31`() {
-        val point = viewModel.getMarkerPoint(1, 0)
-        assertEquals(1f, point.dogYears)
-        assertEquals(31f, point.humanYears)
-    }
-
-    @Test
-    fun `getMarkerPoint with 0 years and 1 month returns 0,1 special case`() {
-        val point = viewModel.getMarkerPoint(0, 1)
-        assertEquals(0f, point.dogYears)
-        assertEquals(1f, point.humanYears)
-    }
-
-    @Test
-    fun `getMarkerPoint with 2 years and 6 months interpolates correctly`() {
-        val point = viewModel.getMarkerPoint(2, 6)
-        // (2*12 + 6) / 12 = 2.5 dog years
-        assertEquals(2.5f, point.dogYears)
-        // 16 * ln(2.5) + 31 ≈ 45.66
-        assertEquals(45.66f, point.humanYears, 0.05f)
-    }
-
-    @Test
-    fun `translateToHuman with 2 years and 6 months computes human months`() {
-        val result = viewModel.translateToHuman(2, 6)
-        // 16 * ln(2.5) + 31 ≈ 45.66 → 45 years and ~7 months
-        assertEquals(45, result.years)
-        assertEquals(7, result.months)
-    }
-
-    @Test
-    fun `translateToHuman is monotonically increasing across full years`() {
-        val ages = (1..10).map { viewModel.translateToHuman(it, 0).years }
-        ages.zipWithNext { a, b -> assertTrue("age $a should be < $b", a < b) }
-    }
-
-    @Test
-    fun `generateChartData second point matches direct dog age formula`() {
-        val data = viewModel.generateChartData()
-        // 16 * ln(1) + 31 = 31
-        assertEquals(1f, data[1].dogYears)
-        assertEquals(31f, data[1].humanYears, 0.001f)
+    fun `showAd is true by default`() {
+        assertTrue(viewModel.showAd.value)
     }
 }
