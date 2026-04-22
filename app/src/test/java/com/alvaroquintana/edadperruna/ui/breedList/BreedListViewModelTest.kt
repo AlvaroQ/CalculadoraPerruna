@@ -119,4 +119,44 @@ class BreedListViewModelTest {
             assertEquals("https://example.com/image.jpg", (event as BreedListViewModel.BreedListEvent.ExpandImage).imageUrl)
         }
     }
+
+    @Test
+    fun `loadBreeds emits showNoInternet when device is offline`() = runTest {
+        every { connectivityObserver.isOnline } returns false
+        coEvery { breedRepository.getBreedList() } returns flowOf(emptyList())
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+
+        viewModel.showNoInternet.test {
+            assertEquals(true, awaitItem())
+        }
+    }
+
+    @Test
+    fun `loadBreeds keeps showNoInternet false when device is online`() = runTest {
+        coEvery { breedRepository.getBreedList() } returns flowOf(emptyList())
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+
+        viewModel.showNoInternet.test {
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `dismissNoInternet resets the flag back to false`() = runTest {
+        every { connectivityObserver.isOnline } returns false
+        coEvery { breedRepository.getBreedList() } returns flowOf(emptyList())
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+
+        viewModel.showNoInternet.test {
+            assertEquals(true, awaitItem())
+            viewModel.dismissNoInternet()
+            assertEquals(false, awaitItem())
+        }
+    }
 }

@@ -1,6 +1,9 @@
 package com.alvaroquintana.edadperruna.ui.home
 
+import app.cash.turbine.test
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -57,5 +60,45 @@ class HomeViewModelTest {
     fun `checkErrors returns true with 11 months`() {
         val result = viewModel.checkErrors(dogWithName(), "1", "11")
         assertTrue(result)
+    }
+
+    @Test
+    fun `navigateToBreedList emits NavigateToBreedList event`() = runTest {
+        viewModel.events.test {
+            viewModel.navigateToBreedList()
+            assertEquals(HomeViewModel.HomeEvent.NavigateToBreedList, awaitItem())
+        }
+    }
+
+    @Test
+    fun `navigateToResult emits NavigateToResult event with the dog`() = runTest {
+        val dog = dogWithName("Beagle")
+
+        viewModel.events.test {
+            viewModel.navigateToResult(dog)
+            val event = awaitItem()
+            assertTrue(event is HomeViewModel.HomeEvent.NavigateToResult)
+            assertEquals("Beagle", (event as HomeViewModel.HomeEvent.NavigateToResult).breed.name)
+        }
+    }
+
+    @Test
+    fun `checkErrors emits ShowError with BreedEmpty when breed is empty`() = runTest {
+        viewModel.events.test {
+            viewModel.checkErrors(Dog(), "1", "0")
+            val event = awaitItem()
+            assertTrue(event is HomeViewModel.HomeEvent.ShowError)
+            assertEquals(HomeViewModel.HomeError.BreedEmpty, (event as HomeViewModel.HomeEvent.ShowError).error)
+        }
+    }
+
+    @Test
+    fun `checkErrors emits MonthIllegal for non-numeric month`() = runTest {
+        viewModel.events.test {
+            viewModel.checkErrors(dogWithName(), "1", "abc")
+            val event = awaitItem()
+            assertTrue(event is HomeViewModel.HomeEvent.ShowError)
+            assertEquals(HomeViewModel.HomeError.MonthIllegal, (event as HomeViewModel.HomeEvent.ShowError).error)
+        }
     }
 }
