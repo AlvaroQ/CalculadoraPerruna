@@ -114,4 +114,47 @@ class BreedDescriptionViewModelTest {
             assertEquals(true, awaitItem())
         }
     }
+
+    @Test
+    fun `loadBreed emits showNoInternet when device is offline`() = runTest {
+        every { connectivityObserver.isOnline } returns false
+        coEvery { breedRepository.getBreedDescription("1") } returns flowOf(Dog(breedId = "1"))
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+        viewModel.loadBreed("1")
+
+        viewModel.showNoInternet.test {
+            assertEquals(true, awaitItem())
+        }
+    }
+
+    @Test
+    fun `loadBreed keeps showNoInternet false when device is online`() = runTest {
+        coEvery { breedRepository.getBreedDescription("1") } returns flowOf(Dog(breedId = "1"))
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+        viewModel.loadBreed("1")
+
+        viewModel.showNoInternet.test {
+            assertEquals(false, awaitItem())
+        }
+    }
+
+    @Test
+    fun `dismissNoInternet resets the flag back to false`() = runTest {
+        every { connectivityObserver.isOnline } returns false
+        coEvery { breedRepository.getBreedDescription("1") } returns flowOf(Dog(breedId = "1"))
+        coEvery { adManager.shouldShowAd() } returns false
+
+        val viewModel = createViewModel()
+        viewModel.loadBreed("1")
+
+        viewModel.showNoInternet.test {
+            assertEquals(true, awaitItem())
+            viewModel.dismissNoInternet()
+            assertEquals(false, awaitItem())
+        }
+    }
 }
