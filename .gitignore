@@ -34,7 +34,10 @@ Thumbs.db
 
 # Project-specific
 app/release/
-docs/
+docs/*
+!docs/images/
+docs/images/*
+!docs/images/store/
 *.xcf
 *.mp4
 *.pen
