@@ -4,58 +4,44 @@ import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-import kotlin.coroutines.resume
 
-class FirestoreBreedDataSource @Inject constructor() {
+class FirestoreBreedDataSource @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val crashlytics: FirebaseCrashlytics,
+) {
 
-    suspend fun getBreedList(): List<Dog> = suspendCancellableCoroutine { continuation ->
-        FirebaseFirestore.getInstance()
-            .collection(COLLECTION_BREED_ES)
+    suspend fun getBreedList(): List<Dog> = try {
+        firestore.collection(COLLECTION_BREED_ES)
             .orderBy("name", Query.Direction.ASCENDING)
             .get()
-            .addOnSuccessListener { snapshot ->
-                val result = try {
-                    snapshot.map { doc -> doc.toObject(Dog::class.java) }
-                } catch (e: Exception) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
-                    emptyList()
-                }
-                if (continuation.isActive) {
-                    continuation.resume(result)
-                }
-            }
-            .addOnFailureListener { error ->
-                if (continuation.isActive) {
-                    continuation.resume(emptyList())
-                }
-                FirebaseCrashlytics.getInstance().recordException(error)
-            }
+            .await()
+            .map { doc -> doc.toObject(Dog::class.java) }
+    } catch (e: Exception) {
+        crashlytics.recordException(e)
+        emptyList()
     }
 
-    suspend fun getBreedDescription(breedId: String): Dog? = suspendCancellableCoroutine { continuation ->
-        FirebaseFirestore.getInstance()
-            .collection(COLLECTION_BREED_ES)
-            .document(breedId)
-            .get()
-            .addOnSuccessListener { result ->
-                val dog = try {
-                    result.toObject(Dog::class.java) ?: Dog()
-                } catch (e: Exception) {
-                    FirebaseCrashlytics.getInstance().recordException(e)
-                    Dog()
-                }
-                if (continuation.isActive) {
-                    continuation.resume(dog)
-                }
-            }
-            .addOnFailureListener { error ->
-                if (continuation.isActive) {
-                    continuation.resume(null)
-                }
-                FirebaseCrashlytics.getInstance().recordException(error)
-            }
+    // Distinguishes two failure modes on purpose:
+    //  - Firestore call fails -> null (caller treats as "not loaded")
+    //  - Document exists but mapping fails -> Dog() (caller treats as "loaded but empty")
+    suspend fun getBreedDescription(breedId: String): Dog? {
+        val snapshot = try {
+            firestore.collection(COLLECTION_BREED_ES)
+                .document(breedId)
+                .get()
+                .await()
+        } catch (e: Exception) {
+            crashlytics.recordException(e)
+            return null
+        }
+        return try {
+            snapshot.toObject(Dog::class.java) ?: Dog()
+        } catch (e: Exception) {
+            crashlytics.recordException(e)
+            Dog()
+        }
     }
 
     private companion object {
