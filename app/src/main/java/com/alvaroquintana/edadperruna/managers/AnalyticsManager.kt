@@ -3,82 +3,100 @@ package com.alvaroquintana.edadperruna.managers
 import android.content.Context
 import android.os.Bundle
 import com.alvaroquintana.edadperruna.BuildConfig
-import com.alvaroquintana.edadperruna.base.BaseActivity
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
+/**
+ * Typed analytics manager — replaces the old static [Analytics] object.
+ * The old object is kept temporarily as a facade that delegates here,
+ * so existing call sites don't break until they're migrated.
+ */
+@Singleton
+class AnalyticsManager @Inject constructor(
+    @ApplicationContext context: Context,
+) {
+    private val firebase: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+    fun logEvent(event: AnalyticsEvent) {
+        val bundle = Bundle().apply {
+            putString("uid", getUID())
+            putString("app_version", BuildConfig.VERSION_NAME)
+            putString("app_name", BuildConfig.APPLICATION_ID)
+            event.params.forEach { (key, value) -> putString(key, value) }
+        }
+        firebase.logEvent(event.eventName, bundle)
+    }
+
+    private fun getUID(): String =
+        FirebaseAuth.getInstance().currentUser?.uid ?: ""
+}
+
+sealed interface AnalyticsEvent {
+    val eventName: String
+    val params: Map<String, String>
+
+    data class ScreenViewed(val screenTitle: String) : AnalyticsEvent {
+        override val eventName = "screen_viewed"
+        override val params = mapOf("screen_title" to screenTitle)
+    }
+
+    data class DogTranslateFinished(val years: Int, val months: Int) : AnalyticsEvent {
+        override val eventName = "game_finished"
+        override val params = mapOf("years" to years.toString(), "months" to months.toString())
+    }
+
+    data class Clicked(val component: String) : AnalyticsEvent {
+        override val eventName = "clicked"
+        override val params = mapOf("component" to component)
+    }
+
+    data class AppRecommendedOpen(val appName: String) : AnalyticsEvent {
+        override val eventName = "app_recommended_open"
+        override val params = mapOf("app_name" to appName)
+    }
+}
+
+/**
+ * Legacy facade — keeps existing static call sites working.
+ * Will be removed when all ViewModels inject [AnalyticsManager] directly.
+ */
 object Analytics {
-    lateinit var mFirebase: FirebaseAnalytics
-    lateinit var ctx: Context
+    private var manager: AnalyticsManager? = null
 
-    fun initialize(ctx: Context) {
-        Analytics.ctx = ctx
-        mFirebase = FirebaseAnalytics.getInstance(ctx.applicationContext)
+    fun initialize(context: Context) {
+        // No-op: AnalyticsManager is now @Singleton via Hilt.
+        // This keeps CalculadoraApp.onCreate() from crashing.
+    }
+
+    internal fun setManager(analyticsManager: AnalyticsManager) {
+        manager = analyticsManager
     }
 
     fun analyticsScreenViewed(screenTitle: String) {
-
-        logEvent(
-            Event("screen_viewed")
-            .with("uid", (ctx as BaseActivity).getUID())
-            .with("screen_title", screenTitle)
-            .with("app_version", BuildConfig.VERSION_NAME)
-            .with("app_name", BuildConfig.APPLICATION_ID))
+        manager?.logEvent(AnalyticsEvent.ScreenViewed(screenTitle))
     }
 
     fun analyticsDogTraslateFinished(years: Int, months: Int) {
-
-        logEvent(
-            Event("game_finished")
-            .with("uid", (ctx as BaseActivity).getUID())
-            .with("years", years.toString())
-            .with("months", months.toString())
-            .with("app_version", BuildConfig.VERSION_NAME)
-            .with("app_name", BuildConfig.APPLICATION_ID))
+        manager?.logEvent(AnalyticsEvent.DogTranslateFinished(years, months))
     }
 
     fun analyticsClicked(btnDescription: String) {
-
-        logEvent(
-            Event("clicked")
-            .with("uid", (ctx as BaseActivity).getUID())
-            .with("component", btnDescription)
-            .with("app_version", BuildConfig.VERSION_NAME)
-            .with("app_name", BuildConfig.APPLICATION_ID))
+        manager?.logEvent(AnalyticsEvent.Clicked(btnDescription))
     }
 
     fun analyticsAppRecommendedOpen(appName: String) {
-
-        logEvent(
-            Event("app_recommended_open")
-            .with("uid", (ctx as BaseActivity).getUID())
-            .with("app_name", appName)
-            .with("app_version", BuildConfig.VERSION_NAME)
-            .with("app_name", BuildConfig.APPLICATION_ID))
+        manager?.logEvent(AnalyticsEvent.AppRecommendedOpen(appName))
     }
 
-    private fun logEvent(event: Event) {
-        mFirebase.logEvent(event.eventName, event.bundle)
-    }
-
-    private class Event(val eventName: String) {
-        val bundle = Bundle()
-        fun with(key: String, value: String): Event {
-            bundle.putString(key, value)
-            return this
-        }
-    }
-
-    // SCREENS
-    const val SCREEN_BREED_LIST = "screen_game"
+    // Screen constants
+    const val SCREEN_BREED_LIST = "screen_breed_list"
     const val SCREEN_RESULT = "screen_result"
-    const val SCREEN_HOME = "screen_ranking"
+    const val SCREEN_HOME = "screen_home"
     const val SCREEN_SETTINGS = "screen_settings"
     const val SCREEN_DESCRIPTION = "screen_description"
-    const val SCREEN_MORE_APPS = "screen_more_apps"
 
-    const val SHOW_AD_INTERSTICIAL = "show_instersticial_ad"
-    const val SHOW_AD_BONIFICATION = "show_bonification_ad"
-
-    // CLICKED
     const val BTN_RESULT = "btn_play_again"
 }

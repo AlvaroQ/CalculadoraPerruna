@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base text styles using Material 3 tokens -->
     <style name="Bold">
         <item name="android:textStyle">bold</item>
     </style>
@@ -7,101 +8,153 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <!-- Text Color variants with theme-aware colors -->
     <style name="Bold.TextColor">
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
     <style name="Bold.TextColorLight">
-        <item name="android:textColor">@color/textColorLight</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
     <style name="Bold.TextColorDark">
-        <item name="android:textColor">@color/textColorDark</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="Regular.TextColorLight">
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
     <style name="Regular.TextColor">
-        <item name="android:textColor">@color/textColorLight</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
     <style name="Regular.TextColorDark">
-        <item name="android:textColor">@color/textColorDark</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
-    <!-- TextColor -->
-    <style name="Bold.TextColor.VeryLarge" >
+    <!-- TextColor Size variants -->
+    <style name="Bold.TextColor.VeryLarge">
         <item name="android:textSize">@dimen/very_large</item>
     </style>
-    <style name="Regular.TextColor.VeryLarge" >
+    <style name="Regular.TextColor.VeryLarge">
         <item name="android:textSize">@dimen/very_large</item>
     </style>
-    <style name="Bold.TextColor.Large" >
+    <style name="Bold.TextColor.Large">
         <item name="android:textSize">@dimen/large</item>
     </style>
-    <style name="Regular.TextColor.Large" >
+    <style name="Regular.TextColor.Large">
         <item name="android:textSize">@dimen/large</item>
     </style>
-    <style name="Bold.TextColor.Medium" >
+    <style name="Bold.TextColor.Medium">
         <item name="android:textSize">@dimen/medium</item>
     </style>
-    <style name="Regular.TextColor.Medium" >
+    <style name="Regular.TextColor.Medium">
         <item name="android:textSize">@dimen/medium</item>
     </style>
-    <style name="Bold.TextColor.Small" >
+    <style name="Bold.TextColor.Small">
         <item name="android:textSize">@dimen/small</item>
     </style>
-    <style name="Regular.TextColor.Small" >
+    <style name="Regular.TextColor.Small">
         <item name="android:textSize">@dimen/small</item>
     </style>
-    <style name="Bold.TextColor.VerySmall" >
+    <style name="Bold.TextColor.VerySmall">
         <item name="android:textSize">@dimen/very_small</item>
     </style>
-    <style name="Regular.TextColor.VerySmall" >
-        <item name="android:textSize">@dimen/very_small</item>
-    </style>
-
-    <!-- TextColorLight -->
-    <style name="Bold.TextColorLight.VeryLarge" >
-        <item name="android:textSize">@dimen/very_large</item>
-    </style>
-    <style name="Regular.TextColorLight.VeryLarge" >
-        <item name="android:textSize">@dimen/very_large</item>
-    </style>
-    <style name="Bold.TextColorLight.Large" >
-        <item name="android:textSize">@dimen/large</item>
-    </style>
-    <style name="Regular.TextColorLight.Large" >
-        <item name="android:textSize">@dimen/large</item>
-    </style>
-    <style name="Bold.TextColorLight.Medium" >
-        <item name="android:textSize">@dimen/medium</item>
-    </style>
-    <style name="Regular.TextColorLight.Medium" >
-        <item name="android:textSize">@dimen/medium</item>
-    </style>
-    <style name="Bold.TextColorLight.Small" >
-        <item name="android:textSize">@dimen/small</item>
-    </style>
-    <style name="Regular.TextColorLight.Small" >
-        <item name="android:textSize">@dimen/small</item>
-    </style>
-    <style name="Bold.TextColorLight.VerySmall" >
-        <item name="android:textSize">@dimen/very_small</item>
-    </style>
-    <style name="Regular.TextColorLight.VerySmall" >
+    <style name="Regular.TextColor.VerySmall">
         <item name="android:textSize">@dimen/very_small</item>
     </style>
 
-    <!-- Grapic -->
-    <style name="Bold.TextColorDark.Large" >
+    <!-- TextColorLight Size variants -->
+    <style name="Bold.TextColorLight.VeryLarge">
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Regular.TextColorLight.VeryLarge">
+        <item name="android:textSize">@dimen/very_large</item>
+    </style>
+    <style name="Bold.TextColorLight.Large">
         <item name="android:textSize">@dimen/large</item>
     </style>
-    <style name="Regular.TextColorDark.Medium" >
+    <style name="Regular.TextColorLight.Large">
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Bold.TextColorLight.Medium">
         <item name="android:textSize">@dimen/medium</item>
     </style>
-    <style name="Regular.TextColorDark.Small" >
+    <style name="Regular.TextColorLight.Medium">
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Bold.TextColorLight.Small">
         <item name="android:textSize">@dimen/small</item>
     </style>
-    <style name="Regular.TextColorDark.VerySmall" >
+    <style name="Regular.TextColorLight.Small">
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Bold.TextColorLight.VerySmall">
         <item name="android:textSize">@dimen/very_small</item>
+    </style>
+    <style name="Regular.TextColorLight.VerySmall">
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+
+    <!-- TextColorDark (Primary) Size variants -->
+    <style name="Bold.TextColorDark.Large">
+        <item name="android:textSize">@dimen/large</item>
+    </style>
+    <style name="Regular.TextColorDark.Medium">
+        <item name="android:textSize">@dimen/medium</item>
+    </style>
+    <style name="Regular.TextColorDark.Small">
+        <item name="android:textSize">@dimen/small</item>
+    </style>
+    <style name="Regular.TextColorDark.VerySmall">
+        <item name="android:textSize">@dimen/very_small</item>
+    </style>
+
+    <!-- Material 3 Typography styles -->
+    <style name="TextAppearance.App.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.App.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.App.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+    <style name="TextAppearance.App.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="TextAppearance.App.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+    <style name="TextAppearance.App.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 </resources>

@@ -2,95 +2,127 @@
     <string name="app_name">Dog calculator</string>
     <string name="tab_dog">Dog age</string>
     <string name="tab_human">Human age</string>
-    <string name="breed">breed</string>
+    <string name="breed">Breed</string>
     <string name="year_title">Year(s)</string>
     <string name="month_title">Month(s)</string>
-    <string name="set_mode">Mode night</string>
+    <string name="set_mode">Night mode</string>
     <string name="calculate">Calculate</string>
     <string name="select_breed">Select breed</string>
-    <string name="dog_image">dog breed image</string>
-    <string name="section_dog_description">Enter the age and breed of your dog to make it the age it would be if it were a person.</string>
-    <string name="section_human_description">Enter your age to translate it to the age you would be if it were the selected breed.</string>
+    <string name="dog_image">Dog breed image</string>
+    <string name="section_dog_description">Enter the age and breed of your dog to calculate the age it would be if it were a person.</string>
+    <string name="hero_title">Calculate the human age\nof your dog</string>
+    <string name="hero_subtitle">Select the breed and enter its age</string>
+    <string name="age_section_title">Your dog\'s age</string>
+    <string name="calculate_human_age">Calculate Human Age</string>
+    <string name="formula_hint">Based on the canine logarithmic formula</string>
+    <string name="section_human_description">Enter your age to translate it to the age you would be if you were the selected breed.</string>
     <string name="choose_breed">Choose breed</string>
-    <string name="back_btn">back</string>
-    <string name="expand">zoom in</string>
-    <string name="completed">Estudio completado</string>
+    <string name="back_btn">Back</string>
+    <string name="expand">Expand</string>
+    <string name="completed">Study completed</string>
     <string name="try_again">Try again</string>
-    <string name="save_puppy">Take care off pet!</string>
-    <string name="fill_year">Fill years of your dog</string>
-    <string name="fill_month">Fill months of your dog</string>
+    <string name="save_puppy">Take good care of your pet!</string>
+    <string name="fill_year">Fill in the years of your dog</string>
+    <string name="fill_month">Fill in the months of your dog</string>
     <string name="ilegal_month">Incorrect months</string>
     <string name="other_apps">Other apps</string>
 
     <string name="size">Size</string>
-    <string name="life_expectative">Expectative life</string>
+    <string name="life_expectative">Life expectancy</string>
     <string name="life_expectative_text">%s years</string>
     <string name="fci_group">Group\n%d</string>
     <string name="fci_section">Section\n%d</string>
     <string name="other_names">Other names</string>
     <string name="common_diseases">Common diseases</string>
 
-    <string name="image_stamp">stamp image</string>
-    <string name="loading_image">loading image</string>
+    <string name="image_stamp">Stamp image</string>
+    <string name="loading_image">Loading image</string>
 
     <string name="human_years">Human years</string>
     <string name="juvenil">Puppy</string>
     <string name="adult">Adult</string>
     <string name="senior">Senior</string>
     <string name="dog_years">Dog years</string>
-    <string name="life_resumen">%s have average life expectancy %s years</string>
-    <string name="time_year_month">%1$s y %2$s</string>
+    <string name="life_resumen">%1$s have an average life expectancy of %2$s years</string>
+    <string name="time_year_month">%1$s and %2$s</string>
     <string name="time_year">%1$s</string>
     <string name="time_month">%1$s</string>
-    <string name="equal_to">equal to</string>
-    <string name="of_people">of humans</string>
-    <string name="settings">settings</string>
+    <string name="equal_to">Equal to</string>
+    <string name="of_people">of a human</string>
+    <string name="settings">Settings</string>
     <plurals name="year">
-        <item quantity="one">%d año</item>
-        <item quantity="other">%d años</item>
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
     </plurals>
     <plurals name="month">
-        <item quantity="one">%d mes</item>
-        <item quantity="other">%d meses</item>
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
     </plurals>
 
     <string-array name="breed_step">
-        <item>Your dog is a puppy</item> // 0 a 3 meses
-        <item>Your dog is young</item> // 3 meses a 1 año
-        <item>Your dog is adult</item> // 1 a 7 años
-        <item>Your dog is senior</item> // 7 años o mas
+        <item>Your dog is a puppy</item>
+        <item>Your dog is young</item>
+        <item>Your dog is an adult</item>
+        <item>Your dog is a senior</item>
     </string-array>
-
 
     <!-- Settings screen -->
     <string name="settings_version">Version</string>
-    <string name="settings_delete_ads">Delete ads</string>
-    <string name="settings_delete_ads_summary">Delete ads forever</string>
-    <string name="settings_rate_app">Rate app</string>
-    <string name="settings_rate_app_summary">Go to play store to rate app</string>
-    <string name="settings_more_apps">More application</string>
-    <string name="settings_more_apps_summary">Free applications recommended</string>
+    <string name="settings_delete_ads">Remove ads</string>
+    <string name="settings_delete_ads_summary">Remove ads forever</string>
+    <string name="settings_rate_app">Rate the app</string>
+    <string name="settings_rate_app_summary">Go to Play Store to rate the app</string>
     <string name="settings_share">Share with your friends</string>
-    <string name="settings_share_summary">Share with your friend this application to play with them</string>
-    <string name="more_apps">More applications</string>
-    <string name="settings_dark_mode">Mode</string>
-    <string name="night_mode">Night mode</string>
-    <string name="day_mode">Day mode</string>
+    <string name="settings_share_summary">Share this app with your friends to enjoy together</string>
+    <string name="settings_dark_mode">Theme</string>
+    <string name="night_mode">Dark</string>
+    <string name="day_mode">Light</string>
+    <string name="system_mode">System default</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_about">About</string>
+
+    <string-array name="theme_entries">
+        <item>@string/day_mode</item>
+        <item>@string/night_mode</item>
+        <item>@string/system_mode</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
     <string name="update_breeds" translatable="false">Actualizar razas perrunas</string>
 
     <string name="share">I like this app</string>
     <string name="share_summary">Download this app and learn about dogs</string>
-    <string name="choose_one">choose one:</string>
-    <string name="advance_search">Búsqueda avanzada</string>
-    <string name="by_other_names">Por otros nombres</string>
-    <string name="by_size">Por tamaño</string>
-    <string name="very_big">Muy grande</string>
-    <string name="big">Grande</string>
-    <string name="middle">Mediano</string>
-    <string name="small">Pequeño</string>
-    <string name="order_by">Ordenar</string>
-    <string name="ascending">Ascendentemente</string>
+    <string name="choose_one">Choose one:</string>
+    <string name="advance_search">Advanced search</string>
+    <string name="by_other_names">By other names</string>
+    <string name="by_size">By size</string>
+    <string name="very_big">Very large</string>
+    <string name="big">Large</string>
+    <string name="middle">Medium</string>
+    <string name="small">Small</string>
+    <string name="order_by">Sort</string>
+    <string name="ascending">Ascending</string>
     <string name="reset">Reset</string>
-    <string name="apply">Aplicar</string>
-    <string name="descending">Descendentemente</string>
+    <string name="apply">Apply</string>
+    <string name="descending">Descending</string>
+
+    <!-- Accessibility content descriptions -->
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_search_breed">Search breed…</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_sort_ascending">Sort ascending</string>
+    <string name="cd_sort_descending">Sort descending</string>
+    <string name="cd_switch_to_list">Switch to list</string>
+    <string name="cd_switch_to_grid">Switch to grid</string>
+
+    <!-- Connectivity -->
+    <string name="no_internet_title">No Internet connection</string>
+    <string name="no_internet_message">Check your Internet connection and try again.</string>
+    <string name="retry">Retry</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="error_generic">An error occurred</string>
+    <string name="error_loading_data">Could not load data</string>
 </resources>

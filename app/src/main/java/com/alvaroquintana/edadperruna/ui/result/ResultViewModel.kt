@@ -1,81 +1,54 @@
 package com.alvaroquintana.edadperruna.ui.result
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.alvaroquintana.edadperruna.common.ScopedViewModel
+import androidx.lifecycle.ViewModel
 import com.alvaroquintana.edadperruna.managers.Analytics
-import com.github.mikephil.charting.data.Entry
-import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 import kotlin.math.ln
 
-class ResultViewModel() : ScopedViewModel() {
+@HiltViewModel
+class ResultViewModel @Inject constructor() : ViewModel() {
 
-    private val _navigation = MutableLiveData<Navigation>()
-    val navigation: LiveData<Navigation> = _navigation
+    private val _showAd = MutableStateFlow(true)
+    val showAd: StateFlow<Boolean> = _showAd.asStateFlow()
 
-    private val _progress = MutableLiveData<Boolean>()
-    val progress: LiveData<Boolean> = _progress
-
-    private val _showingAds = MutableLiveData<UiModel>()
-    val showingAds: LiveData<UiModel> = _showingAds
-
-    private var marker: MutableList<Float> = mutableListOf()
+    data class ChartPoint(val dogYears: Float, val humanYears: Float)
+    data class HumanAge(val years: Int, val months: Int)
 
     init {
         Analytics.analyticsScreenViewed(Analytics.SCREEN_RESULT)
-        launch {
-            _progress.value = true
-            _showingAds.value = UiModel.ShowAd(true)
-            _progress.value = false
-        }
     }
 
-    fun navigateHome() {
-        _navigation.value = Navigation.Home
-    }
-
-    fun onDogLongClicked() {
-        _navigation.value = Navigation.Expand
-    }
-
-    /** 16 * ln(dog age) + 31 = human age.
-        Using that equation:
-     1-year-old dog is like a 31-year-old human
-     3-year-old dog is like a 49-year-old humana
-     7-year-old dog is like a 62-year-old human */
-    fun translateToHuman(years: Int, months: Int): MutableList<Int> {
+    fun translateToHuman(years: Int, months: Int): HumanAge {
         Analytics.analyticsDogTraslateFinished(years, months)
-        return if(years == 0 && months == 0) {
-            marker = mutableListOf(0f, 0f)
-            mutableListOf(0.0.toInt(), 0.0.toInt())
-        } else if(years == 0 && months == 1) {
-            marker = mutableListOf(0f, 1f)
-            mutableListOf(1.1.toInt(), ((1.1 % 1)*12).toInt())
+        return if (years == 0 && months == 0) {
+            HumanAge(0, 0)
+        } else if (years == 0 && months == 1) {
+            HumanAge(1, ((1.1 % 1) * 12).toInt())
         } else {
-            val totalDogsYears: Float = (((years.toFloat() * 12f + months.toFloat()) / 12f))
+            val totalDogsYears = (years.toFloat() * 12f + months.toFloat()) / 12f
             val totalHumanYears = translateDogAge(totalDogsYears)
-            marker = mutableListOf(totalDogsYears, totalHumanYears)
-            mutableListOf(totalHumanYears.toInt(), ((totalHumanYears % 1)*12).toInt())
+            HumanAge(totalHumanYears.toInt(), ((totalHumanYears % 1) * 12).toInt())
         }
     }
 
-    fun generateEntries(): ArrayList<Entry> {
-        val yValues: ArrayList<Entry> = ArrayList()
-        yValues.add(Entry(0f, 0f))
-        for(i in 1..22) yValues.add(Entry(i.toFloat(), translateDogAge(i.toFloat())))
-        return yValues
+    fun generateChartData(): List<ChartPoint> {
+        return (0..22).map { i ->
+            ChartPoint(i.toFloat(), if (i == 0) 0f else translateDogAge(i.toFloat()))
+        }
+    }
+
+    fun getMarkerPoint(years: Int, months: Int): ChartPoint {
+        if (years == 0 && months == 0) return ChartPoint(0f, 0f)
+        if (years == 0 && months == 1) return ChartPoint(0f, 1f)
+        val totalDogsYears = (years.toFloat() * 12f + months.toFloat()) / 12f
+        return ChartPoint(totalDogsYears, translateDogAge(totalDogsYears))
     }
 
     private fun translateDogAge(number: Float): Float {
-        return 16 * (ln(number)) + 31
-    }
-
-    sealed class Navigation {
-        object Home : Navigation()
-        object Expand: Navigation()
-    }
-
-    sealed class UiModel {
-        data class ShowAd(val show: Boolean) : UiModel()
+        return 16 * ln(number) + 31
     }
 }

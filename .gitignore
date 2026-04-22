@@ -1,13 +1,41 @@
-*.json
-captures/background.png
-captures/dog.png
-.gradle/6.7.1/gc.properties
+# Build outputs
+build/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Gradle
 .gradle/
+!gradle-wrapper.jar
+
+# IDE
 .idea/
+*.iml
+.navigation/
+captures/
+
+# Local config & secrets
+local.properties
+*.jks
+*.keystore
 app/firma/
-app/src/main/assets/._.DS_Store
-app/src/main/assets/.DS_Store
 app/src/main/res/values/secrets.xml
+*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Profiling & debug
+*.hprof
+*.log
+
+# Project-specific
 app/release/
-captures/dog_calculator_landing.xcf
-captures/Calculadora Perruna.mp4
+docs/
+*.xcf
+*.mp4
+*.pen
+.atl/

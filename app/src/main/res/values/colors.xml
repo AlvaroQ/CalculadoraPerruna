@@ -1,20 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FCE0FF</color>
-    <color name="colorPrimaryDark">#BCA5EF</color>
-    <color name="colorAccent">#121281</color>
-    <color name="borderColor">#000000</color>
-    <color name="backgroundTransparent">#00FFFFFF</color>
-    <color name="blue">#0050C8</color>
-    <color name="red">#F44336</color>
-    <color name="yellow">#FFC107</color>
-    <color name="green">#00FF48</color>
-    <color name="white">#FFFFFF</color>
-    <color name="light_purple">#4D512D87</color>
+    <!-- ============================================================ -->
+    <!-- Golden Paws — Light Theme                                    -->
+    <!-- ============================================================ -->
 
-    <color name="textColor">#000000</color>
-    <color name="textColorLight">#2C2C2C</color>
-    <color name="textColorDark">#6B51A5</color>
-    <color name="textColorGrapic">#0050C8</color>
-    <color name="settongsIconColor">#000000</color>
+    <!-- Primary — warm amber / dark gold -->
+    <color name="md_theme_light_primary">#B8860B</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#FFE0A0</color>
+    <color name="md_theme_light_onPrimaryContainer">#3A2500</color>
+
+    <!-- Secondary — warm brown -->
+    <color name="md_theme_light_secondary">#6F5B40</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FADEBB</color>
+    <color name="md_theme_light_onSecondaryContainer">#271904</color>
+
+    <!-- Tertiary — sage green -->
+    <color name="md_theme_light_tertiary">#51664A</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#D3ECC8</color>
+    <color name="md_theme_light_onTertiaryContainer">#0F210C</color>
+
+    <!-- Error Colors -->
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+
+    <!-- Background & Surface — warm cream -->
+    <color name="md_theme_light_background">#FFF8F0</color>
+    <color name="md_theme_light_onBackground">#1F1B13</color>
+    <color name="md_theme_light_surface">#FFF8F0</color>
+    <color name="md_theme_light_onSurface">#1F1B13</color>
+    <color name="md_theme_light_surfaceVariant">#F0E4CF</color>
+    <color name="md_theme_light_onSurfaceVariant">#50453A</color>
+
+    <!-- Outline & Inverse -->
+    <color name="md_theme_light_outline">#82735F</color>
+    <color name="md_theme_light_outlineVariant">#D4C5B0</color>
+    <color name="md_theme_light_inverseSurface">#352F27</color>
+    <color name="md_theme_light_inverseOnSurface">#FAEEE2</color>
+    <color name="md_theme_light_inversePrimary">#FFD180</color>
+
+    <!-- Surface Containers -->
+    <color name="md_theme_light_surfaceContainerLowest">#FFFFFF</color>
+    <color name="md_theme_light_surfaceContainerLow">#FFF3E2</color>
+    <color name="md_theme_light_surfaceContainer">#FAEDD8</color>
+    <color name="md_theme_light_surfaceContainerHigh">#F4E7D2</color>
+    <color name="md_theme_light_surfaceContainerHighest">#EEE1CC</color>
+
+    <!-- Scrim -->
+    <color name="md_theme_light_scrim">#000000</color>
+
+    <!-- =========================================== -->
+    <!-- Legacy colors (para compatibilidad)         -->
+    <!-- =========================================== -->
+    <color name="colorPrimary">@color/md_theme_light_primary</color>
+    <color name="colorPrimaryDark">@color/md_theme_light_primaryContainer</color>
+    <color name="colorAccent">@color/md_theme_light_tertiary</color>
+
+    <!-- Text Colors -->
+    <color name="textColor">@color/md_theme_light_onBackground</color>
+    <color name="textColorLight">@color/md_theme_light_onSurfaceVariant</color>
+    <color name="textColorDark">@color/md_theme_light_primary</color>
+
+    <!-- UI Elements -->
+    <color name="borderColor">@color/md_theme_light_outline</color>
+    <color name="backgroundTransparent">#00FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="settingsIconColor">@color/md_theme_light_onSurfaceVariant</color>
+
+    <!-- Ripple -->
+    <color name="rippleColor">#1FB8860B</color>
 </resources>
