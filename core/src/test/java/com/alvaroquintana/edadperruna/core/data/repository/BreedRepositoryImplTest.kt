@@ -7,12 +7,18 @@ import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.yield
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.util.concurrent.atomic.AtomicInteger
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class BreedRepositoryImplTest {
 
     private val firestoreDataSource = mockk<FirestoreBreedDataSource>()
@@ -56,4 +62,30 @@ class BreedRepositoryImplTest {
         coVerify { dogDao.deleteAll() }
         coVerify { dogDao.insertAll(any()) }
     }
+
+    @Test
+    fun `concurrent getBreedList collectors trigger only one remote fetch`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val count = AtomicInteger(0)
+            val remoteDogs = listOf(Dog(breedId = "1", name = "Labrador"))
+
+            coEvery { dogDao.count() } answers { count.get() }
+            coEvery { dogDao.getAllDogs() } returns flowOf(emptyList())
+            coEvery { firestoreDataSource.getBreedList() } coAnswers {
+                // Force a suspension point so the second collector can race
+                // the populate check if the mutex was not protecting it.
+                yield()
+                remoteDogs
+            }
+            coEvery { dogDao.insertAll(any()) } coAnswers { count.set(remoteDogs.size) }
+
+            val a = async { repo.getBreedList().first() }
+            val b = async { repo.getBreedList().first() }
+            a.await()
+            b.await()
+
+            coVerify(exactly = 1) { firestoreDataSource.getBreedList() }
+            coVerify(exactly = 1) { dogDao.insertAll(any()) }
+            coVerify(exactly = 1) { dogDao.deleteAll() }
+        }
 }
