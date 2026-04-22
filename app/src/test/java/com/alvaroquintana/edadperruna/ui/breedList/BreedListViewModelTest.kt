@@ -1,11 +1,13 @@
 package com.alvaroquintana.edadperruna.ui.breedList
 
 import app.cash.turbine.test
+import com.alvaroquintana.edadperruna.core.data.network.ConnectivityObserver
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
 import com.alvaroquintana.edadperruna.managers.AdManager
 import com.alvaroquintana.edadperruna.ui.common.UiState
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,6 +27,9 @@ class BreedListViewModelTest {
 
     private val breedRepository = mockk<BreedRepository>()
     private val adManager = mockk<AdManager>()
+    private val connectivityObserver = mockk<ConnectivityObserver> {
+        every { isOnline } returns true
+    }
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @Before
@@ -37,7 +42,8 @@ class BreedListViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel() = BreedListViewModel(breedRepository, adManager)
+    private fun createViewModel() =
+        BreedListViewModel(breedRepository, adManager, connectivityObserver)
 
     @Test
     fun `init loads breed list and emits Success`() = runTest {
