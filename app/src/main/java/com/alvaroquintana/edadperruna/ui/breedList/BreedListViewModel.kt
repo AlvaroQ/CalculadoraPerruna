@@ -7,6 +7,8 @@ import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
 import com.alvaroquintana.edadperruna.managers.AdManager
 import com.alvaroquintana.edadperruna.managers.Analytics
+import com.alvaroquintana.edadperruna.managers.Screens
+import com.alvaroquintana.edadperruna.managers.screenViewed
 import com.alvaroquintana.edadperruna.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -23,6 +25,7 @@ class BreedListViewModel @Inject constructor(
     private val breedRepository: BreedRepository,
     private val adManager: AdManager,
     private val connectivityObserver: ConnectivityObserver,
+    private val analytics: Analytics,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Dog>>>(UiState.Loading)
@@ -38,7 +41,7 @@ class BreedListViewModel @Inject constructor(
     val events = _events.receiveAsFlow()
 
     init {
-        Analytics.analyticsScreenViewed(Analytics.SCREEN_BREED_LIST)
+        analytics.screenViewed(Screens.BREED_LIST)
         loadBreeds()
     }
 

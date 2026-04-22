@@ -4,8 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.alvaroquintana.edadperruna.core.domain.repository.PreferencesRepository
-import com.alvaroquintana.edadperruna.managers.Analytics
-import com.alvaroquintana.edadperruna.managers.AnalyticsManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
@@ -22,15 +20,11 @@ class CalculadoraApp : Application() {
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
 
-    @Inject
-    lateinit var analyticsManager: AnalyticsManager
-
     private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     override fun onCreate() {
         super.onCreate()
         initFirebaseAuth()
-        Analytics.setManager(analyticsManager)
         applyTheme()
     }
 

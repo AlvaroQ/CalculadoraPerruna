@@ -3,6 +3,9 @@ package com.alvaroquintana.edadperruna.ui.result
 import com.alvaroquintana.edadperruna.core.domain.age.AgePoint
 import com.alvaroquintana.edadperruna.core.domain.age.DogAgeCalculator
 import com.alvaroquintana.edadperruna.core.domain.age.HumanAge
+import com.alvaroquintana.edadperruna.managers.Analytics
+import com.alvaroquintana.edadperruna.managers.AnalyticsEvent
+import com.alvaroquintana.edadperruna.managers.Screens
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -14,12 +17,14 @@ import org.junit.Test
 class ResultViewModelTest {
 
     private lateinit var calculator: DogAgeCalculator
+    private lateinit var analytics: Analytics
     private lateinit var viewModel: ResultViewModel
 
     @Before
     fun setUp() {
         calculator = mockk(relaxed = true)
-        viewModel = ResultViewModel(calculator)
+        analytics = mockk(relaxed = true)
+        viewModel = ResultViewModel(calculator, analytics)
     }
 
     @Test
@@ -58,5 +63,19 @@ class ResultViewModelTest {
     @Test
     fun `showAd is true by default`() {
         assertTrue(viewModel.showAd.value)
+    }
+
+    @Test
+    fun `init logs RESULT screen viewed event`() {
+        verify { analytics.logEvent(AnalyticsEvent.ScreenViewed(Screens.RESULT)) }
+    }
+
+    @Test
+    fun `translateToHuman logs DogTranslateFinished event`() {
+        every { calculator.toHumanAge(any(), any()) } returns HumanAge(0, 0)
+
+        viewModel.translateToHuman(3, 6)
+
+        verify { analytics.logEvent(AnalyticsEvent.DogTranslateFinished(3, 6)) }
     }
 }
