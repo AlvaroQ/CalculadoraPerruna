@@ -5,10 +5,14 @@ import com.alvaroquintana.edadperruna.core.data.network.ConnectivityObserver
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
 import com.alvaroquintana.edadperruna.managers.AdManager
+import com.alvaroquintana.edadperruna.managers.Analytics
+import com.alvaroquintana.edadperruna.managers.AnalyticsEvent
+import com.alvaroquintana.edadperruna.managers.Screens
 import com.alvaroquintana.edadperruna.ui.common.UiState
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -30,6 +34,7 @@ class BreedListViewModelTest {
     private val connectivityObserver = mockk<ConnectivityObserver> {
         every { isOnline } returns true
     }
+    private val analytics = mockk<Analytics>(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @Before
@@ -43,7 +48,7 @@ class BreedListViewModelTest {
     }
 
     private fun createViewModel() =
-        BreedListViewModel(breedRepository, adManager, connectivityObserver)
+        BreedListViewModel(breedRepository, adManager, connectivityObserver, analytics)
 
     @Test
     fun `init loads breed list and emits Success`() = runTest {
@@ -158,5 +163,15 @@ class BreedListViewModelTest {
             viewModel.dismissNoInternet()
             assertEquals(false, awaitItem())
         }
+    }
+
+    @Test
+    fun `init logs BREED_LIST screen viewed event`() = runTest {
+        coEvery { breedRepository.getBreedList() } returns flowOf(emptyList())
+        coEvery { adManager.shouldShowAd() } returns false
+
+        createViewModel()
+
+        verify { analytics.logEvent(AnalyticsEvent.ScreenViewed(Screens.BREED_LIST)) }
     }
 }

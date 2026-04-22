@@ -2,6 +2,12 @@ package com.alvaroquintana.edadperruna.ui.home
 
 import app.cash.turbine.test
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
+import com.alvaroquintana.edadperruna.managers.Analytics
+import com.alvaroquintana.edadperruna.managers.AnalyticsEvent
+import com.alvaroquintana.edadperruna.managers.Buttons
+import com.alvaroquintana.edadperruna.managers.Screens
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -10,7 +16,8 @@ import org.junit.Test
 
 class HomeViewModelTest {
 
-    private val viewModel = HomeViewModel()
+    private val analytics: Analytics = mockk(relaxed = true)
+    private val viewModel = HomeViewModel(analytics)
 
     private fun dogWithName(name: String = "Labrador") = Dog(name = name)
 
@@ -100,5 +107,16 @@ class HomeViewModelTest {
             assertTrue(event is HomeViewModel.HomeEvent.ShowError)
             assertEquals(HomeViewModel.HomeError.MonthIllegal, (event as HomeViewModel.HomeEvent.ShowError).error)
         }
+    }
+
+    @Test
+    fun `init logs HOME screen viewed event`() {
+        verify { analytics.logEvent(AnalyticsEvent.ScreenViewed(Screens.HOME)) }
+    }
+
+    @Test
+    fun `navigateToResult logs PLAY_AGAIN click event`() {
+        viewModel.navigateToResult(dogWithName())
+        verify { analytics.logEvent(AnalyticsEvent.Clicked(Buttons.PLAY_AGAIN)) }
     }
 }

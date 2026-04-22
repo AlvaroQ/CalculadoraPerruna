@@ -3,19 +3,25 @@ package com.alvaroquintana.edadperruna.ui.home
 import androidx.lifecycle.ViewModel
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.managers.Analytics
+import com.alvaroquintana.edadperruna.managers.Buttons
+import com.alvaroquintana.edadperruna.managers.Screens
+import com.alvaroquintana.edadperruna.managers.clicked
+import com.alvaroquintana.edadperruna.managers.screenViewed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val analytics: Analytics,
+) : ViewModel() {
 
     private val _events = Channel<HomeEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
 
     init {
-        Analytics.analyticsScreenViewed(Analytics.SCREEN_HOME)
+        analytics.screenViewed(Screens.HOME)
     }
 
     fun navigateToBreedList() {
@@ -23,7 +29,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToResult(dog: Dog) {
-        Analytics.analyticsClicked(Analytics.BTN_RESULT)
+        analytics.clicked(Buttons.PLAY_AGAIN)
         _events.trySend(HomeEvent.NavigateToResult(dog))
     }
 
