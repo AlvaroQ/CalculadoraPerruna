@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Placeholders for release signing. We never build release in CI — debug
+      # doesn't use these — but Gradle evaluates the signingConfigs block at
+      # configure time, so the properties must exist or configuration fails.
+      - name: Inject CI signing placeholders
+        run: |
+          cat >> gradle.properties <<'EOF'
+
+          EDADPERRUNA_RELEASE_KEY_ALIAS=ci
+          EDADPERRUNA_RELEASE_KEY_PASSWORD=ci
+          EDADPERRUNA_RELEASE_STORE_FILE=ci-dummy.jks
+          EDADPERRUNA_RELEASE_STORE_PASSWORD=ci
+          EOF
+
+      # AdMob secrets are read from app/src/main/res/values/secrets.xml via XML
+      # parsing in build.gradle.kts. getAdmobId() returns "" on missing keys,
+      # but the file is also a resource source — its <string> entries are used
+      # by AndroidManifest.xml (@string/admob_id). We stub it with structurally
+      # valid but non-functional IDs so resource merging succeeds.
+      - name: Generate stub secrets.xml
+        run: |
+          mkdir -p app/src/main/res/values
+          cat > app/src/main/res/values/secrets.xml <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <string name="admob_id">ca-app-pub-0000000000000000~0000000000</string>
+              <string name="admob_banner_main_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_settings_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_description_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_intersticial_result_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_bonificado_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_test_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_intersticial_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_bonificado_test_id">ca-app-pub-0000000000000000/0000000000</string>
+          </resources>
+          EOF
+
+      # The google-services plugin requires this file at build time even for
+      # JVM unit tests. The values are structurally valid but non-functional —
+      # CI never makes real Firebase calls.
+      - name: Generate stub google-services.json
+        run: |
+          cat > app/google-services.json <<'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "edadperruna-ci",
+              "storage_bucket": "edadperruna-ci.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": { "package_name": "com.alvaroquintana.edadperruna" }
+                },
+                "oauth_client": [],
+                "api_key": [{ "current_key": "AIzaSyDummyKeyForCIBuildOnly00000000000000" }],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
+      - name: Unit tests
+        run: ./gradlew test --no-daemon --stacktrace
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/build/reports/tests/
+          retention-days: 7
+          if-no-files-found: ignore
