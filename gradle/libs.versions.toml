@@ -73,6 +73,7 @@ glance = "1.1.1"
 wearCompose = "1.6.1"
 wearComposeMaterial3 = "1.6.1"
 wearToolingPreview = "1.0.0"
+playServicesWearable = "19.0.0"
 
 [libraries]
 # Compose
@@ -159,6 +160,7 @@ wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-fou
 wear-compose-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
 wear-compose-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "wearComposeMaterial3" }
 wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
+play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

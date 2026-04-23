@@ -156,6 +156,9 @@ dependencies {
     // Ads
     implementation(libs.play.services.ads)
 
+    // Wear OS data sync (companion channel)
+    implementation(libs.play.services.wearable)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

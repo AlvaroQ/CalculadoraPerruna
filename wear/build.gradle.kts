@@ -56,4 +56,8 @@ dependencies {
 
     // AndroidX
     implementation(libs.core.ktx)
+
+    // Wear OS data sync
+    implementation(libs.play.services.wearable)
+    implementation(libs.coroutines.play.services)
 }
