@@ -35,6 +35,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
@@ -125,11 +129,13 @@ private fun SettingsCategoryHeader(title: String) {
         text = title,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(
-            start = PerrunoTokens.Spacing.lg,
-            top = PerrunoTokens.Spacing.xxl,
-            bottom = PerrunoTokens.Spacing.sm
-        )
+        modifier = Modifier
+            .padding(
+                start = PerrunoTokens.Spacing.lg,
+                top = PerrunoTokens.Spacing.xxl,
+                bottom = PerrunoTokens.Spacing.sm
+            )
+            .semantics { heading() }
     )
 }
 
@@ -144,6 +150,7 @@ private fun SettingsItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
+            .semantics(mergeDescendants = true) { role = Role.Button }
             .padding(horizontal = PerrunoTokens.Spacing.lg, vertical = PerrunoTokens.Spacing.lg),
         verticalAlignment = Alignment.CenterVertically
     ) {
