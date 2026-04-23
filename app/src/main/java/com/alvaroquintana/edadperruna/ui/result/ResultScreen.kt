@@ -2,6 +2,7 @@ package com.alvaroquintana.edadperruna.ui.result
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -100,6 +101,20 @@ fun ResultScreen(
         label = "heroAlpha"
     )
     LaunchedEffect(Unit) { heroVisible = true }
+
+    // Predictive back — the hero number shrinks/fades in sync with the swipe gesture progress.
+    // Falls back to the default back animation on pre-Android 14 devices where progress is absent.
+    PredictiveBackHandler(enabled = true) { progress ->
+        try {
+            progress.collect { backEvent ->
+                heroVisible = backEvent.progress < 0.1f
+            }
+            onBackClick()
+        } catch (_: kotlinx.coroutines.CancellationException) {
+            // Gesture cancelled — restore hero
+            heroVisible = true
+        }
+    }
 
     // Vico chart model producer
     val modelProducer = remember { CartesianChartModelProducer() }
