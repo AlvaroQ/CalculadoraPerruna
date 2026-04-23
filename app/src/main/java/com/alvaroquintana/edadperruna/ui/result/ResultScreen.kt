@@ -2,6 +2,7 @@ package com.alvaroquintana.edadperruna.ui.result
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,9 +29,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 
 import androidx.compose.ui.platform.LocalContext
@@ -82,6 +86,20 @@ fun ResultScreen(
 
     val humanAge = remember { viewModel.translateToHuman(years, months) }
     val chartData = remember { viewModel.generateChartData() }
+
+    // Hero reveal — expressive spring on the human-age number
+    var heroVisible by remember { mutableStateOf(false) }
+    val heroScale by animateFloatAsState(
+        targetValue = if (heroVisible) 1f else 0.6f,
+        animationSpec = PerrunoTokens.ExpressiveMotion.heroSpring(),
+        label = "heroScale"
+    )
+    val heroAlpha by animateFloatAsState(
+        targetValue = if (heroVisible) 1f else 0f,
+        animationSpec = PerrunoTokens.ExpressiveMotion.entrySpring(),
+        label = "heroAlpha"
+    )
+    LaunchedEffect(Unit) { heroVisible = true }
 
     // Vico chart model producer
     val modelProducer = remember { CartesianChartModelProducer() }
@@ -198,7 +216,12 @@ fun ResultScreen(
                                 text = formatHumanAge(humanAge.years, humanAge.months),
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.graphicsLayer {
+                                    scaleX = heroScale
+                                    scaleY = heroScale
+                                    alpha = heroAlpha
+                                }
                             )
 
                             Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.xs))

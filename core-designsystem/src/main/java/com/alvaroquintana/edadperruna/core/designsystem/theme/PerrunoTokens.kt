@@ -1,6 +1,9 @@
 package com.alvaroquintana.edadperruna.core.designsystem.theme
 
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.ui.unit.dp
 
 object PerrunoTokens {
@@ -44,5 +47,33 @@ object PerrunoTokens {
         const val LONG_MS = 500
         const val STAGGER_MS = 100
         val EaseInOut = CubicBezierEasing(0.4f, 0.0f, 0.2f, 1.0f)
+    }
+
+    /**
+     * Expressive motion specs — local substitute for Material 3 Expressive's MotionScheme.expressive()
+     * until the official API becomes public (internal in compose-material3 BOM 2026.03.01).
+     *
+     * Intent:
+     *  - "Expressive" = playful, slightly overshooting springs for hero elements (result, favourite selection).
+     *  - "Standard" = productive motion for list entries, shimmer, navigation transitions.
+     */
+    object ExpressiveMotion {
+        /** Hero number / result reveal. Overshoots and settles — emotional. */
+        fun <T> heroSpring(): SpringSpec<T> = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+
+        /** Card / chip entry. Slight bounce, quick settle. */
+        fun <T> entrySpring(): SpringSpec<T> = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessMediumLow
+        )
+
+        /** Button press / micro-interaction. Snappy, no bounce. */
+        fun <T> pressSpring(): SpringSpec<T> = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessHigh
+        )
     }
 }
