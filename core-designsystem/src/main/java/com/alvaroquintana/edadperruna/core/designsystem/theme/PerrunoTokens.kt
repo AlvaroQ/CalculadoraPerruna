@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.theme
+package com.alvaroquintana.edadperruna.core.designsystem.theme
 
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.ui.unit.dp

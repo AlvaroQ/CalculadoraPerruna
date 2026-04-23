@@ -40,8 +40,8 @@ import com.alvaroquintana.edadperruna.ui.components.BreedGridItem
 import com.alvaroquintana.edadperruna.ui.components.NoInternetDialog
 import com.alvaroquintana.edadperruna.ui.components.PerrunoSearchBar
 import com.alvaroquintana.edadperruna.ui.components.ShimmerBox
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import java.util.Locale
 
 private const val STAGGER_CAP = 20

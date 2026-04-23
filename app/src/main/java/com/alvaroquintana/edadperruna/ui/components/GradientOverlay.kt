@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
 
 @Composable
 fun GradientOverlay(

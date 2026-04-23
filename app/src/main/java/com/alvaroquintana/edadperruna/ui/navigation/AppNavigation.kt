@@ -19,7 +19,7 @@ import com.alvaroquintana.edadperruna.ui.breedList.BreedListScreen
 import com.alvaroquintana.edadperruna.ui.home.HomeScreen
 import com.alvaroquintana.edadperruna.ui.result.ResultScreen
 import com.alvaroquintana.edadperruna.ui.settings.SettingsScreen
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import kotlinx.serialization.Serializable
 
 // Type-safe route definitions — no URL encoding needed

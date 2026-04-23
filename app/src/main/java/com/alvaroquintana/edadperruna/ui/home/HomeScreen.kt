@@ -54,10 +54,10 @@ import com.alvaroquintana.edadperruna.ui.components.PerrunoAsyncImage
 import com.alvaroquintana.edadperruna.ui.components.PerrunoButton
 import com.alvaroquintana.edadperruna.ui.components.PerrunoButtonSize
 import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
-import com.alvaroquintana.edadperruna.ui.theme.DynaPuffFontFamily
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.DynaPuffFontFamily
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun HomeScreen(

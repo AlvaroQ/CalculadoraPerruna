@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.theme
+package com.alvaroquintana.edadperruna.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.alvaroquintana.edadperruna.R
+import com.alvaroquintana.edadperruna.core.designsystem.R
 
 val DynaPuffFontFamily = FontFamily(
     Font(R.font.dynapuff_regular, FontWeight.Normal),
