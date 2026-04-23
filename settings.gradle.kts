@@ -19,3 +19,4 @@ rootProject.name = "edadperruna"
 include(":app")
 include(":core")
 include(":core-designsystem")
+include(":benchmark")
