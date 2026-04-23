@@ -41,6 +41,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -306,7 +310,8 @@ private fun HeroCard(modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold,
                     lineHeight = 28.sp
                 ),
-                color = contentColor
+                color = contentColor,
+                modifier = Modifier.semantics { heading() }
             )
 
             Text(
@@ -332,7 +337,8 @@ private fun BreedSelectorCard(
                 elevation = 4.dp,
                 shape = PerrunoShapes.md
             )
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .semantics { role = Role.Button },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),

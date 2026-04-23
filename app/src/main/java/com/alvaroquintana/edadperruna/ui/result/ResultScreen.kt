@@ -37,6 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
@@ -209,9 +213,13 @@ fun ResultScreen(
 
                 Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.lg))
 
-                // Result Card
+                // Result Card — liveRegion makes TalkBack announce the human-age result on reveal
                 PerrunoCard(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics(mergeDescendants = true) {
+                            liveRegion = LiveRegionMode.Polite
+                        },
                     variant = PerrunoCardVariant.Elevated
                 ) {
                     Box(modifier = Modifier.fillMaxWidth()) {
@@ -232,11 +240,13 @@ fun ResultScreen(
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.graphicsLayer {
-                                    scaleX = heroScale
-                                    scaleY = heroScale
-                                    alpha = heroAlpha
-                                }
+                                modifier = Modifier
+                                    .graphicsLayer {
+                                        scaleX = heroScale
+                                        scaleY = heroScale
+                                        alpha = heroAlpha
+                                    }
+                                    .semantics { heading() }
                             )
 
                             Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.xs))
