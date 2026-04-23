@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Edad Perruna</string>
+    <string name="wear_pick_years">Años del perro</string>
+    <string name="wear_human_years_result">= %1$d años humanos</string>
+</resources>
