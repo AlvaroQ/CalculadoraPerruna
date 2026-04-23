@@ -6,6 +6,12 @@
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.3.20-7F52FF)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-2026.03.01-4285F4)
 ![Unit tests](https://img.shields.io/badge/unit%20tests-75%20passing-22C55E)
+![Screenshot tests](https://img.shields.io/badge/screenshot%20tests-13%20baseline-22C55E)
+![Modules](https://img.shields.io/badge/modules-6-8B5CF6)
+![Material 3 Expressive](https://img.shields.io/badge/Material%203-Expressive-FF6B6B)
+![Predictive Back](https://img.shields.io/badge/Predictive%20Back-enabled-4285F4)
+![Glance Widget](https://img.shields.io/badge/Glance-Widget-FBBC04)
+![Wear OS](https://img.shields.io/badge/Wear%20OS-standalone-EA4335)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ---
@@ -22,7 +28,28 @@ Calculadora Perruna is an Android utility app that **translates between dog year
 
 The app ships with a catalogue of dog breeds enriched with FCI classification, physical characteristics, life expectancy, character traits, common diseases, hygiene and nutrition guidance — all sourced from Firestore and cached locally for offline use.
 
-Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across two Gradle modules. Doubles as a real-world reference for migrating an Android app from the Fragments + Koin + XML era to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the full migration).
+Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across **six Gradle modules** (`app`, `core`, `core-designsystem`, `widget`, `wear`, `benchmark`). Doubles as a real-world reference for migrating an Android app from the Fragments + Koin + XML era to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the full migration).
+
+### Modern Android 2026 — form factors, APIs, accessibility
+
+This project is also a showcase of **APIs 2025-2026 that most Android apps haven't adopted yet**, intentionally selected to demonstrate form-factor awareness, official Google tooling, and accessibility as a first-class concern:
+
+| Signal                                  | Where it lives                                       | Why it matters                                                 |
+| --------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------- |
+| **Glance Widget** (Compose for widgets) | `:widget` module                                     | Same design tokens as `:app` — zero XML duplication.           |
+| **Wear OS standalone**                  | `:wear` module                                       | Picker + result on `ScalingLazyColumn`, Material 3 Wear 1.6.1. |
+| **Wear ↔ phone sync**                   | `:app/wearsync` + `:wear/sync`                       | `Wearable.DataClient` channel at `/favorite_breed`.            |
+| **Predictive Back gesture**             | `ResultScreen.kt` + `AndroidManifest.xml`            | Hero atenuates in sync with the swipe `progress`.              |
+| **Material 3 Expressive motion**        | `:core-designsystem/theme/PerrunoTokens.kt`          | Hero number reveal with overshooting spring.                   |
+| **Baseline Profiles + Macrobenchmark**  | `:benchmark` module                                  | Cold-startup AOT compilation (15-25% faster on first install). |
+| **Compose Preview Screenshot Testing**  | `:app/src/screenshotTest/`                           | Official Google plugin, alpha14 — 13 snapshot baselines.       |
+| **Semantics + LiveRegion TalkBack**     | `ResultScreen.kt`, `HomeScreen.kt`, `SettingsScreen.kt` | Result announced automatically on reveal.                   |
+| **Dynamic type `fontScale=2.0`**        | `app/src/screenshotTest/DynamicTypePreviews.kt`      | WCAG 2.2 AA — 200% text scaling without overflow.              |
+| **Reduce-motion aware animations**      | `:core-designsystem/a11y/ReducedMotion.kt`           | Springs snap to target when `ANIMATOR_DURATION_SCALE=0`.       |
+| **Architecture tests (Konsist)**        | `app/src/test/.../ArchitectureTest.kt`               | ViewModels, domain purity and use-case placement enforced.     |
+| **Code coverage (Kover)**               | Root + `:app` + `:core`                              | `./gradlew koverHtmlReport`.                                   |
+
+See the [ADRs in `docs/adr/`](docs/adr/README.md) for the technical reasoning behind each of these adoptions.
 
 ---
 
