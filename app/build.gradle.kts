@@ -98,6 +98,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":core-designsystem"))
+    implementation(project(":widget"))
 
     // Baseline Profiles runtime
     implementation(libs.profileinstaller)
