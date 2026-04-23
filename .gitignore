@@ -35,6 +35,7 @@ Thumbs.db
 # Project-specific
 app/release/
 docs/*
+!docs/adr/
 !docs/images/
 docs/images/*
 !docs/images/store/
