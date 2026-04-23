@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,6 +61,7 @@ import com.alvaroquintana.edadperruna.ui.components.PerrunoButton
 import com.alvaroquintana.edadperruna.ui.components.PerrunoCard
 import com.alvaroquintana.edadperruna.ui.components.PerrunoCardVariant
 import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
+import com.alvaroquintana.edadperruna.core.designsystem.a11y.rememberIsReducedMotionEnabled
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
@@ -92,16 +94,18 @@ fun ResultScreen(
     val humanAge = remember { viewModel.translateToHuman(years, months) }
     val chartData = remember { viewModel.generateChartData() }
 
-    // Hero reveal — expressive spring on the human-age number
+    // Hero reveal — expressive spring on the human-age number.
+    // Respects the "Remove animations" a11y setting (snaps to target immediately).
+    val reducedMotion = rememberIsReducedMotionEnabled()
     var heroVisible by remember { mutableStateOf(false) }
     val heroScale by animateFloatAsState(
         targetValue = if (heroVisible) 1f else 0.6f,
-        animationSpec = PerrunoTokens.ExpressiveMotion.heroSpring(),
+        animationSpec = if (reducedMotion) snap() else PerrunoTokens.ExpressiveMotion.heroSpring(),
         label = "heroScale"
     )
     val heroAlpha by animateFloatAsState(
         targetValue = if (heroVisible) 1f else 0f,
-        animationSpec = PerrunoTokens.ExpressiveMotion.entrySpring(),
+        animationSpec = if (reducedMotion) snap() else PerrunoTokens.ExpressiveMotion.entrySpring(),
         label = "heroAlpha"
     )
     LaunchedEffect(Unit) { heroVisible = true }
