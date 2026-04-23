@@ -46,9 +46,9 @@ import com.alvaroquintana.edadperruna.ui.components.PerrunoCard
 import com.alvaroquintana.edadperruna.ui.components.PerrunoCardVariant
 import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
 import com.alvaroquintana.edadperruna.ui.components.ShimmerBox
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun BreedDescriptionScreen(

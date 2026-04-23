@@ -93,6 +93,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":core-designsystem"))
 
     // Hilt
     implementation(libs.hilt.android)

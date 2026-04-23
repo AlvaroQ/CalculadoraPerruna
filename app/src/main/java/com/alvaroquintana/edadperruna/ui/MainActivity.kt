@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.navigation.AppNavigation
-import com.alvaroquintana.edadperruna.ui.theme.CalculadoraPerrunaTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.CalculadoraPerrunaTheme
 import com.alvaroquintana.edadperruna.utils.showBonificado
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError

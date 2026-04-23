@@ -34,9 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 enum class PerrunoButtonSize(val minHeight: Dp, val iconSize: Dp, val fontSize: Int, val horizontalPadding: Dp) {
     Small(minHeight = 40.dp, iconSize = 18.dp, fontSize = 14, horizontalPadding = 16.dp),

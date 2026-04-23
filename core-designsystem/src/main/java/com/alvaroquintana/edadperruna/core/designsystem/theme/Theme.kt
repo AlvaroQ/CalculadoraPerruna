@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.theme
+package com.alvaroquintana.edadperruna.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build

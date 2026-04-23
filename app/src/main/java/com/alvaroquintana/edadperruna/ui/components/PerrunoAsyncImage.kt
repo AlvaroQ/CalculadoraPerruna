@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun PerrunoAsyncImage(

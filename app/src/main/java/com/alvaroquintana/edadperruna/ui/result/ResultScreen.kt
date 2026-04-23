@@ -51,8 +51,8 @@ import com.alvaroquintana.edadperruna.ui.components.PerrunoButton
 import com.alvaroquintana.edadperruna.ui.components.PerrunoCard
 import com.alvaroquintana.edadperruna.ui.components.PerrunoCardVariant
 import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTheme
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
@@ -136,7 +136,7 @@ fun ResultScreen(
                         .fillMaxWidth()
                         .height(220.dp)
                         .clickable { onImageClick(image) },
-                    shape = com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes.md,
+                    shape = com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes.md,
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
@@ -149,7 +149,7 @@ fun ResultScreen(
                             imageUrl = image,
                             contentDescription = name,
                             modifier = Modifier.fillMaxSize(),
-                            shape = com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes.md
+                            shape = com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes.md
                         )
 
                         GradientOverlay(

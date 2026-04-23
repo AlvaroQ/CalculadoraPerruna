@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.theme
+package com.alvaroquintana.edadperruna.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

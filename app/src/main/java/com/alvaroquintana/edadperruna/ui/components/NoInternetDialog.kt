@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun NoInternetDialog(

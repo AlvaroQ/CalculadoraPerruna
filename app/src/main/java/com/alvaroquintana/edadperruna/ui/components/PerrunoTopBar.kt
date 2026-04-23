@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.alvaroquintana.edadperruna.R
-import com.alvaroquintana.edadperruna.ui.theme.DynaPuffFontFamily
+import com.alvaroquintana.edadperruna.core.designsystem.theme.DynaPuffFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

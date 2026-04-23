@@ -15,8 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun InfoChip(

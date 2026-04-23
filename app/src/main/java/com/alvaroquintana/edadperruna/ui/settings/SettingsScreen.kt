@@ -43,8 +43,8 @@ import com.alvaroquintana.edadperruna.utils.shareApp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
 import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoShapes
-import com.alvaroquintana.edadperruna.ui.theme.PerrunoTokens
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
+import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 
 @Composable
 fun SettingsScreen(
