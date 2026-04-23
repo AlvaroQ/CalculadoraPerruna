@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.compose.screenshot)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -168,6 +169,9 @@ dependencies {
     // Screenshot testing (Compose Preview Screenshot Testing — official Google)
     screenshotTestImplementation(libs.compose.ui.tooling)
     screenshotTestImplementation(libs.compose.screenshot.validation)
+
+    // Architecture tests
+    testImplementation(libs.konsist)
 }
 
 configurations.configureEach {

@@ -74,6 +74,8 @@ wearCompose = "1.6.1"
 wearComposeMaterial3 = "1.6.1"
 wearToolingPreview = "1.0.0"
 playServicesWearable = "19.0.0"
+konsist = "0.17.3"
+kover = "0.9.1"
 
 [libraries]
 # Compose
@@ -162,6 +164,9 @@ wear-compose-material3 = { group = "androidx.wear.compose", name = "compose-mate
 wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
 
+# Architecture tests & coverage
+konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -176,3 +181,4 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "composeScreenshot" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "benchmark" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
