@@ -9,9 +9,16 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
 
+        <!--
+            'com.google.android.wearable' is the legacy Wearable Support Library.
+            Mark required="false" so the APK installs on Wear OS emulators / devices
+            that don't ship it (common on recent Wear OS 4+ images and Pixel Watch).
+            Compose-based Wear apps don't actually depend on it — we keep the entry
+            for play-services-wearable DataClient resolution only.
+        -->
         <uses-library
             android:name="com.google.android.wearable"
-            android:required="true" />
+            android:required="false" />
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
