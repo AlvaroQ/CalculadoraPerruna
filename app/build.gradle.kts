@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.compose.screenshot)
+    alias(libs.plugins.baselineprofile)
 }
 
 kotlin {
@@ -97,6 +98,10 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":core-designsystem"))
+
+    // Baseline Profiles runtime
+    implementation(libs.profileinstaller)
+    baselineProfile(project(":benchmark"))
 
     // Hilt
     implementation(libs.hilt.android)

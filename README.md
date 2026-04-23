@@ -142,6 +142,35 @@ Run a single module:
 ./gradlew :app:test
 ```
 
+### Screenshot testing (Compose Preview)
+
+UI regressions are guarded by [Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing) — the official Google plugin that turns `@Preview` functions into snapshot tests. 10 baseline snapshots cover `PerrunoButton`, `PerrunoCard`, and `InfoChip`.
+
+```bash
+./gradlew :app:validateDebugScreenshotTest   # CI check
+./gradlew :app:updateDebugScreenshotTest     # regenerate references after intentional changes
+```
+
+HTML report: `app/build/reports/screenshotTest/preview/debug/index.html`.
+
+---
+
+## Performance
+
+Startup time is measured with **Jetpack Macrobenchmark** and optimized with **Baseline Profiles** (both AOT-compiled via ART on first install). Infrastructure lives in the `:benchmark` module (`com.android.test`).
+
+**Requires a connected device or emulator** (API 28+). The JVM-only unit tests from `./gradlew test` do *not* cover these.
+
+```bash
+# Generate the baseline profile (writes app/src/main/baseline-prof.txt)
+./gradlew :app:generateReleaseBaselineProfile
+
+# Measure cold startup with and without the baseline profile applied
+./gradlew :benchmark:connectedReleaseAndroidTest
+```
+
+Reports land in `benchmark/build/outputs/connected_android_test_additional_output/`. Expected signal: Baseline Profile run is 15-25% faster than `CompilationMode.None` on cold start.
+
 ---
 
 ## Getting Started
