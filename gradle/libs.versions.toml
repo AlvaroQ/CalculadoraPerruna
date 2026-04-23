@@ -69,6 +69,7 @@ benchmark = "1.5.0-alpha05"
 profileinstaller = "1.4.1"
 uiAutomator = "2.3.0"
 androidxTestJunit = "1.2.1"
+glance = "1.1.1"
 
 [libraries]
 # Compose
@@ -145,6 +146,10 @@ benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestJunit" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiAutomator" }
+
+# Glance — Compose-style App Widgets
+glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
