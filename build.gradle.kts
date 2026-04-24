@@ -91,6 +91,7 @@ kover {
                     "com.alvaroquintana.edadperruna.utils",
                     // Compose components — no business logic, validated via screenshot tests
                     "com.alvaroquintana.edadperruna.ui.components",
+                    "com.alvaroquintana.edadperruna.core.designsystem.components",
                     // Wear sync publisher: thin DataClient wrapper, integration-tested via reloj
                     "com.alvaroquintana.edadperruna.wearsync",
                     // TODO(PR#28): re-include once AdManager is split into AdsClient + UseCase

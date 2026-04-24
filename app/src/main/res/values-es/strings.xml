@@ -108,15 +108,6 @@
     <string name="apply">Aplicar</string>
     <string name="descending">Descendente</string>
 
-    <!-- Accessibility content descriptions -->
-    <string name="cd_navigate_back">Volver atrás</string>
-    <string name="cd_search_breed">Buscar raza…</string>
-    <string name="cd_clear_search">Borrar búsqueda</string>
-    <string name="cd_sort_ascending">Orden ascendente</string>
-    <string name="cd_sort_descending">Orden descendente</string>
-    <string name="cd_switch_to_list">Cambiar a lista</string>
-    <string name="cd_switch_to_grid">Cambiar a cuadrícula</string>
-
     <!-- Connectivity -->
     <string name="no_internet_title">Sin conexión a Internet</string>
     <string name="no_internet_message">Comprueba tu conexión a Internet e inténtalo de nuevo.</string>

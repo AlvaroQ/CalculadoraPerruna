@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Content descriptions consumed by PerrunoTopBar / PerrunoSearchBar. -->
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_search_breed">Search breed…</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_sort_ascending">Sort ascending</string>
+    <string name="cd_sort_descending">Sort descending</string>
+    <string name="cd_switch_to_list">Switch to list</string>
+    <string name="cd_switch_to_grid">Switch to grid</string>
+</resources>

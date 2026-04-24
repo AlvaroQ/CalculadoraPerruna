@@ -45,8 +45,8 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.utils.rateApp
 import com.alvaroquintana.edadperruna.utils.shareApp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoTopBar
 import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
-import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 

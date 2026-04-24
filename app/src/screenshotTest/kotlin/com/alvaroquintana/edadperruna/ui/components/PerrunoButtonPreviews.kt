@@ -4,6 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Calculate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoButton
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoButtonSize
 import com.alvaroquintana.edadperruna.core.designsystem.theme.CalculadoraPerrunaTheme
 import com.android.tools.screenshot.PreviewTest
 

@@ -35,11 +35,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.common.UiState
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoSearchBar
+import com.alvaroquintana.edadperruna.core.designsystem.components.ShimmerBox
 import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
 import com.alvaroquintana.edadperruna.ui.components.BreedGridItem
 import com.alvaroquintana.edadperruna.ui.components.NoInternetDialog
-import com.alvaroquintana.edadperruna.ui.components.PerrunoSearchBar
-import com.alvaroquintana.edadperruna.ui.components.ShimmerBox
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import java.util.Locale
