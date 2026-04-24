@@ -3,18 +3,24 @@ package com.alvaroquintana.edadperruna.ui.breedDescription
 import app.cash.turbine.test
 import com.alvaroquintana.edadperruna.core.data.network.ConnectivityObserver
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
+import com.alvaroquintana.edadperruna.core.domain.model.FavoriteBreed
 import com.alvaroquintana.edadperruna.core.domain.repository.BreedRepository
+import com.alvaroquintana.edadperruna.core.domain.repository.PreferencesRepository
 import com.alvaroquintana.edadperruna.managers.AdManager
 import com.alvaroquintana.edadperruna.managers.Analytics
 import com.alvaroquintana.edadperruna.managers.AnalyticsEvent
 import com.alvaroquintana.edadperruna.managers.Screens
 import com.alvaroquintana.edadperruna.ui.common.UiState
+import com.alvaroquintana.edadperruna.wearsync.FavoriteBreedPayload
+import com.alvaroquintana.edadperruna.wearsync.WearSyncPublisher
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -30,6 +36,8 @@ import org.junit.Test
 class BreedDescriptionViewModelTest {
 
     private val breedRepository = mockk<BreedRepository>()
+    private val preferencesRepository = mockk<PreferencesRepository>(relaxUnitFun = true)
+    private val wearSyncPublisher = mockk<WearSyncPublisher>(relaxUnitFun = true)
     private val adManager = mockk<AdManager>()
     private val connectivityObserver = mockk<ConnectivityObserver> {
         every { isOnline } returns true
@@ -37,9 +45,12 @@ class BreedDescriptionViewModelTest {
     private val analytics = mockk<Analytics>(relaxed = true)
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    private val favoriteFlow = MutableStateFlow<FavoriteBreed?>(null)
+
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
+        every { preferencesRepository.favoriteBreed } returns favoriteFlow
     }
 
     @After
@@ -48,7 +59,14 @@ class BreedDescriptionViewModelTest {
     }
 
     private fun createViewModel() =
-        BreedDescriptionViewModel(breedRepository, adManager, connectivityObserver, analytics)
+        BreedDescriptionViewModel(
+            breedRepository,
+            preferencesRepository,
+            wearSyncPublisher,
+            adManager,
+            connectivityObserver,
+            analytics,
+        )
 
     @Test
     fun `initial state is Loading`() = runTest {
@@ -168,5 +186,47 @@ class BreedDescriptionViewModelTest {
         createViewModel()
 
         verify { analytics.logEvent(AnalyticsEvent.ScreenViewed(Screens.BREED_DESCRIPTION)) }
+    }
+
+    @Test
+    fun `toggleFavorite persists the breed and pushes it to the watch when not favorited`() = runTest {
+        val viewModel = createViewModel()
+
+        viewModel.toggleFavorite("husky-id", "Husky", "https://img/husky", 13)
+
+        coVerify {
+            preferencesRepository.setFavoriteBreed(
+                FavoriteBreed("husky-id", "Husky", "https://img/husky", 13),
+            )
+        }
+        coVerify {
+            wearSyncPublisher.publishFavoriteBreed(
+                FavoriteBreedPayload("Husky", "https://img/husky", 13),
+            )
+        }
+    }
+
+    @Test
+    fun `toggleFavorite clears the favorite when the same breed is toggled again`() = runTest {
+        favoriteFlow.value = FavoriteBreed("husky-id", "Husky", "https://img/husky", 13)
+        val viewModel = createViewModel()
+
+        viewModel.toggleFavorite("husky-id", "Husky", "https://img/husky", 13)
+
+        coVerify(exactly = 1) { preferencesRepository.clearFavoriteBreed() }
+        coVerify(exactly = 0) { wearSyncPublisher.publishFavoriteBreed(any()) }
+    }
+
+    @Test
+    fun `toggleFavorite clamps avgLifeYears to a minimum of 1`() = runTest {
+        val viewModel = createViewModel()
+
+        viewModel.toggleFavorite("husky-id", "Husky", "https://img/husky", 0)
+
+        coVerify {
+            preferencesRepository.setFavoriteBreed(
+                FavoriteBreed("husky-id", "Husky", "https://img/husky", 1),
+            )
+        }
     }
 }

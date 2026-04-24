@@ -3,4 +3,5 @@
     <string name="app_name">Edad Perruna</string>
     <string name="wear_pick_years">Años del perro</string>
     <string name="wear_human_years_result">= %1$d años humanos</string>
+    <string name="wear_favorite_calc_button">%1$d años (vida media)</string>
 </resources>
