@@ -102,6 +102,9 @@ jobs:
       - name: Unit tests
         run: ./gradlew test --no-daemon --stacktrace
 
+      - name: Coverage verification (Kover thresholds)
+        run: ./gradlew koverVerify --no-daemon --stacktrace
+
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -109,5 +112,15 @@ jobs:
           name: test-reports
           path: |
             **/build/reports/tests/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kover-report
+          path: |
+            build/reports/kover/
           retention-days: 7
           if-no-files-found: ignore

@@ -61,8 +61,6 @@ android {
             resValue("string", "BANNER_DESCRIPTION", getAdmobId("admob_banner_test_id"))
 
             buildConfigField("Boolean", "uploadBreedsFromJSON", "true")
-            enableUnitTestCoverage = true
-            enableAndroidTestCoverage = true
         }
         release {
             isMinifyEnabled = true
