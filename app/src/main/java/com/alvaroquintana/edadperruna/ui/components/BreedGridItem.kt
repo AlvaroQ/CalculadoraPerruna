@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoAsyncImage
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 

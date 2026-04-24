@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.components
+package com.alvaroquintana.edadperruna.core.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.components
+package com.alvaroquintana.edadperruna.core.designsystem.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import com.alvaroquintana.edadperruna.R
+import com.alvaroquintana.edadperruna.core.designsystem.R
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 

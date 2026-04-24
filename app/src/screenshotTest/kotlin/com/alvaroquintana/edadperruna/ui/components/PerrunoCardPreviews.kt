@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoCard
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoCardVariant
 import com.alvaroquintana.edadperruna.core.designsystem.theme.CalculadoraPerrunaTheme
 import com.android.tools.screenshot.PreviewTest
 

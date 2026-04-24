@@ -1,4 +1,4 @@
-package com.alvaroquintana.edadperruna.ui.components
+package com.alvaroquintana.edadperruna.core.designsystem.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring

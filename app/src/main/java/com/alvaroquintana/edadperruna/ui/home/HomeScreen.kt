@@ -53,11 +53,11 @@ import androidx.compose.ui.unit.sp
 import com.alvaroquintana.edadperruna.core.domain.model.Dog
 import com.alvaroquintana.edadperruna.R
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoAsyncImage
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoButton
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoButtonSize
+import com.alvaroquintana.edadperruna.core.designsystem.components.PerrunoTopBar
 import com.alvaroquintana.edadperruna.ui.components.AdaptiveContainer
-import com.alvaroquintana.edadperruna.ui.components.PerrunoAsyncImage
-import com.alvaroquintana.edadperruna.ui.components.PerrunoButton
-import com.alvaroquintana.edadperruna.ui.components.PerrunoButtonSize
-import com.alvaroquintana.edadperruna.ui.components.PerrunoTopBar
 import com.alvaroquintana.edadperruna.core.designsystem.theme.DynaPuffFontFamily
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoShapes
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTheme
