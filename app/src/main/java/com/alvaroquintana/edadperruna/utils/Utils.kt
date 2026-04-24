@@ -1,6 +1,5 @@
 package com.alvaroquintana.edadperruna.utils
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -8,7 +7,6 @@ import android.net.Uri
 import android.util.Log
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.alvaroquintana.edadperruna.R
-import com.google.android.gms.ads.rewarded.RewardedAd
 
 fun log(tag: String?, msg: String?, error: Throwable? = null) {
     if (BuildConfig.BUILD_TYPE != "release") {
@@ -16,18 +14,6 @@ fun log(tag: String?, msg: String?, error: Throwable? = null) {
             Log.e(tag, msg, error)
         } else {
             Log.d(tag, msg!!)
-        }
-    }
-}
-
-fun showBonificado(activity: Activity, show: Boolean, rewardedAd: RewardedAd?) {
-    if (show) {
-        rewardedAd?.let { ad ->
-            ad.show(activity) { rewardItem ->
-                Log.d("loadBonificado", "User earned the reward. rewardAmount=$rewardItem.amount, rewardType=$rewardItem.type")
-            }
-        } ?: run {
-            Log.d("loadBonificado", "The rewarded ad wasn't ready yet.")
         }
     }
 }
