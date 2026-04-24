@@ -34,6 +34,7 @@ import com.alvaroquintana.edadperruna.core.domain.age.DogAgeCalculator
 import com.alvaroquintana.edadperruna.core.domain.age.LogarithmicDogAgeCalculator
 import com.alvaroquintana.edadperruna.wear.sync.FavoriteBreed
 import com.alvaroquintana.edadperruna.wear.sync.favoriteBreedFlow
+import com.alvaroquintana.edadperruna.wear.theme.PerrunoWearTheme
 
 private val dogAgeCalculator: DogAgeCalculator = LogarithmicDogAgeCalculator()
 
@@ -51,7 +52,7 @@ class WearMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            PerrunoWearTheme {
                 WearApp()
             }
         }
@@ -101,8 +102,9 @@ private fun YearPicker(
     ) {
         item {
             Text(
-                text = stringResource(R.string.wear_pick_years),
+                text = "🐾 " + stringResource(R.string.wear_pick_years),
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -148,8 +150,9 @@ private fun MonthPicker(
     ) {
         item {
             Text(
-                text = stringResource(R.string.wear_pick_months, years),
+                text = "🐾 " + stringResource(R.string.wear_pick_months, years),
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -243,7 +246,7 @@ private fun ResultView(
 @Preview(device = WearDevices.SMALL_ROUND, showSystemUi = true)
 @Composable
 private fun WearAppPreview() {
-    MaterialTheme {
+    PerrunoWearTheme {
         WearApp()
     }
 }
