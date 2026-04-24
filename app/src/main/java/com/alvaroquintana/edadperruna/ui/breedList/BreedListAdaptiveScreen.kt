@@ -1,5 +1,6 @@
 package com.alvaroquintana.edadperruna.ui.breedList
 
+import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +26,7 @@ import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.core.designsystem.theme.PerrunoTokens
 import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionScreen
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
+import kotlinx.parcelize.Parcelize
 
 /**
  * Adaptive list-detail scaffold for breed browsing.
@@ -117,10 +118,14 @@ private fun EmptyDetailPlaceholder() {
     }
 }
 
-@Serializable
+// @Parcelize (not @Serializable) because ThreePaneScaffoldNavigator's default
+// saver stores the contentKey via rememberSaveable, which accepts Parcelable
+// or java.io.Serializable — not kotlinx.serialization's @Serializable. A crash
+// was observed on configuration change after picking a breed (#30 aftermath).
+@Parcelize
 data class BreedSelection(
     val breedId: String,
     val image: String,
     val name: String,
     val life: String,
-)
+) : Parcelable
