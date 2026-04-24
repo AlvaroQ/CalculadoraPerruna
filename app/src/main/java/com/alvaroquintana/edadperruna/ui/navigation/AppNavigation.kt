@@ -14,8 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.alvaroquintana.edadperruna.ui.breedDescription.BreedDescriptionScreen
-import com.alvaroquintana.edadperruna.ui.breedList.BreedListScreen
+import com.alvaroquintana.edadperruna.ui.breedList.BreedListAdaptiveScreen
 import com.alvaroquintana.edadperruna.ui.home.HomeScreen
 import com.alvaroquintana.edadperruna.ui.result.ResultScreen
 import com.alvaroquintana.edadperruna.ui.settings.SettingsScreen
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
 @Serializable data object HomeRoute
 @Serializable data object SettingsRoute
 @Serializable data object BreedListRoute
-@Serializable data class BreedDescriptionRoute(val image: String, val name: String, val idBreed: String)
 @Serializable data class ResultRoute(val years: Int, val months: Int, val image: String, val name: String, val life: String)
 
 @Composable
@@ -90,25 +88,7 @@ fun AppNavigation() {
         }
 
         composable<BreedListRoute> {
-            BreedListScreen(
-                onBackClick = { navController.popBackStack() },
-                onBreedSelected = { breedId, image, name, life ->
-                    selectedBreedImage = image
-                    selectedBreedName = name
-                    selectedBreedLife = life
-                    navController.navigate(BreedDescriptionRoute(image, name, breedId)) {
-                        popUpTo<BreedListRoute> { inclusive = true }
-                    }
-                },
-            )
-        }
-
-        composable<BreedDescriptionRoute> { backStackEntry ->
-            val route = backStackEntry.toRoute<BreedDescriptionRoute>()
-            BreedDescriptionScreen(
-                image = route.image,
-                name = route.name,
-                idBreed = route.idBreed,
+            BreedListAdaptiveScreen(
                 onBackClick = { navController.popBackStack() },
                 onSelectBreed = { img, nm, life ->
                     selectedBreedImage = img

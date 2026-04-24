@@ -19,6 +19,9 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.window.core.layout.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,6 +49,7 @@ import java.util.Locale
 
 private const val STAGGER_CAP = 20
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun BreedListScreen(
     onBackClick: () -> Unit,
@@ -61,9 +65,20 @@ fun BreedListScreen(
     val isError = uiState is UiState.Error
     val breedList = (uiState as? UiState.Success)?.data ?: emptyList()
 
+    // Default span count adapts to window width — 3 cols on phones, 5 on tablets/foldables.
+    // The grid toggle in PerrunoSearchBar still lets the user override per session.
+    val widthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
+    val initialSpanCount = remember(widthSizeClass) {
+        when (widthSizeClass) {
+            WindowWidthSizeClass.EXPANDED -> 5
+            WindowWidthSizeClass.MEDIUM -> 4
+            else -> 3
+        }
+    }
+
     var searchText by remember { mutableStateOf("") }
     var isOrderDescending by remember { mutableStateOf(false) }
-    var spanCount by remember { mutableIntStateOf(3) }
+    var spanCount by remember(initialSpanCount) { mutableIntStateOf(initialSpanCount) }
 
     // Filter and sort breeds
     val displayedBreeds = remember(breedList, searchText, isOrderDescending) {
