@@ -75,7 +75,7 @@ wearComposeMaterial3 = "1.6.1"
 wearToolingPreview = "1.0.0"
 playServicesWearable = "19.0.0"
 konsist = "0.17.3"
-kover = "0.9.1"
+kover = "0.9.8"
 
 [libraries]
 # Compose
