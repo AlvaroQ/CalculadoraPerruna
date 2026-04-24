@@ -109,6 +109,8 @@
     <string name="apply">Apply</string>
     <string name="descending">Descending</string>
     <string name="adaptive_select_breed_hint">Pick a breed from the list to see its details here.</string>
+    <string name="cd_mark_favorite">Mark as favorite — sync to watch</string>
+    <string name="cd_unmark_favorite">Remove from favorites</string>
 
     <!-- Connectivity -->
     <string name="no_internet_title">No Internet connection</string>

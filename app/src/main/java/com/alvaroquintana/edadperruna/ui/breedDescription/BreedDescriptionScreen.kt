@@ -16,7 +16,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pets
 import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -62,9 +66,11 @@ fun BreedDescriptionScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showAd by viewModel.showAd.collectAsStateWithLifecycle()
     val showNoInternet by viewModel.showNoInternet.collectAsStateWithLifecycle()
+    val favoriteBreed by viewModel.favoriteBreed.collectAsStateWithLifecycle()
 
     val isLoading = uiState is UiState.Loading
     val breedData = (uiState as? UiState.Success)?.data
+    val isFavorite = favoriteBreed?.breedId == idBreed
 
     LaunchedEffect(idBreed) {
         viewModel.loadBreed(idBreed)
@@ -93,7 +99,25 @@ fun BreedDescriptionScreen(
         topBar = {
             PerrunoTopBar(
                 title = name,
-                onBack = onBackClick
+                onBack = onBackClick,
+                actions = {
+                    IconButton(
+                        onClick = {
+                            val avg = breedData?.mainInformation?.lifeExpectancy?.expectancy?.toInt() ?: 0
+                            viewModel.toggleFavorite(idBreed, name, image, avg)
+                        },
+                        enabled = breedData != null,
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                            contentDescription = stringResource(
+                                if (isFavorite) R.string.cd_unmark_favorite else R.string.cd_mark_favorite,
+                            ),
+                            tint = if (isFavorite) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                },
             )
         }
     ) { paddingValues ->

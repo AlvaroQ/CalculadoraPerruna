@@ -108,6 +108,8 @@
     <string name="apply">Aplicar</string>
     <string name="descending">Descendente</string>
     <string name="adaptive_select_breed_hint">Elige una raza de la lista para ver sus detalles aquí.</string>
+    <string name="cd_mark_favorite">Marcar como favorita — sincronizar al reloj</string>
+    <string name="cd_unmark_favorite">Quitar de favoritas</string>
 
     <!-- Connectivity -->
     <string name="no_internet_title">Sin conexión a Internet</string>
