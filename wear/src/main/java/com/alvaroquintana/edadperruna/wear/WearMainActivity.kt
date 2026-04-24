@@ -27,6 +27,10 @@ import androidx.wear.compose.material3.FilledTonalButton
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import androidx.wear.tooling.preview.devices.WearDevices
+import com.alvaroquintana.edadperruna.core.domain.age.DogAgeCalculator
+import com.alvaroquintana.edadperruna.core.domain.age.LogarithmicDogAgeCalculator
+
+private val dogAgeCalculator: DogAgeCalculator = LogarithmicDogAgeCalculator()
 
 class WearMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +52,7 @@ private fun WearApp() {
     } else {
         ResultView(
             dogYears = dogYears,
-            humanYears = humanYearsFromDogYears(dogYears),
+            humanYears = dogAgeCalculator.toHumanAge(dogYears, 0).years,
             onReset = { dogYears = 0 }
         )
     }

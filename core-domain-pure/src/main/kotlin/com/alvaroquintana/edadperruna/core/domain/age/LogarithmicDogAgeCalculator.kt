@@ -1,9 +1,8 @@
 package com.alvaroquintana.edadperruna.core.domain.age
 
-import javax.inject.Inject
 import kotlin.math.ln
 
-class LogarithmicDogAgeCalculator @Inject constructor() : DogAgeCalculator {
+class LogarithmicDogAgeCalculator : DogAgeCalculator {
 
     override fun toHumanAge(years: Int, months: Int): HumanAge = when {
         years == 0 && months == 0 -> HumanAge(0, 0)

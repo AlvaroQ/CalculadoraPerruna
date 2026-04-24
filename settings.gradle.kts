@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 rootProject.name = "edadperruna"
 include(":app")
 include(":core")
+include(":core-domain-pure")
 include(":core-designsystem")
 include(":benchmark")
 include(":widget")

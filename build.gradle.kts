@@ -5,6 +5,7 @@ import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
@@ -18,8 +19,12 @@ plugins {
 }
 
 dependencies {
-    kover(project(":app"))
+    // TODO(kover): re-add :app once Kover 0.9.x picks up its debug variant under
+    // AGP 9 multi-variant (debug + release + nonMinifiedRelease + benchmarkRelease).
+    // Today the aggregator silently drops :app, so its ViewModel coverage doesn't
+    // contribute. :core and :core-domain-pure carry the JVM business logic anyway.
     kover(project(":core"))
+    kover(project(":core-domain-pure"))
 }
 
 // Coverage policy: Option B (per-layer enforcement on testable JVM code only).
