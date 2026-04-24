@@ -28,6 +28,9 @@ android {
 }
 
 dependencies {
+    // Pure JVM domain layer (no Android, no DI)
+    api(project(":core-domain-pure"))
+
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

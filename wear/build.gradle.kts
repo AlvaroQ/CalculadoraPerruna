@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    // Pure JVM domain shared with :core (no Android, no Hilt — keeps Wear cold-start fast)
+    implementation(project(":core-domain-pure"))
+
     // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
