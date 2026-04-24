@@ -34,8 +34,6 @@ dependencies {
 //   utils, NetworkObserver).
 // - Two rules: per-package floor (50%) blocks any included package from rotting,
 //   plus an application-wide floor (70%) blocks the aggregate from drifting.
-// - PR #28 (AdManager → Hilt-injected AdsClient) will lift app/managers above 50%
-//   and let it re-enter the report.
 kover {
     reports {
         filters {
@@ -62,6 +60,11 @@ kover {
                     "*Screen*",
                     "*Application",
                     "*Application\$*",
+                    // SDK wrappers — call third-party static APIs, integration-tested
+                    "com.alvaroquintana.edadperruna.managers.AnalyticsManager",
+                    "com.alvaroquintana.edadperruna.managers.AnalyticsManager\$*",
+                    "com.alvaroquintana.edadperruna.managers.AdMobAdsClient",
+                    "com.alvaroquintana.edadperruna.managers.AdMobAdsClient\$*",
                 )
                 packages(
                     // Generated DI graph
@@ -94,8 +97,6 @@ kover {
                     "com.alvaroquintana.edadperruna.core.designsystem.components",
                     // Wear sync publisher: thin DataClient wrapper, integration-tested via reloj
                     "com.alvaroquintana.edadperruna.wearsync",
-                    // TODO(PR#28): re-include once AdManager is split into AdsClient + UseCase
-                    "com.alvaroquintana.edadperruna.managers",
                 )
                 annotatedBy("*Generated*")
             }

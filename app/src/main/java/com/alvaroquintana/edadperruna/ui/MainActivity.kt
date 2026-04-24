@@ -1,7 +1,6 @@
 package com.alvaroquintana.edadperruna.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,17 +8,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alvaroquintana.edadperruna.R
 import com.alvaroquintana.edadperruna.ui.navigation.AppNavigation
 import com.alvaroquintana.edadperruna.core.designsystem.theme.CalculadoraPerrunaTheme
-import com.alvaroquintana.edadperruna.utils.showBonificado
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.alvaroquintana.edadperruna.managers.AdsClient
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private var rewardedAd: RewardedAd? = null
+
+    @Inject lateinit var adsClient: AdsClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -27,9 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
 
-        // Initialize Ads
-        MobileAds.initialize(this)
-        loadRewardedAd()
+        adsClient.initialize()
+        adsClient.loadRewarded(getString(R.string.BONIFICADO_LIST))
 
         setContent {
             CalculadoraPerrunaTheme {
@@ -38,26 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadRewardedAd() {
-        RewardedAd.load(
-            this,
-            getString(R.string.BONIFICADO_LIST),
-            AdRequest.Builder().build(),
-            object : RewardedAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("MainActivity", "Ad failed to load: ${adError.message}")
-                    rewardedAd = null
-                }
-
-                override fun onAdLoaded(ad: RewardedAd) {
-                    Log.d("MainActivity", "Ad was loaded.")
-                    rewardedAd = ad
-                }
-            }
-        )
-    }
-
     fun showRewardAd(show: Boolean) {
-        showBonificado(this, show, rewardedAd)
+        if (show) adsClient.showRewardedIfAvailable(this)
     }
 }
