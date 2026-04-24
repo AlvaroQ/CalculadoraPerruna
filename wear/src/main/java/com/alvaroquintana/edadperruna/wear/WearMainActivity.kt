@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,16 @@ import com.alvaroquintana.edadperruna.wear.sync.favoriteBreedFlow
 
 private val dogAgeCalculator: DogAgeCalculator = LogarithmicDogAgeCalculator()
 
+// Three-step state machine mirrors the mobile calculator flow:
+//   PickYears → PickMonths(years) → ShowResult(years, months)
+// The favorite-breed shortcut skips PickMonths and jumps straight to
+// ShowResult(avgLifeYears, 0) — average lifespan has no month precision.
+private sealed interface PickerStep {
+    data object PickYears : PickerStep
+    data class PickMonths(val years: Int) : PickerStep
+    data class ShowResult(val years: Int, val months: Int) : PickerStep
+}
+
 class WearMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,18 +64,25 @@ private fun WearApp() {
     val favoriteBreed by remember(context) { context.favoriteBreedFlow() }
         .collectAsState(initial = null)
 
-    var dogYears by remember { mutableIntStateOf(0) }
+    var step: PickerStep by remember { mutableStateOf(PickerStep.PickYears) }
 
-    if (dogYears == 0) {
-        YearPicker(
+    when (val current = step) {
+        is PickerStep.PickYears -> YearPicker(
             favoriteBreed = favoriteBreed,
-            onYearSelected = { dogYears = it },
+            onYearSelected = { years -> step = PickerStep.PickMonths(years) },
+            onFavoriteShortcut = { years -> step = PickerStep.ShowResult(years, 0) },
         )
-    } else {
-        ResultView(
-            dogYears = dogYears,
-            humanYears = dogAgeCalculator.toHumanAge(dogYears, 0).years,
-            onReset = { dogYears = 0 }
+        is PickerStep.PickMonths -> MonthPicker(
+            years = current.years,
+            onMonthSelected = { months ->
+                step = PickerStep.ShowResult(current.years, months)
+            },
+        )
+        is PickerStep.ShowResult -> ResultView(
+            dogYears = current.years,
+            dogMonths = current.months,
+            humanYears = dogAgeCalculator.toHumanAge(current.years, current.months).years,
+            onReset = { step = PickerStep.PickYears },
         )
     }
 }
@@ -73,6 +91,7 @@ private fun WearApp() {
 private fun YearPicker(
     favoriteBreed: FavoriteBreed?,
     onYearSelected: (Int) -> Unit,
+    onFavoriteShortcut: (Int) -> Unit,
 ) {
     val listState = rememberScalingLazyListState()
     ScalingLazyColumn(
@@ -90,12 +109,11 @@ private fun YearPicker(
             )
         }
 
-        // Phone-synced favorite shortcut: tap to jump straight to its average lifespan.
         favoriteBreed?.let { breed ->
             item {
                 FavoriteShortcut(
                     breed = breed,
-                    onClick = { onYearSelected(breed.avgLifeYears) },
+                    onClick = { onFavoriteShortcut(breed.avgLifeYears) },
                 )
             }
             item { Spacer(Modifier.height(8.dp)) }
@@ -118,6 +136,41 @@ private fun YearPicker(
 }
 
 @Composable
+private fun MonthPicker(
+    years: Int,
+    onMonthSelected: (Int) -> Unit,
+) {
+    val listState = rememberScalingLazyListState()
+    ScalingLazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState,
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
+    ) {
+        item {
+            Text(
+                text = stringResource(R.string.wear_pick_months, years),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 4.dp),
+            )
+        }
+        items(count = 12) { month ->
+            FilledTonalButton(
+                onClick = { onMonthSelected(month) },
+                modifier = Modifier.padding(vertical = 2.dp),
+            ) {
+                Text(
+                    text = "$month",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun FavoriteShortcut(
     breed: FavoriteBreed,
     onClick: () -> Unit,
@@ -126,9 +179,7 @@ private fun FavoriteShortcut(
         onClick = onClick,
         modifier = Modifier.padding(vertical = 4.dp),
     ) {
-        androidx.compose.foundation.layout.Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "★ ${breed.name}",
                 style = MaterialTheme.typography.labelMedium,
@@ -147,6 +198,7 @@ private fun FavoriteShortcut(
 @Composable
 private fun ResultView(
     dogYears: Int,
+    dogMonths: Int,
     humanYears: Int,
     onReset: () -> Unit,
 ) {
@@ -160,7 +212,7 @@ private fun ResultView(
         ) {
             item {
                 Text(
-                    text = "$dogYears anos",
+                    text = stringResource(R.string.wear_age_label, dogYears, dogMonths),
                     style = MaterialTheme.typography.labelMedium,
                     textAlign = TextAlign.Center,
                 )
