@@ -1,20 +1,17 @@
 package com.alvaroquintana.edadperruna.managers
 
-import android.content.Context
 import android.os.Bundle
 import com.alvaroquintana.edadperruna.BuildConfig
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AnalyticsManager @Inject constructor(
-    @ApplicationContext context: Context,
+    private val firebase: FirebaseAnalytics,
+    private val firebaseAuth: FirebaseAuth,
 ) : Analytics {
-
-    private val firebase: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
     override fun logEvent(event: AnalyticsEvent) {
         val bundle = Bundle().apply {
@@ -27,7 +24,7 @@ class AnalyticsManager @Inject constructor(
     }
 
     private fun getUID(): String =
-        FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        firebaseAuth.currentUser?.uid ?: ""
 }
 
 sealed interface AnalyticsEvent {

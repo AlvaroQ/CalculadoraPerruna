@@ -20,6 +20,12 @@ class CalculadoraApp : Application() {
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
 
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
+    lateinit var crashlytics: FirebaseCrashlytics
+
     private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     override fun onCreate() {
@@ -29,12 +35,11 @@ class CalculadoraApp : Application() {
     }
 
     private fun initFirebaseAuth() {
-        val auth = FirebaseAuth.getInstance()
-        if (auth.currentUser == null) {
-            auth.signInAnonymously()
+        if (firebaseAuth.currentUser == null) {
+            firebaseAuth.signInAnonymously()
                 .addOnFailureListener { error ->
                     Log.e("CalculadoraApp", "Anonymous auth failed", error)
-                    FirebaseCrashlytics.getInstance().recordException(error)
+                    crashlytics.recordException(error)
                 }
         }
     }
