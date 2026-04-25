@@ -36,6 +36,8 @@ Thumbs.db
 app/release/
 docs/*
 !docs/adr/
+!docs/captures/
+!docs/diagrams/
 !docs/images/
 docs/images/*
 !docs/images/store/

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 320" role="img" aria-labelledby="flow-title flow-desc">
+  <title id="flow-title">Offline-first data flow — Firestore as source, Room as cache</title>
+  <desc id="flow-desc">Compose UI subscribes to a StateFlow exposed by the ViewModel. The ViewModel asks the BreedRepository, which serves cached data from Room. On first request (or explicit refresh), the repository syncs from Firestore into Room. After that, all reads stay local.</desc>
+
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0F766E"/>
+    </marker>
+    <marker id="arr2-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9333EA"/>
+    </marker>
+  </defs>
+
+  <!-- Top row: UI ← VM ← Repository ← Room (read path) -->
+  <g>
+    <rect x="20" y="60" width="180" height="76" rx="12" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="110" y="92" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#1E1B4B">Compose UI</text>
+    <text x="110" y="112" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">collectAsState()</text>
+  </g>
+
+  <g>
+    <rect x="240" y="60" width="180" height="76" rx="12" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="330" y="92" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#1E1B4B">ViewModel</text>
+    <text x="330" y="112" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">StateFlow&lt;UiState&gt;</text>
+  </g>
+
+  <g>
+    <rect x="460" y="60" width="180" height="76" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+    <text x="550" y="92" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#064E3B">BreedRepository</text>
+    <text x="550" y="112" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">single source of truth</text>
+  </g>
+
+  <g>
+    <rect x="680" y="60" width="220" height="76" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+    <text x="790" y="92" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#064E3B">Room (SQLite)</text>
+    <text x="790" y="112" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">DogDao · always available</text>
+  </g>
+
+  <!-- Read arrows: pointing left (data flows from cache up to UI) -->
+  <line x1="240" y1="98" x2="200" y2="98" stroke="#0F766E" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="220" y="86" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="10" fill="#0F766E" font-style="italic" font-weight="600">StateFlow</text>
+
+  <line x1="460" y1="98" x2="420" y2="98" stroke="#0F766E" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="440" y="86" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="10" fill="#0F766E" font-style="italic" font-weight="600">Flow</text>
+
+  <line x1="680" y1="98" x2="640" y2="98" stroke="#0F766E" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="660" y="86" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="10" fill="#0F766E" font-style="italic" font-weight="600">read</text>
+
+  <!-- Bottom: Firestore (cloud) — only on first sync -->
+  <g>
+    <rect x="680" y="220" width="220" height="76" rx="12" fill="#FAF5FF" stroke="#9333EA" stroke-width="2"/>
+    <text x="790" y="252" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#3B0764">Firestore (cloud)</text>
+    <text x="790" y="272" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">canonical breed catalogue</text>
+  </g>
+
+  <!-- Repository → Firestore (down-right) — refresh -->
+  <line x1="600" y1="136" x2="730" y2="220" stroke="#9333EA" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr2-dashed)"/>
+  <text x="615" y="200" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#9333EA" font-style="italic" font-weight="600">first request</text>
+  <text x="615" y="216" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#9333EA" font-style="italic" font-weight="600">or refresh()</text>
+
+  <!-- Firestore → Room (up) — write -->
+  <line x1="850" y1="220" x2="850" y2="136" stroke="#9333EA" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr2-dashed)"/>
+  <text x="860" y="180" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#9333EA" font-style="italic" font-weight="600">cache</text>
+
+  <!-- Caption -->
+  <text x="20" y="40" font-family="-apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Read path (always local)</text>
+  <text x="20" y="252" font-family="-apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Sync path (network)</text>
+  <text x="20" y="272" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Runs once on first request and on explicit refresh.</text>
+  <text x="20" y="288" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Subsequent reads never touch the network.</text>
+</svg>
