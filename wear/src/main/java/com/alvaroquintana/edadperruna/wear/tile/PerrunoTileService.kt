@@ -82,6 +82,8 @@ class PerrunoTileService : TileService() {
             .setOnClick(launchAction)
             .build()
 
+        val lastCalc = LastCalculationStore.readBlocking(this)
+
         val column = Column.Builder()
             .setHorizontalAlignment(LayoutElementBuilders.HORIZONTAL_ALIGN_CENTER)
             .addContent(
@@ -89,38 +91,82 @@ class PerrunoTileService : TileService() {
                     .setText("🐾")
                     .setFontStyle(
                         FontStyle.Builder()
-                            .setSize(sp(36f))
+                            .setSize(sp(if (lastCalc != null) 26f else 36f))
                             .setColor(argb(GOLDEN_PAWS_PRIMARY))
                             .build(),
                     )
                     .build(),
             )
-            .addContent(Spacer.Builder().setHeight(dp(6f)).build())
-            .addContent(
-                Text.Builder()
-                    .setText("Edad Perruna")
-                    .setFontStyle(
-                        FontStyle.Builder()
-                            .setSize(sp(15f))
-                            .setWeight(LayoutElementBuilders.FONT_WEIGHT_BOLD)
-                            .setColor(argb(GOLDEN_PAWS_ON_SURFACE))
-                            .build(),
-                    )
-                    .build(),
-            )
-            .addContent(Spacer.Builder().setHeight(dp(2f)).build())
-            .addContent(
-                Text.Builder()
-                    .setText("Toca para calcular")
-                    .setFontStyle(
-                        FontStyle.Builder()
-                            .setSize(sp(11f))
-                            .setColor(argb(GOLDEN_PAWS_ON_SURFACE_VARIANT))
-                            .build(),
-                    )
-                    .build(),
-            )
-            .build()
+            .addContent(Spacer.Builder().setHeight(dp(4f)).build())
+
+        if (lastCalc != null) {
+            // Surface the last calculated result so the tile is informational,
+            // not just a launch shortcut. Big number = human-years equivalent.
+            column
+                .addContent(
+                    Text.Builder()
+                        .setText("${lastCalc.humanYears}")
+                        .setFontStyle(
+                            FontStyle.Builder()
+                                .setSize(sp(34f))
+                                .setWeight(LayoutElementBuilders.FONT_WEIGHT_BOLD)
+                                .setColor(argb(GOLDEN_PAWS_ON_SURFACE))
+                                .build(),
+                        )
+                        .build(),
+                )
+                .addContent(
+                    Text.Builder()
+                        .setText("años humanos")
+                        .setFontStyle(
+                            FontStyle.Builder()
+                                .setSize(sp(11f))
+                                .setColor(argb(GOLDEN_PAWS_ON_SURFACE_VARIANT))
+                                .build(),
+                        )
+                        .build(),
+                )
+                .addContent(Spacer.Builder().setHeight(dp(4f)).build())
+                .addContent(
+                    Text.Builder()
+                        .setText(formatDogAge(lastCalc.dogYears, lastCalc.dogMonths))
+                        .setFontStyle(
+                            FontStyle.Builder()
+                                .setSize(sp(11f))
+                                .setColor(argb(GOLDEN_PAWS_ON_SURFACE_VARIANT))
+                                .build(),
+                        )
+                        .build(),
+                )
+        } else {
+            column
+                .addContent(
+                    Text.Builder()
+                        .setText("Edad Perruna")
+                        .setFontStyle(
+                            FontStyle.Builder()
+                                .setSize(sp(15f))
+                                .setWeight(LayoutElementBuilders.FONT_WEIGHT_BOLD)
+                                .setColor(argb(GOLDEN_PAWS_ON_SURFACE))
+                                .build(),
+                        )
+                        .build(),
+                )
+                .addContent(Spacer.Builder().setHeight(dp(2f)).build())
+                .addContent(
+                    Text.Builder()
+                        .setText("Toca para calcular")
+                        .setFontStyle(
+                            FontStyle.Builder()
+                                .setSize(sp(11f))
+                                .setColor(argb(GOLDEN_PAWS_ON_SURFACE_VARIANT))
+                                .build(),
+                        )
+                        .build(),
+                )
+        }
+
+        val builtColumn = column.build()
 
         return Box.Builder()
             .setWidth(expand())
@@ -144,8 +190,13 @@ class PerrunoTileService : TileService() {
                     )
                     .build(),
             )
-            .addContent(column)
+            .addContent(builtColumn)
             .build()
     }
+}
+
+private fun formatDogAge(years: Int, months: Int): String = when {
+    months == 0 -> "$years años perro"
+    else -> "$years años $months meses"
 }
 

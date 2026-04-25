@@ -73,6 +73,9 @@ dependencies {
 
     // AndroidX
     implementation(libs.core.ktx)
+    // DataStore Preferences — persists the last calculation so the Tile can
+    // surface a real number on next render rather than a static placeholder.
+    implementation(libs.datastore.preferences)
 
     // Wear OS data sync
     implementation(libs.play.services.wearable)
