@@ -74,6 +74,8 @@ import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProdu
 import com.patrykandpatrick.vico.compose.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
+import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
+import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,6 +95,7 @@ fun ResultScreen(
 
     val humanAge = remember { viewModel.translateToHuman(years, months) }
     val chartData = remember { viewModel.generateChartData() }
+    val markerPoint = remember { viewModel.getMarkerPoint(years, months) }
 
     // Hero reveal — expressive spring on the human-age number.
     // Respects the "Remove animations" a11y setting (snaps to target immediately).
@@ -299,6 +302,15 @@ fun ResultScreen(
 
                         Spacer(modifier = Modifier.height(PerrunoTokens.Spacing.xs))
 
+                        // Persistent marker pinned at the user's input on the curve.
+                        // Vico draws the marker indicator + label at the chart's y for
+                        // this x — no need to also pass the y (the chart resolves it
+                        // by intersecting the line series). x is fractional dog-years
+                        // (years + months/12) so 2y 6m lands halfway between 2 and 3.
+                        val resultMarker = rememberDefaultCartesianMarker(
+                            label = rememberTextComponent(),
+                        )
+
                         CartesianChartHost(
                             chart = rememberCartesianChart(
                                 rememberLineCartesianLayer(
@@ -312,6 +324,9 @@ fun ResultScreen(
                                 ),
                                 startAxis = VerticalAxis.rememberStart(),
                                 bottomAxis = HorizontalAxis.rememberBottom(),
+                                persistentMarkers = { _ ->
+                                    resultMarker at markerPoint.dogYears
+                                },
                             ),
                             modelProducer = modelProducer,
                             modifier = Modifier
