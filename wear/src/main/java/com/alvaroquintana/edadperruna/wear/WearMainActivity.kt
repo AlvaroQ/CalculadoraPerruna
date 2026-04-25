@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,12 +30,15 @@ import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material3.FilledTonalButton
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
+import androidx.wear.tiles.TileService
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.alvaroquintana.edadperruna.core.domain.age.DogAgeCalculator
 import com.alvaroquintana.edadperruna.core.domain.age.LogarithmicDogAgeCalculator
 import com.alvaroquintana.edadperruna.wear.sync.FavoriteBreed
 import com.alvaroquintana.edadperruna.wear.sync.favoriteBreedFlow
 import com.alvaroquintana.edadperruna.wear.theme.PerrunoWearTheme
+import com.alvaroquintana.edadperruna.wear.tile.LastCalculationStore
+import com.alvaroquintana.edadperruna.wear.tile.PerrunoTileService
 
 private val dogAgeCalculator: DogAgeCalculator = LogarithmicDogAgeCalculator()
 
@@ -79,12 +83,27 @@ private fun WearApp() {
                 step = PickerStep.ShowResult(current.years, months)
             },
         )
-        is PickerStep.ShowResult -> ResultView(
-            dogYears = current.years,
-            dogMonths = current.months,
-            humanYears = dogAgeCalculator.toHumanAge(current.years, current.months).years,
-            onReset = { step = PickerStep.PickYears },
-        )
+        is PickerStep.ShowResult -> {
+            val humanYears = dogAgeCalculator.toHumanAge(current.years, current.months).years
+            // Persist this calculation and ping the Tile so its next render
+            // surfaces the real number instead of the static placeholder.
+            LaunchedEffect(current.years, current.months, humanYears) {
+                LastCalculationStore.save(
+                    context = context,
+                    dogYears = current.years,
+                    dogMonths = current.months,
+                    humanYears = humanYears,
+                )
+                TileService.getUpdater(context)
+                    .requestUpdate(PerrunoTileService::class.java)
+            }
+            ResultView(
+                dogYears = current.years,
+                dogMonths = current.months,
+                humanYears = humanYears,
+                onReset = { step = PickerStep.PickYears },
+            )
+        }
     }
 }
 
