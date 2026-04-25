@@ -31,10 +31,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # API 33 = Tiramisu. Sweet spot: high enough that ART AOT behaves like
-        # production, low enough that the emulator boots fast and is stable.
-        # Add API 28 / 34 here when we want a per-PR matrix.
-        api-level: [33]
+        # API 30 (Android 11) on the AOSP ATD image. ATD = Automated Test
+        # Device — slimmed-down system image without GMS, boots in ~60s on
+        # hosted runners (vs 5+ min for google_apis on API 33). Macrobenchmark
+        # itself works on any API >= 28; the ATD lineage gives more stable
+        # cold-start measurements in CI.
+        api-level: [30]
 
     steps:
       - name: Checkout
@@ -123,28 +125,24 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}-v1
+          # Cache key includes target+arch — bumping the system image flavour
+          # automatically busts the cache so a stale snapshot can't load against
+          # a different image.
+          key: avd-${{ matrix.api-level }}-aosp-atd-x86_64-v2
 
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          profile: pixel_6
-          force-avd-creation: false
-          emulator-options: -no-snapshot-load -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio
-          disable-animations: true
-          script: echo "AVD snapshot generated"
-
+      # Single emulator run handles AVD creation + benchmark execution.
+      # Earlier attempts split snapshot prep into a separate step, which
+      # doubled boot time for first runs and timed out on `pixel_6` +
+      # `google_apis` API 33 under software GPU. The default device on
+      # AOSP ATD boots reliably in ~60s on hosted runners.
       - name: Run macrobenchmark
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
-          profile: pixel_6
+          target: aosp_atd
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio
+          emulator-options: -no-snapshot-save -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -camera-back none -camera-front none
           disable-animations: true
           script: ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest --no-daemon --stacktrace
 
