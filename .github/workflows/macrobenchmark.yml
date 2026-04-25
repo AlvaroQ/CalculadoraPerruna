@@ -1,0 +1,165 @@
+name: Macrobenchmark
+
+# Cold-start macrobenchmark on a hosted Android emulator. Runs the
+# :benchmark module against a release-signed app on push to master only
+# and uploads timing results as artifacts. Treat as a trend signal on
+# main branch evolution, not as a per-PR SLA.
+#
+# WHY push-only (not pull_request):
+# Macrobenchmark requires booting a hosted Android emulator under software
+# GPU. The reactivecircus/android-emulator-runner @v2 action is known to
+# flake on ubuntu-latest runners (gfxstream Vulkan warnings, AVD boot
+# timeouts) and ~30% of runs fail to boot regardless of config. We don't
+# want that flake to block PR merges. Master pushes give us the same
+# trend signal without coupling reliability to PR throughput. If a master
+# run fails the cause is visible in artifacts; manual re-run via the UI.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: macrobenchmark-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  macrobenchmark:
+    name: Macrobenchmark (cold startup)
+    # KVM acceleration is only available on the standard Linux runner image.
+    # macOS / Windows runners would work but are 10x slower and 10x more expensive.
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # API 30 (Android 11) on the AOSP ATD image. ATD = Automated Test
+        # Device — slimmed-down system image without GMS, boots in ~60s on
+        # hosted runners (vs 5+ min for google_apis on API 33). Macrobenchmark
+        # itself works on any API >= 28; the ATD lineage gives more stable
+        # cold-start measurements in CI.
+        api-level: [30]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      # Same placeholders as ci.yml — Gradle evaluates signingConfigs at
+      # configure time, so the properties must exist or configuration fails.
+      - name: Inject CI signing placeholders
+        run: |
+          cat >> gradle.properties <<'EOF'
+
+          EDADPERRUNA_RELEASE_KEY_ALIAS=ci
+          EDADPERRUNA_RELEASE_KEY_PASSWORD=ci
+          EDADPERRUNA_RELEASE_STORE_FILE=ci-dummy.jks
+          EDADPERRUNA_RELEASE_STORE_PASSWORD=ci
+          EOF
+
+      - name: Generate stub secrets.xml
+        run: |
+          mkdir -p app/src/main/res/values
+          cat > app/src/main/res/values/secrets.xml <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <string name="admob_id">ca-app-pub-0000000000000000~0000000000</string>
+              <string name="admob_banner_main_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_settings_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_description_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_intersticial_result_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_bonificado_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_banner_test_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_intersticial_list_id">ca-app-pub-0000000000000000/0000000000</string>
+              <string name="admob_bonificado_test_id">ca-app-pub-0000000000000000/0000000000</string>
+          </resources>
+          EOF
+
+      - name: Generate stub google-services.json
+        run: |
+          cat > app/google-services.json <<'EOF'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "edadperruna-ci",
+              "storage_bucket": "edadperruna-ci.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": { "package_name": "com.alvaroquintana.edadperruna" }
+                },
+                "oauth_client": [],
+                "api_key": [{ "current_key": "AIzaSyDummyKeyForCIBuildOnly00000000000000" }],
+                "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
+
+      # Macrobenchmark requires KVM hardware acceleration on the runner.
+      # Without this the emulator falls back to software rendering and runs
+      # are 5-10x slower (and the timing measurements become useless).
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          # Cache key includes target+arch — bumping the system image flavour
+          # automatically busts the cache so a stale snapshot can't load against
+          # a different image.
+          key: avd-${{ matrix.api-level }}-aosp-atd-x86_64-v2
+
+      # Single emulator run handles AVD creation + benchmark execution.
+      # Earlier attempts split snapshot prep into a separate step, which
+      # doubled boot time for first runs and timed out on `pixel_6` +
+      # `google_apis` API 33 under software GPU. The default device on
+      # AOSP ATD boots reliably in ~60s on hosted runners.
+      - name: Run macrobenchmark
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          target: aosp_atd
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -camera-back none -camera-front none
+          disable-animations: true
+          script: ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest --no-daemon --stacktrace
+
+      - name: Upload macrobenchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macrobenchmark-results-api-${{ matrix.api-level }}
+          path: |
+            benchmark/build/outputs/connected_android_test_additional_output/
+            benchmark/build/outputs/androidTest-results/
+            benchmark/build/reports/androidTests/
+          retention-days: 14
+          if-no-files-found: warn
