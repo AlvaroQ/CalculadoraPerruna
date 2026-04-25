@@ -20,10 +20,7 @@ plugins {
 }
 
 dependencies {
-    // TODO(kover): re-add :app once Kover 0.9.x picks up its debug variant under
-    // AGP 9 multi-variant (debug + release + nonMinifiedRelease + benchmarkRelease).
-    // Today the aggregator silently drops :app, so its ViewModel coverage doesn't
-    // contribute. :core and :core-domain-pure carry the JVM business logic anyway.
+    kover(project(":app"))
     kover(project(":core"))
     kover(project(":core-domain-pure"))
 }
@@ -90,7 +87,6 @@ kover {
                     "com.alvaroquintana.edadperruna.core.designsystem.a11y",
                     // App layer: navigation graph + Activity helpers (Android Context)
                     "com.alvaroquintana.edadperruna.application",
-                    "com.alvaroquintana.edadperruna.ui",
                     "com.alvaroquintana.edadperruna.ui.navigation",
                     "com.alvaroquintana.edadperruna.utils",
                     // Compose components — no business logic, validated via screenshot tests
