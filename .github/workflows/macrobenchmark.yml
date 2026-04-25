@@ -76,19 +76,20 @@ jobs:
           cat >> gradle.properties <<'EOF'
 
           EDADPERRUNA_RELEASE_KEY_ALIAS=ci
-          EDADPERRUNA_RELEASE_KEY_PASSWORD=ci
+          EDADPERRUNA_RELEASE_KEY_PASSWORD=cipass
           EDADPERRUNA_RELEASE_STORE_FILE=ci-dummy.jks
-          EDADPERRUNA_RELEASE_STORE_PASSWORD=ci
+          EDADPERRUNA_RELEASE_STORE_PASSWORD=cipass
           EOF
 
       - name: Generate dummy keystore for signed benchmark build
+        # keytool requires passwords >= 6 characters — "ci" was rejected.
         run: |
           keytool -genkey -v \
             -keystore app/ci-dummy.jks \
             -storetype JKS \
             -keyalg RSA -keysize 2048 -validity 1 \
             -alias ci \
-            -storepass ci -keypass ci \
+            -storepass cipass -keypass cipass \
             -dname "CN=CI, OU=CI, O=CI, L=CI, S=CI, C=US"
 
       - name: Generate stub secrets.xml
