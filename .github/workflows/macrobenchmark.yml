@@ -29,20 +29,24 @@ permissions:
 jobs:
   macrobenchmark:
     name: Macrobenchmark (cold startup)
-    # KVM acceleration is only available on the standard Linux runner image.
-    # macOS / Windows runners would work but are 10x slower and 10x more expensive.
-    runs-on: ubuntu-latest
+    # ubuntu-22.04 pinned (was ubuntu-latest). The 24.04 image rolled out as
+    # ubuntu-latest in early 2025 and the emulator-runner v2 + KVM combination
+    # has been intermittently broken there since — the previous master attempts
+    # all failed at "device 'emulator-5554' not found" with no recovery path.
+    # 22.04 is still supported through 2027 and is the configuration the
+    # action's maintainers test against most.
+    runs-on: ubuntu-22.04
     timeout-minutes: 60
 
     strategy:
       fail-fast: false
       matrix:
-        # API 30 (Android 11) on the AOSP ATD image. ATD = Automated Test
-        # Device — slimmed-down system image without GMS, boots in ~60s on
-        # hosted runners (vs 5+ min for google_apis on API 33). Macrobenchmark
-        # itself works on any API >= 28; the ATD lineage gives more stable
-        # cold-start measurements in CI.
-        api-level: [30]
+        # API 29 with google_apis target — the combination most heavily tested
+        # by reactivecircus/android-emulator-runner. Earlier attempts with
+        # API 33/google_apis and API 30/aosp_atd both failed at AVD boot on
+        # ubuntu-latest. Macrobenchmark requires API >= 28, so 29 is the
+        # earliest reliable option.
+        api-level: [29]
 
     steps:
       - name: Checkout
@@ -134,19 +138,21 @@ jobs:
           # Cache key includes target+arch — bumping the system image flavour
           # automatically busts the cache so a stale snapshot can't load against
           # a different image.
-          key: avd-${{ matrix.api-level }}-aosp-atd-x86_64-v2
+          key: avd-${{ matrix.api-level }}-google-apis-x86_64-v3
 
       # Single emulator run handles AVD creation + benchmark execution.
-      # Earlier attempts split snapshot prep into a separate step, which
-      # doubled boot time for first runs and timed out on `pixel_6` +
-      # `google_apis` API 33 under software GPU. The default device on
-      # AOSP ATD boots reliably in ~60s on hosted runners.
+      # Pinned ubuntu-22.04 + google_apis API 29 is the configuration the
+      # action's maintainers test against most heavily. Earlier attempts on
+      # ubuntu-latest with pixel_6/google_apis API 33 and default/aosp_atd
+      # API 30 both timed out at AVD boot ("device not found") — the 24.04
+      # image + emulator-runner v2 combination has been intermittently
+      # broken since 2025.
       - name: Run macrobenchmark
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
-          target: aosp_atd
+          target: google_apis
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -camera-back none -camera-front none
           disable-animations: true
