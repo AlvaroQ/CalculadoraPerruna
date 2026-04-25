@@ -28,7 +28,7 @@ Calculadora Perruna is an Android utility app that **translates between dog year
 
 The app ships with a catalogue of dog breeds enriched with FCI classification, physical characteristics, life expectancy, character traits, common diseases, hygiene and nutrition guidance — all sourced from Firestore and cached locally for offline use.
 
-Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across **six Gradle modules** (`app`, `core`, `core-designsystem`, `widget`, `wear`, `benchmark`). Doubles as a real-world reference for migrating an Android app from the Fragments + Koin + XML era to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the full migration).
+Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across **seven Gradle modules** (`app`, `core`, `core-domain-pure`, `core-designsystem`, `widget`, `wear`, `benchmark`). Doubles as a real-world reference for migrating an Android app from the Fragments + Koin + XML era to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the full migration).
 
 ### Modern Android 2026 — form factors, APIs, accessibility
 
@@ -38,16 +38,17 @@ This project is also a showcase of **APIs 2025-2026 that most Android apps haven
 | --------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------- |
 | **Glance Widget** (Compose for widgets) | `:widget` module                                     | Same design tokens as `:app` — zero XML duplication.           |
 | **Wear OS standalone**                  | `:wear` module                                       | Picker + result on `ScalingLazyColumn`, Material 3 Wear 1.6.1. |
+| **Wear OS Tile (ProtoLayout)**          | `:wear/tile/PerrunoTileService.kt`                   | Declarative tile rendered by SysUI, taps launch the calculator. |
 | **Wear ↔ phone sync**                   | `:app/wearsync` + `:wear/sync`                       | `Wearable.DataClient` channel at `/favorite_breed`.            |
 | **Predictive Back gesture**             | `ResultScreen.kt` + `AndroidManifest.xml`            | Hero atenuates in sync with the swipe `progress`.              |
 | **Material 3 Expressive motion**        | `:core-designsystem/theme/PerrunoTokens.kt`          | Hero number reveal with overshooting spring.                   |
-| **Baseline Profiles + Macrobenchmark**  | `:benchmark` module                                  | Cold-startup AOT compilation (15-25% faster on first install). |
+| **Baseline Profiles + Macrobenchmark**  | `:benchmark` module + `.github/workflows/macrobenchmark.yml` | Real profile shipped (37k entries); CI workflow re-measures cold start on every push to master. |
 | **Compose Preview Screenshot Testing**  | `:app/src/screenshotTest/`                           | Official Google plugin, alpha14 — 13 snapshot baselines.       |
 | **Semantics + LiveRegion TalkBack**     | `ResultScreen.kt`, `HomeScreen.kt`, `SettingsScreen.kt` | Result announced automatically on reveal.                   |
 | **Dynamic type `fontScale=2.0`**        | `app/src/screenshotTest/DynamicTypePreviews.kt`      | WCAG 2.2 AA — 200% text scaling without overflow.              |
 | **Reduce-motion aware animations**      | `:core-designsystem/a11y/ReducedMotion.kt`           | Springs snap to target when `ANIMATOR_DURATION_SCALE=0`.       |
 | **Architecture tests (Konsist)**        | `app/src/test/.../ArchitectureTest.kt`               | ViewModels, domain purity and use-case placement enforced.     |
-| **Code coverage (Kover)**               | Root + `:app` + `:core`                              | `./gradlew koverHtmlReport`.                                   |
+| **Code coverage (Kover)**               | `:app` + `:core` + `:core-domain-pure` aggregated    | 94.96% line coverage with per-package and project-wide thresholds enforced via `koverVerify`. |
 
 See the [ADRs in `docs/adr/`](docs/adr/README.md) for the technical reasoning behind each of these adoptions.
 
@@ -189,12 +190,14 @@ Startup time is measured with **Jetpack Macrobenchmark** and optimized with **Ba
 **Requires a connected device or emulator** (API 28+). The JVM-only unit tests from `./gradlew test` do *not* cover these.
 
 ```bash
-# Generate the baseline profile (writes app/src/main/baseline-prof.txt)
+# Regenerate the baseline profile (writes app/src/release/generated/baselineProfiles/baseline-prof.txt)
 ./gradlew :app:generateReleaseBaselineProfile
 
 # Measure cold startup with and without the baseline profile applied
-./gradlew :benchmark:connectedReleaseAndroidTest
+./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest
 ```
+
+The committed profile is regenerated on demand — CI runs the same measurement automatically on every push to `master` via [`.github/workflows/macrobenchmark.yml`](.github/workflows/macrobenchmark.yml) and uploads timing artifacts (14d retention).
 
 Reports land in `benchmark/build/outputs/connected_android_test_additional_output/`. Expected signal: Baseline Profile run is 15-25% faster than `CompilationMode.None` on cold start.
 
