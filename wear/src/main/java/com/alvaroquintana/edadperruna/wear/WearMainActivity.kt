@@ -215,8 +215,10 @@ private fun ResultView(
         ) {
             item {
                 Text(
-                    text = stringResource(R.string.wear_age_label, dogYears, dogMonths),
+                    text = "🐾 " + stringResource(R.string.wear_age_label, dogYears, dogMonths),
                     style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
                 )
             }
