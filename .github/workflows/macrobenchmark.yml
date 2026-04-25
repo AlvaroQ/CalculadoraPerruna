@@ -172,7 +172,14 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -camera-back none -camera-front none
           disable-animations: true
-          script: ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest --no-daemon --stacktrace
+          # androidx.benchmark.suppressErrors=EMULATOR is set explicitly: the
+          # benchmark library refuses to run on emulators by default because
+          # timing measurements are noisier than on a physical device. We
+          # accept that tradeoff in CI — the goal here is regression-trend
+          # signal across master, not absolute SLA numbers. Suppression is
+          # scoped to this CI invocation only; local runs against a real
+          # device keep the default behaviour.
+          script: ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.suppressErrors=EMULATOR --no-daemon --stacktrace
 
       - name: Upload macrobenchmark results
         if: always()
