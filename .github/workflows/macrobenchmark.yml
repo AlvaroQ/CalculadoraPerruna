@@ -1,17 +1,23 @@
 name: Macrobenchmark
 
 # Cold-start macrobenchmark on a hosted Android emulator. Runs the
-# :benchmark module against a release-signed app on PR + push to master,
-# and uploads timing results as artifacts. Does NOT fail the PR on timing
-# regressions — emulator runs have measurable variance, so this gates on
-# benchmark correctness (the run completes without errors), not absolute
-# numbers. Treat the artifacts as a trend signal, not a hard SLA.
+# :benchmark module against a release-signed app on push to master only
+# and uploads timing results as artifacts. Treat as a trend signal on
+# main branch evolution, not as a per-PR SLA.
+#
+# WHY push-only (not pull_request):
+# Macrobenchmark requires booting a hosted Android emulator under software
+# GPU. The reactivecircus/android-emulator-runner @v2 action is known to
+# flake on ubuntu-latest runners (gfxstream Vulkan warnings, AVD boot
+# timeouts) and ~30% of runs fail to boot regardless of config. We don't
+# want that flake to block PR merges. Master pushes give us the same
+# trend signal without coupling reliability to PR throughput. If a master
+# run fails the cause is visible in artifacts; manual re-run via the UI.
 
 on:
-  pull_request:
-    branches: [master]
   push:
     branches: [master]
+  workflow_dispatch:
 
 concurrency:
   group: macrobenchmark-${{ github.workflow }}-${{ github.ref }}
