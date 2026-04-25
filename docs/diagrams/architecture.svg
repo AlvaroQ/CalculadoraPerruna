@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">CalculadoraPerruna — modules and dependencies</title>
+  <desc id="arch-desc">Seven Gradle modules grouped in three layers. UI surfaces (app, wear, widget) sit on top of foundations (core, core-domain-pure, core-designsystem). Benchmark is tooling that profiles app.</desc>
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="32" font-family="-apple-system, Segoe UI, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#64748B" letter-spacing="1.5">UI SURFACES</text>
+  <text x="20" y="216" font-family="-apple-system, Segoe UI, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#64748B" letter-spacing="1.5">FOUNDATIONS</text>
+
+  <!-- Row 1: UI surfaces -->
+  <g>
+    <rect x="20" y="50" width="180" height="84" rx="12" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="110" y="82" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#1E1B4B">:wear</text>
+    <text x="110" y="104" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Wear OS standalone</text>
+    <text x="110" y="121" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">+ ProtoLayout Tile</text>
+  </g>
+
+  <g>
+    <rect x="240" y="50" width="180" height="84" rx="12" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="330" y="82" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#1E1B4B">:app</text>
+    <text x="330" y="104" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Compose phone/tablet</text>
+    <text x="330" y="121" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">screens + ViewModels</text>
+  </g>
+
+  <g>
+    <rect x="460" y="50" width="180" height="84" rx="12" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2"/>
+    <text x="550" y="82" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#1E1B4B">:widget</text>
+    <text x="550" y="104" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Glance home-screen</text>
+    <text x="550" y="121" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">widget</text>
+  </g>
+
+  <!-- Tooling box, separated -->
+  <g>
+    <rect x="720" y="50" width="180" height="84" rx="12" fill="#F8FAFC" stroke="#64748B" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="810" y="36" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#64748B" letter-spacing="1.5">TOOLING</text>
+    <text x="810" y="82" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#0F172A">:benchmark</text>
+    <text x="810" y="104" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Macrobenchmark +</text>
+    <text x="810" y="121" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Baseline Profiles → :app</text>
+  </g>
+
+  <!-- Row 2: Foundations -->
+  <g>
+    <rect x="20" y="234" width="180" height="84" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+    <text x="110" y="266" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14" font-weight="700" fill="#064E3B">:core-domain-pure</text>
+    <text x="110" y="288" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Pure Kotlin / KMP-ready</text>
+    <text x="110" y="305" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">age formula + entities</text>
+  </g>
+
+  <g>
+    <rect x="240" y="234" width="180" height="84" rx="12" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+    <text x="330" y="266" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" font-weight="700" fill="#064E3B">:core</text>
+    <text x="330" y="288" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Firestore + Room + Hilt</text>
+    <text x="330" y="305" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">repository implementations</text>
+  </g>
+
+  <g>
+    <rect x="460" y="234" width="180" height="84" rx="12" fill="#FAF5FF" stroke="#9333EA" stroke-width="2"/>
+    <text x="550" y="266" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="13" font-weight="700" fill="#3B0764">:core-designsystem</text>
+    <text x="550" y="288" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">M3 Expressive tokens</text>
+    <text x="550" y="305" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">a11y + reduce-motion</text>
+  </g>
+
+  <!-- Arrows: app → core (down), app → core-designsystem (down-right), app → widget (right) -->
+  <line x1="300" y1="134" x2="300" y2="234" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="380" y1="134" x2="510" y2="234" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="420" y1="92" x2="460" y2="92" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- widget → core-designsystem (down) -->
+  <line x1="550" y1="134" x2="550" y2="234" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- wear → core-domain-pure (down) -->
+  <line x1="110" y1="134" x2="110" y2="234" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- core → core-domain-pure (left, api) -->
+  <line x1="240" y1="276" x2="200" y2="276" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="220" y="268" text-anchor="middle" font-family="-apple-system, Segoe UI, sans-serif" font-size="10" fill="#0F766E" font-style="italic" font-weight="600">api</text>
+
+  <!-- Legend -->
+  <g transform="translate(20, 360)">
+    <rect x="0" y="0" width="14" height="14" rx="3" fill="#EEF2FF" stroke="#4F46E5" stroke-width="1.5"/>
+    <text x="22" y="11" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">UI surface</text>
+    <rect x="110" y="0" width="14" height="14" rx="3" fill="#ECFDF5" stroke="#059669" stroke-width="1.5"/>
+    <text x="132" y="11" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Logic</text>
+    <rect x="190" y="0" width="14" height="14" rx="3" fill="#FAF5FF" stroke="#9333EA" stroke-width="1.5"/>
+    <text x="212" y="11" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Design system</text>
+    <rect x="320" y="0" width="14" height="14" rx="3" fill="#F8FAFC" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="342" y="11" font-family="-apple-system, Segoe UI, sans-serif" font-size="11" fill="#475569">Tooling</text>
+  </g>
+</svg>

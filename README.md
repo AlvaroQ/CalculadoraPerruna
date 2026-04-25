@@ -7,28 +7,32 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-2026.03.01-4285F4)
 ![Unit tests](https://img.shields.io/badge/unit%20tests-75%20passing-22C55E)
 ![Screenshot tests](https://img.shields.io/badge/screenshot%20tests-13%20baseline-22C55E)
-![Modules](https://img.shields.io/badge/modules-6-8B5CF6)
+![Modules](https://img.shields.io/badge/modules-7-8B5CF6)
 ![Material 3 Expressive](https://img.shields.io/badge/Material%203-Expressive-FF6B6B)
 ![Predictive Back](https://img.shields.io/badge/Predictive%20Back-enabled-4285F4)
 ![Glance Widget](https://img.shields.io/badge/Glance-Widget-FBBC04)
 ![Wear OS](https://img.shields.io/badge/Wear%20OS-standalone-EA4335)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
+<p align="center">
+  <img src="docs/captures/landing.png" alt="Calculadora Perruna — guía de edad canina basada en la ciencia: resultados precisos por raza, gráficos de desarrollo, fórmulas logarítmicas y versión para Wear OS." width="100%">
+</p>
+
 ---
 
 ## Table of Contents
 
-[About](#about) · [Screenshots](#screenshots) · [Features](#features) · [Tech Stack](#tech-stack) · [Architecture](#architecture) · [Design Decisions](#design-decisions) · [Testing](#testing) · [Getting Started](#getting-started) · [Links](#links) · [License](#license)
+[About](#about) · [Features](#features) · [Tech Stack](#tech-stack) · [Architecture](#architecture) · [Design Decisions](#design-decisions) · [Testing](#testing) · [Performance](#performance) · [Getting Started](#getting-started) · [Links](#links) · [License](#license)
 
 ---
 
 ## About
 
-Calculadora Perruna is an Android utility app that **translates between dog years and human years** using a logarithmic age conversion model — bidirectional: enter your dog's age and breed to see what age that would be in human years, or enter your own age to see what age you'd be if you were a dog of the selected breed. The result is shown numerically and as a chart of life trajectory.
+Calculadora Perruna is an Android utility that **translates between dog years and human years** using a logarithmic conversion model — bidirectional: dog → human, or human → dog years for the selected breed. Result is shown numerically and as a life-trajectory chart.
 
-The app ships with a catalogue of dog breeds enriched with FCI classification, physical characteristics, life expectancy, character traits, common diseases, hygiene and nutrition guidance — all sourced from Firestore and cached locally for offline use.
+It also ships a breed catalogue enriched with FCI classification, physical characteristics, life expectancy, character, common diseases, hygiene and nutrition — sourced from Firestore and cached locally for offline use.
 
-Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across **seven Gradle modules** (`app`, `core`, `core-domain-pure`, `core-designsystem`, `widget`, `wear`, `benchmark`). Doubles as a real-world reference for migrating an Android app from the Fragments + Koin + XML era to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the full migration).
+Built with modern Kotlin, Jetpack Compose, Hilt and Clean Architecture across **seven Gradle modules** (`:app`, `:core`, `:core-domain-pure`, `:core-designsystem`, `:widget`, `:wear`, `:benchmark`). Doubles as a real-world reference for migrating an Android app from Fragments + Koin + XML to Compose + Hilt + Clean Architecture without rewriting from scratch (see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1)).
 
 ### Modern Android 2026 — form factors, APIs, accessibility
 
@@ -54,19 +58,6 @@ See the [ADRs in `docs/adr/`](docs/adr/README.md) for the technical reasoning be
 
 ---
 
-## Screenshots
-
-<table align="center">
-  <tr>
-    <td align="center"><img src="docs/images/store/store1.png" width="200"><br/><sub>Calculator home</sub></td>
-    <td align="center"><img src="docs/images/store/store2.png" width="200"><br/><sub>Breed catalogue</sub></td>
-    <td align="center"><img src="docs/images/store/store3.png" width="200"><br/><sub>Result with chart</sub></td>
-    <td align="center"><img src="docs/images/store/store4.png" width="200"><br/><sub>Breed detail</sub></td>
-  </tr>
-</table>
-
----
-
 ## Features
 
 - **Bidirectional age calculator** — convert dog age (years + months) to human equivalent using the formula `16 · ln(years) + 31`, or compute the inverse for human-to-dog translation. Includes special handling for the first year of life where the linear model breaks down.
@@ -85,7 +76,7 @@ See the [ADRs in `docs/adr/`](docs/adr/README.md) for the technical reasoning be
 | Language               | Kotlin                                                      | 2.3.20            |
 | Build                  | Android Gradle Plugin                                       | 9.1.1             |
 | UI                     | Jetpack Compose + Material 3                                | BOM 2026.03.01    |
-| Architecture           | Clean Architecture — 2 Gradle modules                       | MVVM              |
+| Architecture           | Clean Architecture — 7 Gradle modules                       | MVVM              |
 | State Management       | StateFlow + Channel events                                  | Coroutines 1.10.2 |
 | Navigation             | Navigation Compose                                          | 2.9.7             |
 | Dependency Injection   | Hilt                                                        | 2.59.2            |
@@ -102,24 +93,19 @@ See the [ADRs in `docs/adr/`](docs/adr/README.md) for the technical reasoning be
 
 ## Architecture
 
-Two Gradle modules, one responsibility each:
+Seven Gradle modules grouped by role: three UI surfaces (phone, watch, widget), three foundations (data, pure logic, design system) and one tooling module (benchmark).
 
-- **`app`** — Android UI layer: Compose screens (`HomeScreen`, `BreedListScreen`, `BreedDescriptionScreen`, `ResultScreen`, `SettingsScreen`), ViewModels, navigation, AdMob integration and analytics. Depends on `core` for data and domain.
-- **`core`** — All non-UI logic: domain entities (`Dog`, `FCI`, `Weight`, `Height`, `MainInformation`, `PhysicalCharacteristics`, `Prize`, `LifeExpectancy`, `App`), repository contracts (`BreedRepository`, `PreferencesRepository`), Room persistence, Firestore data source, DataStore preferences, and Hilt modules. Zero Compose, zero AdMob.
+<p align="center">
+  <img src="docs/diagrams/architecture.svg" alt="Module dependency graph: :app, :wear and :widget depend on the foundation modules :core, :core-domain-pure and :core-designsystem. :benchmark profiles :app." width="100%">
+</p>
 
-Inside `core` the data layer follows the standard Clean Architecture split:
-
-```
-core/
-├── domain/
-│   ├── model/        — pure entities, @Serializable
-│   └── repository/   — contracts (interfaces)
-└── data/
-    ├── local/        — Room: AppDatabase, DogDao, DogEntity + mapper, PreferencesDataSource
-    ├── remote/       — Firestore: FirestoreBreedDataSource
-    ├── network/      — ConnectivityObserver
-    └── repository/   — implementations of domain contracts
-```
+- **`:app`** — Compose phone/tablet UI: screens (`HomeScreen`, `BreedListScreen`, `BreedDescriptionScreen`, `ResultScreen`, `SettingsScreen`), ViewModels, navigation, AdMob and analytics.
+- **`:wear`** — Wear OS standalone app + ProtoLayout Tile, depends only on `:core-domain-pure` so the calculation logic is shared without dragging Firestore or AdMob onto the watch.
+- **`:widget`** — Glance home-screen widget; reuses `:core-designsystem` so widget and app share tokens with zero XML duplication.
+- **`:core`** — Data layer: Room (`AppDatabase`, `DogDao`, mappers), Firestore data source, DataStore, `ConnectivityObserver`, repository implementations and Hilt modules. Re-exports `:core-domain-pure` via `api` so `:app` sees the domain types transitively.
+- **`:core-domain-pure`** — Pure Kotlin / KMP-ready: `Dog`, `FCI`, `Weight`, `Height`, `MainInformation`, `PhysicalCharacteristics`, `Prize`, `LifeExpectancy`, `App` and the age conversion formula. Zero Android dependencies.
+- **`:core-designsystem`** — `PerrunoTokens`, Material 3 Expressive theming, accessibility helpers and the `ReducedMotion` API consumed by both `:app` and `:widget`.
+- **`:benchmark`** — `com.android.test` module that runs Macrobenchmark and generates Baseline Profiles for `:app`.
 
 ViewModels expose `StateFlow<UiState<T>>` for reactive screen state and a `Channel`-backed `Flow<Event>` for one-shot events (navigation, dialogs, errors). Hilt wires repositories, data sources, Firebase singletons and the database at the `SingletonComponent` level.
 
@@ -129,9 +115,14 @@ ViewModels expose `StateFlow<UiState<T>>` for reactive screen state and a `Chann
 
 Short rationale behind the less-obvious architectural choices — what was gained, what was given up.
 
-- **Two modules instead of four.** The classic Clean Architecture split (`app` / `usecases` / `data` / `domain`) was the previous shape — see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the migration. With one calculator screen and one CRUD-style breed feature, the use-case layer was a thin pass-through and the separate `data` interface module added coupling without leverage. Collapsing to `app` + `core` cuts the module count in half and removes ~30 boilerplate files. *Tradeoff:* if a third feature with non-trivial business logic shows up, a dedicated `usecases` module becomes worth re-introducing.
+- **No separate `usecases` + `data` + `domain` modules.** The classic Clean Architecture split (`app` / `usecases` / `data` / `domain`) was the previous shape — see [PR #1](https://github.com/AlvaroQ/CalculadoraPerruna/pull/1) for the migration. With one calculator screen and one CRUD-style breed feature, the use-case layer was a thin pass-through and the separate `data` interface module added coupling without leverage. The current layering is `:app` ↔ `:core` ↔ `:core-domain-pure` — three Clean Architecture layers, not four — which removed ~30 boilerplate files. The other modules (`:widget`, `:wear`, `:core-designsystem`, `:benchmark`) exist for form factors and tooling, not Clean Architecture layering. *Tradeoff:* if a third feature with non-trivial business logic shows up, a dedicated `usecases` module becomes worth re-introducing.
 - **Hilt over Koin.** Compile-time validation catches missing bindings before runtime, KSP keeps incremental builds fast, and the integration with `@HiltViewModel` + `hilt-navigation-compose` is first-class. *Tradeoff:* annotation processing adds time on cold builds, and DI graph errors are noisier than Koin's lambda DSL.
 - **Firestore as source of truth, Room as offline cache.** Breed data is fetched once into Room on first request, then served from SQLite forever after. Random catalog browsing and breed lookups don't burn Firestore reads; the app stays fully usable without network. *Tradeoff:* new content from Firestore isn't pushed in real time — users get it on next refresh. Acceptable for a dataset that changes on the order of weeks. `BreedRepository.refreshBreeds()` is exposed for explicit re-sync.
+
+  <p align="center">
+    <img src="docs/diagrams/data-flow.svg" alt="Offline-first data flow: Compose UI subscribes to a StateFlow from the ViewModel, which reads from BreedRepository, which serves from Room. Firestore syncs into Room only on first request or explicit refresh." width="100%">
+  </p>
+
 - **Inject Firebase singletons via Hilt instead of `getInstance()`.** `FirestoreBreedDataSource` originally pulled `FirebaseFirestore.getInstance()` and `FirebaseCrashlytics.getInstance()` from inside its methods, which made it untestable without `mockkStatic` ceremony. A dedicated `FirebaseModule` now provides them as `@Singleton` bindings — see [PR #5](https://github.com/AlvaroQ/CalculadoraPerruna/pull/5) for the refactor. *Tradeoff:* one extra DI module to maintain (~20 lines). Tests dropped from a hypothetical 200+ lines of static mocking to 80 lines of straight constructor injection.
 - **`kotlinx-coroutines-play-services` `.await()` over hand-rolled `suspendCancellableCoroutine`.** The previous data source wrapped each Firestore `Task<T>` in a manual `suspendCancellableCoroutine` block (~25 lines per call). Replaced with the `.await()` extension (3 lines), with try/catch preserving the exact same failure semantics. *Tradeoff:* none — the new code is shorter, more idiomatic, and exceptions propagate as expected.
 - **DataStore Preferences over SharedPreferences.** Async-by-default Flow API integrates cleanly with `StateFlow.stateIn(...)` in the ViewModel. *Tradeoff:* DataStore writes are not transactional with other state — fine here because preferences are independent.
@@ -172,7 +163,7 @@ Run a single module:
 
 ### Screenshot testing (Compose Preview)
 
-UI regressions are guarded by [Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing) — the official Google plugin that turns `@Preview` functions into snapshot tests. 10 baseline snapshots cover `PerrunoButton`, `PerrunoCard`, and `InfoChip`.
+UI regressions are guarded by [Compose Preview Screenshot Testing](https://developer.android.com/studio/preview/compose-screenshot-testing) — the official Google plugin that turns `@Preview` functions into snapshot tests. Baseline snapshots cover `PerrunoButton`, `PerrunoCard`, `InfoChip` and dynamic-type previews (`fontScale=2.0`).
 
 ```bash
 ./gradlew :app:validateDebugScreenshotTest   # CI check
