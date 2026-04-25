@@ -1,5 +1,6 @@
 package com.alvaroquintana.edadperruna.core.di
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -19,4 +20,8 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideCrashlytics(): FirebaseCrashlytics = FirebaseCrashlytics.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 }
