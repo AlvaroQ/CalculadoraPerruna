@@ -57,6 +57,20 @@ dependencies {
     implementation(libs.wear.compose.navigation)
     implementation(libs.wear.tooling.preview)
 
+    // Wear Tiles + ProtoLayout — declarative UI rendered by SysUI on the watch face,
+    // independent of the launcher Activity. Material3 helpers + dynamic-data
+    // expressions support live timeline updates without recreating the tile.
+    implementation(libs.wear.tiles)
+    implementation(libs.wear.protolayout)
+    implementation(libs.wear.protolayout.material3)
+    implementation(libs.wear.protolayout.expression)
+    implementation(libs.wear.tiles.tooling.preview)
+    debugImplementation(libs.wear.tiles.tooling)
+    // Guava is required at compile time for Futures.immediateFuture used by
+    // TileService callbacks. wear-tiles only ships listenablefuture (the empty
+    // stub) on its compile classpath; the real guava-android lives in runtime.
+    implementation(libs.guava.android)
+
     // AndroidX
     implementation(libs.core.ktx)
 

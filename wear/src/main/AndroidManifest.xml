@@ -36,5 +36,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+            Wear Tile entry point. SysUI binds this service when the user
+            adds the tile from the watch tile carousel. permission ensures
+            only the platform can bind. Without exported="true" the tile
+            picker on Wear OS 4+ doesn't list us.
+        -->
+        <service
+            android:name=".tile.PerrunoTileService"
+            android:exported="true"
+            android:label="@string/wear_tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="androidx.wear.tiles.PREVIEW"
+                android:resource="@drawable/tile_preview" />
+        </service>
     </application>
 </manifest>
