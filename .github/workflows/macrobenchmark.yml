@@ -64,8 +64,13 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      # Same placeholders as ci.yml — Gradle evaluates signingConfigs at
-      # configure time, so the properties must exist or configuration fails.
+      # Same placeholders as ci.yml plus a real keystore at the path the
+      # signingConfig points to. Unlike ci.yml (which only runs unit tests
+      # and never produces a signed APK), this workflow assembles the
+      # benchmarkRelease variant — that variant inherits the release
+      # signingConfig and runs validateSigningBenchmarkRelease, which
+      # opens the keystore file. The placeholder path needs to resolve
+      # to a real keystore.
       - name: Inject CI signing placeholders
         run: |
           cat >> gradle.properties <<'EOF'
@@ -75,6 +80,16 @@ jobs:
           EDADPERRUNA_RELEASE_STORE_FILE=ci-dummy.jks
           EDADPERRUNA_RELEASE_STORE_PASSWORD=ci
           EOF
+
+      - name: Generate dummy keystore for signed benchmark build
+        run: |
+          keytool -genkey -v \
+            -keystore app/ci-dummy.jks \
+            -storetype JKS \
+            -keyalg RSA -keysize 2048 -validity 1 \
+            -alias ci \
+            -storepass ci -keypass ci \
+            -dname "CN=CI, OU=CI, O=CI, L=CI, S=CI, C=US"
 
       - name: Generate stub secrets.xml
         run: |
